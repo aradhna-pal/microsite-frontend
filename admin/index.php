@@ -56,7 +56,7 @@
                 <!-- section-menu-left -->
                 <div class="section-menu-left">
                     <div class="box-logo">
-                        <a href="index-2.html" id="site-logo-inner">
+                        <a href="index.php" id="site-logo-inner">
                             <img class="" id="logo_header" alt="" src="images/logo/logo.png" data-light="images/logo/logo.png" data-dark="images/logo/logo-dark.png" >
                         </a>
                         <div class="button-show-hide">
