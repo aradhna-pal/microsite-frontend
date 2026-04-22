@@ -31,41 +31,31 @@
             </div>
             <!-- new-category -->
             <div class="wg-box">
-                <form class="form-new-product form-style-1">
+                <form id="addSizeForm" class="form-new-product form-style-1">
+
                     <fieldset class="name">
                         <div class="body-title">Size name <span class="tf-color-1">*</span></div>
-                        <input class="flex-grow" type="text" placeholder="Category name" name="text" tabindex="0"
-                            value="" aria-required="true" required="">
+                        <input class="flex-grow" type="text" placeholder="Size name" name="SizeName" required>
                     </fieldset>
-                    <fieldset>
-                        <div class="body-title">Upload images <span class="tf-color-1">*</span></div>
-                        <div class="upload-image flex-grow">
-                            <div class="item up-load">
-                                <label class="uploadfile" for="myFile">
-                                    <span class="icon">
-                                        <i class="icon-upload-cloud"></i>
-                                    </span>
-                                    <span class="body-text">Drop your images here or select <span class="tf-color">click
-                                            to browse</span></span>
-                                    <input type="file" id="myFile" name="filename">
-                                </label>
-                            </div>
-                        </div>
+
+                    <fieldset class="description">
+                        <div class="body-title">Description <span class="tf-color-1">*</span></div>
+                        <textarea class="flex-grow" name="Description" placeholder="Enter description" rows="4"
+                            required></textarea>
                     </fieldset>
+
                     <fieldset class="category">
-                        <div class="body-title">Select category icon</div>
-                        <div class="select flex-grow">
-                            <select class="">
-                                <option>Select icon</option>
-                                <option>icon 1</option>
-                                <option>icon 2</option>
-                            </select>
-                        </div>
+                        <div class="body-title mb-10">Status</div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="statusToggle">
+                            <span class="slider"></span>
+                        </label>
                     </fieldset>
+
                     <div class="bot">
-                        <div></div>
                         <button class="tf-button w208" type="submit">Save</button>
                     </div>
+
                 </form>
             </div>
             <!-- /new-category -->

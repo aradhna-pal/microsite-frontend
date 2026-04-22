@@ -50,3 +50,81 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch(err => console.error(err));
 
 });
+
+
+
+// *************************************** add size ********************************
+
+// const domin = 'http://microsite_backend.workarya.com/';
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const form = document.getElementById("addSizeForm");
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const api = `${domin}api/admin/addsize`;
+    const token = localStorage.getItem("authToken");
+
+    if (!token) {
+      iziToast.error({
+        title: "Error",
+        message: "User not authenticated",
+        position: "topRight"
+      });
+      return;
+    }
+
+    const formData = new FormData(form);
+
+    // toggle status
+    const toggle = document.getElementById("statusToggle");
+    formData.set("IsActive", toggle && toggle.checked ? "true" : "false");
+
+    try {
+      const res = await fetch(api, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        body: formData,
+        credentials: "include"
+      });
+
+      const text = await res.text();
+      const data = text ? JSON.parse(text) : {};
+
+      if (res.ok) {
+        iziToast.success({
+          title: "Success",
+          message: "Size added",
+          position: "topRight"
+        });
+        form.reset();
+      } else {
+        iziToast.error({
+          title: "Error",
+          message: data.message || "Failed to add size",
+          position: "topRight"
+        });
+      }
+
+    } catch (err) {
+      console.error(err);
+      iziToast.error({
+        title: "Error",
+        message: "Something went wrong",
+        position: "topRight"
+      });
+    }
+
+  });
+
+});
+
+
+
+// ************************************************** end add size **********************************************
