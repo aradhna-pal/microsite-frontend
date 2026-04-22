@@ -56,7 +56,7 @@
                 <!-- section-menu-left -->
                 <div class="section-menu-left">
                     <div class="box-logo">
-                        <a href="index-2.html" id="site-logo-inner">
+                        <a href="index.php" id="site-logo-inner">
                             <img class="" id="logo_header" alt="" src="images/logo/logo.png" data-light="images/logo/logo.png" data-dark="images/logo/logo-dark.png" >
                         </a>
                         <div class="button-show-hide">
@@ -69,13 +69,13 @@
                                 <div class="center-heading">Main Home</div>
                                 <ul class="menu-list">
                                     <li class="menu-item  active">
-                                        <a href="index.html" class="menu-item-button">
+                                        <a href="index.php" class="menu-item-button">
                                             <div class="icon"><i class="icon-grid"></i></div>
                                             <div class="text">Dashboard</div>
                                         </a>
                                         <!-- <ul class="sub-menu" style="display: block;">
                                             <li class="sub-menu-item">
-                                                <a href="index.html" class="active">
+                                                <a href="index.php" class="active">
                                                     <div class="text">Home 01</div>
                                                 </a>
                                             </li>
@@ -95,12 +95,12 @@
                                         </a>
                                         <ul class="sub-menu">
                                             <li class="sub-menu-item">
-                                                <a href="add-product.html" class="">
+                                                <a href="add-product.php" class="">
                                                     <div class="text">Add Product</div>
                                                 </a>
                                             </li>
                                             <li class="sub-menu-item">
-                                                <a href="product-list.html" class="">
+                                                <a href="product-list.php" class="">
                                                     <div class="text">Product List</div>
                                                 </a>
                                             </li>
@@ -114,12 +114,12 @@
                                         </a>
                                         <ul class="sub-menu">
                                             <li class="sub-menu-item">
-                                                <a href="category-list.html" class="">
+                                                <a href="category-list.php" class="">
                                                     <div class="text">Category list</div>
                                                 </a>
                                             </li>
                                             <li class="sub-menu-item">
-                                                <a href="new-category.html" class="">
+                                                <a href="new-category.php" class="">
                                                     <div class="text">New category</div>
                                                 </a>
                                             </li>
@@ -133,17 +133,17 @@
                                         </a>
                                         <ul class="sub-menu">
                                             <li class="sub-menu-item">
-                                                <a href="oder-list.html" class="">
+                                                <a href="oder-list.php" class="">
                                                     <div class="text">Order list</div>
                                                 </a>
                                             </li>
                                             <li class="sub-menu-item">
-                                                <a href="oder-detail.html" class="">
+                                                <a href="oder-detail.php" class="">
                                                     <div class="text">Order detail</div>
                                                 </a>
                                             </li>
                                             <li class="sub-menu-item">
-                                                <a href="oder-tracking.html" class="">
+                                                <a href="oder-tracking.php" class="">
                                                     <div class="text">Order tracking</div>
                                                 </a>
                                             </li>
@@ -156,22 +156,22 @@
                                         </a>
                                         <ul class="sub-menu">
                                             <li class="sub-menu-item">
-                                                <a href="all-user.html" class="">
+                                                <a href="all-user.php" class="">
                                                     <div class="text">All user</div>
                                                 </a>
                                             </li>
                                             <li class="sub-menu-item">
-                                                <a href="add-new-user.html" class="">
+                                                <a href="add-new-user.php" class="">
                                                     <div class="text">Add new user</div>
                                                 </a>
                                             </li>
                                             <li class="sub-menu-item">
-                                                <a href="login.html" class="">
+                                                <a href="login.php" class="">
                                                     <div class="text">Login</div>
                                                 </a>
                                             </li>
                                             <li class="sub-menu-item">
-                                                <a href="sign-up.html" class="">
+                                                <a href="sign-up.php" class="">
                                                     <div class="text">Sign up</div>
                                                 </a>
                                             </li>
@@ -184,12 +184,12 @@
                                         </a>
                                         <ul class="sub-menu">
                                             <li class="sub-menu-item">
-                                                <a href="all-roles.html" class="">
+                                                <a href="all-roles.php" class="">
                                                     <div class="text">All roles</div>
                                                 </a>
                                             </li>
                                             <li class="sub-menu-item">
-                                                <a href="create-role.html" class="">
+                                                <a href="create-role.php" class="">
                                                     <div class="text">Create role</div>
                                                 </a>
                                             </li>
@@ -197,7 +197,7 @@
                                     </li>
                                  
                                     <li class="menu-item">
-                                        <a href="report.html" class="">
+                                        <a href="report.php" class="">
                                             <div class="icon"><i class="icon-pie-chart"></i></div>
                                             <div class="text">Report</div>
                                         </a>
@@ -209,7 +209,7 @@
                                 <ul class="menu-list">
                                   
                                     <li class="menu-item">
-                                        <a href="setting.html" class="">
+                                        <a href="setting.php" class="">
                                             <div class="icon"><i class="icon-settings"></i></div>
                                             <div class="text">Setting</div>
                                         </a>
@@ -221,17 +221,17 @@
                                         </a>
                                         <ul class="sub-menu">
                                             <li class="sub-menu-item">
-                                                <a href="list-page.html" class="">
+                                                <a href="list-page.php" class="">
                                                     <div class="text">List page</div>
                                                 </a>
                                             </li>
                                             <li class="sub-menu-item">
-                                                <a href="new-page.html" class="">
+                                                <a href="new-page.php" class="">
                                                     <div class="text">New page</div>
                                                 </a>
                                             </li>
                                             <li class="sub-menu-item">
-                                                <a href="edit-page.html" class="">
+                                                <a href="edit-page.php" class="">
                                                     <div class="text">Edit page</div>
                                                 </a>
                                             </li>
@@ -320,7 +320,7 @@
                     <div class="header-dashboard">
                         <div class="wrap">
                             <div class="header-left">
-                                <a href="index-2.html">
+                                <a href="index-2.php">
                                     <img class="" id="logo_header_mobile" alt="" src="images/logo/logo.png" data-light="images/logo/logo.png" data-dark="images/logo/logo-dark.png" data-width="154px" data-height="52px" data-retina="images/logo/logo@2x.png">
                                 </a>
                                 <div class="button-show-hide">
@@ -478,7 +478,7 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="setting.html" class="user-item">
+                                                <a href="setting.php" class="user-item">
                                                     <div class="icon">
                                                         <i class="icon-settings"></i>
                                                     </div>
@@ -494,7 +494,7 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="login.html" class="user-item">
+                                                <a href="login.php" class="user-item">
                                                     <div class="icon">
                                                         <i class="icon-log-out"></i>
                                                     </div>
