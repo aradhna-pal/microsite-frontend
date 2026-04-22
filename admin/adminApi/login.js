@@ -1,11 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
-
+alert("DOMContentLoaded")
     const form = document.getElementById("login-form");
 
     form.addEventListener("submit", async function (e) {
         e.preventDefault();
 
-        const loginApi = `${domin}api/admin/login`;
+        // const loginApi = `${domin}api/admin/login`;
+        const loginApi = `http://microsite_backend.workarya.com/api/admin/login`;
 
         const formData = new FormData(form);
 
@@ -16,7 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             const data = await response.json();
-            console.log("API Response:", data); // 🔍 debug
+            console.log("API Response:", data); 
+
 
             // ✅ correct condition
             if (response.ok && data.status === true) {
