@@ -35,6 +35,11 @@
     <!-- Favicon and Touch Icons  -->
     <link rel="shortcut icon" href="images/favicon.png">
     <link rel="apple-touch-icon-precomposed" href="images/favicon.png">
+    <script src="./adminApi/login.js"></script>
+    <script src="./adminApi/domin.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+<script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+
 
 </head>
 
@@ -54,14 +59,14 @@
                             <h3>Login to account</h3>
                             <div class="body-text">Enter your email & password to login</div>
                         </div>
-                        <form class="form-login flex flex-column gap24">
+                        <form class="form-login flex flex-column gap24" id="login-form">
                             <fieldset class="email">
                                 <div class="body-title mb-10">Email address <span class="tf-color-1">*</span></div>
-                                <input class="flex-grow" type="email" placeholder="Enter your email address" name="email" tabindex="0" value="" aria-required="true" required="">
+                                <input class="flex-grow" type="email" placeholder="Enter your email address" id="email" name="email" tabindex="0" value="" aria-required="true" required="">
                             </fieldset>
                             <fieldset class="password">
                                 <div class="body-title mb-10">Password <span class="tf-color-1">*</span></div>
-                                <input class="password-input" type="password" placeholder="Enter your password" name="password" tabindex="0" value="" aria-required="true" required="">
+                                <input class="password-input" type="password" placeholder="Enter your password" id="password" name="password" tabindex="0" value="" aria-required="true" required="">
                                 <span class="show-pass">
                                     <i class="icon-eye view"></i>
                                     <i class="icon-eye-off hide"></i>
@@ -74,10 +79,10 @@
                                 </div>
                                 <a href="#" class="body-text tf-color">Forgot password?</a>
                             </div>
-                            <a href="index.php" class="tf-button w-full">Login</a>
+                            <button  class="tf-button w-full">Login</button>
                         </form>
                         <div>
-                            <div class="text-tiny mb-16 text-center">Or continue with social account</div>
+                            <!-- <div class="text-tiny mb-16 text-center">Or continue with social account</div>
                             <div class="flex gap16 mobile-wrap">
                                 <a href="index.php" class="tf-button style-2 w-full">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="23" height="22" viewBox="0 0 23 22" fill="none">
@@ -111,7 +116,7 @@
                                     </svg>
                                     <span class="tf-color-3">Sign in with Facebook</span>
                                 </a>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="body-text text-center">
                             You don't have an account yet?

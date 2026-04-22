@@ -1,2 +1,1 @@
-alert("alrt")
-const domin = 'https://localhost:7161/'
+const domin = 'http://localhost:7161/'

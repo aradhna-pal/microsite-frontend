@@ -1,5 +1,3 @@
-// adminApi/auth.js
-
 (function () {
     const isLoggedIn = localStorage.getItem("authToken");
 
