@@ -36,6 +36,10 @@
     <link rel="shortcut icon" href="images/favicon.png">
     <link rel="apple-touch-icon-precomposed" href="images/favicon.png">
 
+    <!-- scripts file  -->
+    <script src="./adminApi/auth.js"></script>
+    <script src="./adminApi/domin.js"></script>
+
 </head>
 
 <body class="body">
