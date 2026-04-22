@@ -36,9 +36,15 @@
     <link rel="shortcut icon" href="images/favicon.png">
     <link rel="apple-touch-icon-precomposed" href="images/favicon.png">
 
+    <!-- toster -->
+       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+<script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+
     <!-- scripts file  -->
     <script src="./adminApi/auth.js"></script>
     <script src="./adminApi/domin.js"></script>
+    <script src="./adminApi/login.js"></script>
+
 
 </head>
 
@@ -459,12 +465,12 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="login.php" class="user-item">
+                                                <div  style="cursor: pointer;" class="user-item">
                                                     <div class="icon">
                                                         <i class="icon-log-out"></i>
                                                     </div>
-                                                    <div class="body-title-2">Log out</div>
-                                                </a>
+                                                    <div id="logout-btn" class="body-title-2">Log out</div>
+                                                </div>
                                             </li>
                                         </ul>
                                     </div>
@@ -472,4 +478,4 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /header-dashboard -->
+                    
