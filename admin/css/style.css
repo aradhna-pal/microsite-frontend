@@ -6754,3 +6754,24 @@ select.h40 {
 }
 
 /*# sourceMappingURL=style.css.map */
+
+
+
+.badge{
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.badge-success{
+  background: #e6f7ee;
+  color: #1f9254;
+}
+.badge-danger{
+  background: #fde8e8;
+  color: #c81e1e;
+}
+.attribute-item{
+  padding: 12px 0;
+  border-top: 1px solid #eee;
+}

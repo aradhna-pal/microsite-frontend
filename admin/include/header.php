@@ -44,6 +44,7 @@
     <script src="./adminApi/auth.js"></script>
     <script src="./adminApi/domin.js"></script>
     <script src="./adminApi/login.js"></script>
+    <script src="./adminApi/size.js"></script>
 
 
 </head>
@@ -132,6 +133,20 @@
                                                     <div class="text">New category</div>
                                                 </a>
                                             </li>
+                                        </ul>
+                                    </li>
+                                     <li class="menu-item has-children">
+                                        <a href="javascript:void(0);" class="menu-item-button">
+                                            <div class="icon"><i class="icon-layers"></i></div>
+                                            <div class="text">Size</div>
+                                        </a>
+                                        <ul class="sub-menu">
+                                            <li class="sub-menu-item">
+                                                <a href="size-list.php" class="">
+                                                    <div class="text">Size list</div>
+                                                </a>
+                                            </li>
+                                           
                                         </ul>
                                     </li>
                                    
