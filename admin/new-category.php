@@ -31,9 +31,9 @@
             </div>
             <!-- new-category -->
             <div class="wg-box">
-                <form class="form-new-product form-style-1">
+                <form class="form-new-product form-style-1" id="category-add">
                     <fieldset class="name">
-                        <div class="body-title">Product name <span class="tf-color-1">*</span></div>
+                        <div class="body-title">Category name <span class="tf-color-1">*</span></div>
                         <input class="flex-grow" type="text" placeholder="Category name" name="text" tabindex="0"
                             value="" aria-required="true" required="">
                     </fieldset>
@@ -53,15 +53,16 @@
                         </div>
                     </fieldset>
                     <fieldset class="category">
-                        <div class="body-title">Select category icon</div>
-                        <div class="select flex-grow">
-                            <select class="">
-                                <option>Select icon</option>
-                                <option>icon 1</option>
-                                <option>icon 2</option>
-                            </select>
-                        </div>
+                        <div class="body-title">Category Status</div>
+
+                        <label class="switch">
+                            <input type="checkbox" id="statusToggle" checked>
+                            <span class="slider round"></span>
+                        </label>
+
+                        <span id="statusText">Active</span>
                     </fieldset>
+
                     <div class="bot">
                         <div></div>
                         <button class="tf-button w208" type="submit">Save</button>

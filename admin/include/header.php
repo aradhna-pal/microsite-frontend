@@ -44,6 +44,8 @@
     <script src="./adminApi/auth.js"></script>
     <script src="./adminApi/domin.js"></script>
     <script src="./adminApi/login.js"></script>
+    <script src="./adminApi/category.js"></script>
+    
 
 
 </head>
@@ -124,12 +126,7 @@
                                         <ul class="sub-menu">
                                             <li class="sub-menu-item">
                                                 <a href="category-list.php" class="">
-                                                    <div class="text">Category list</div>
-                                                </a>
-                                            </li>
-                                            <li class="sub-menu-item">
-                                                <a href="new-category.php" class="">
-                                                    <div class="text">New category</div>
+                                                    <div class="text">Category</div>
                                                 </a>
                                             </li>
                                         </ul>
