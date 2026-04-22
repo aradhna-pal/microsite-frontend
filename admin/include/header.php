@@ -76,7 +76,6 @@
                     <div class="section-menu-left-wrap">
                         <div class="center">
                             <div class="center-item">
-                                <div class="center-heading">Main Home</div>
                                 <ul class="menu-list">
                                     <li class="menu-item  active">
                                         <a href="index.php" class="menu-item-button">
