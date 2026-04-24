@@ -1,37 +1,29 @@
 <?php include 'include/header.php'; ?>
 <!-- main-content -->
 <div class="main-content">
-    <!-- main-content-wrap -->
     <div class="main-content-inner">
-        <!-- main-content-wrap -->
         <div class="main-content-wrap">
             <div class="flex items-center flex-wrap justify-between gap20 mb-27">
-                <h3>Edit Sub Category</h3>
+                <h3>Edit Child Category</h3>
                 <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                     <li>
                         <a href="index.php">
                             <div class="text-tiny">Dashboard</div>
                         </a>
                     </li>
+                    <li><i class="icon-chevron-right"></i></li>
                     <li>
-                        <i class="icon-chevron-right"></i>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <div class="text-tiny">Category</div>
+                        <a href="child-category.php">
+                            <div class="text-tiny">Child Category</div>
                         </a>
                     </li>
-                    <li>
-                        <i class="icon-chevron-right"></i>
-                    </li>
-                    <li>
-                        <div class="text-tiny">Edit Sub Category</div>
-                    </li>
+                    <li><i class="icon-chevron-right"></i></li>
+                    <li><div class="text-tiny">Edit Child Category</div></li>
                 </ul>
             </div>
-            <!-- new-category -->
+            <!-- edit-childcategory -->
             <div class="wg-box">
-                <form class="form-new-product form-style-1" id="subcategory-add">
+                <form class="form-new-product form-style-1" id="childcategory-add">
 
                     <div class="gap22 cols">
                         <!-- Parent Category -->
@@ -44,44 +36,37 @@
                             </div>
                         </fieldset>
 
-                        <!-- Sub Category Name -->
+                        <!-- Sub Category -->
                         <fieldset class="name">
-                            <div class="body-title">
-                                Sub Category name <span class="tf-color-1">*</span>
+                            <div class="body-title">Select Sub Category <span class="tf-color-1">*</span></div>
+                            <div class="select">
+                                <select class="flex-grow" id="subCategory" name="subCategoryId" required>
+                                    <option value="" disabled selected>Select Sub Category</option>
+                                </select>
                             </div>
-                            <input class="flex-grow" type="text" id="categoryName" placeholder="Sub Category name" name="text" required>
+                        </fieldset>
+
+                        <!-- Child Category Name -->
+                        <fieldset class="name">
+                            <div class="body-title">Child Category name <span class="tf-color-1">*</span></div>
+                            <input class="flex-grow" type="text" id="childCategoryName" placeholder="Child Category name" name="text" required>
                         </fieldset>
                     </div>
 
                     <!-- Upload Image -->
                     <fieldset>
-                        <div class="body-title">
-                            Upload image <span class="tf-color-1">*</span>
-                        </div>
-
+                        <div class="body-title">Upload image <span class="tf-color-1">*</span></div>
                         <div class="upload-image flex-grow">
                             <div class="item up-load">
-                                <label class="uploadfile" for="myFile"
-                                    style="position:relative; overflow:hidden; cursor:pointer;">
-
-                                    <!-- Icon -->
+                                <label class="uploadfile" for="myFile" style="position:relative; overflow:hidden; cursor:pointer;">
                                     <span class="icon" id="uploadIcon">
                                         <i class="icon-upload-cloud"></i>
                                     </span>
-
-                                    <!-- Text -->
                                     <span class="body-text" id="uploadText">
-                                        Drop your image here or
-                                        <span class="tf-color">click to browse</span>
+                                        Drop your image here or <span class="tf-color">click to browse</span>
                                     </span>
-
-                                    <!-- File Input -->
                                     <input type="file" id="myFile" name="filename" accept="image/*" hidden>
-
-                                    <!-- Preview Image -->
-                                    <img id="imagePreview"
-                                        style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:contain;" />
-
+                                    <img id="imagePreview" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:contain;" />
                                 </label>
                             </div>
                         </div>
@@ -89,13 +74,11 @@
 
                     <!-- Status -->
                     <fieldset class="category">
-                        <div class="body-title">Sub Category Status</div>
-
+                        <div class="body-title">Child Category Status</div>
                         <label class="switch">
                             <input type="checkbox" id="statusToggle" checked>
                             <span class="slider round"></span>
                         </label>
-
                         <span id="statusText">Active</span>
                     </fieldset>
 
@@ -115,7 +98,6 @@
                     input.addEventListener("change", function () {
                         const file = this.files[0];
                         if (!file) return;
-
                         const reader = new FileReader();
                         reader.onload = function (e) {
                             preview.src = e.target.result;
@@ -127,25 +109,11 @@
                     });
                 </script>
             </div>
-            <!-- /new-category -->
         </div>
-        <!-- /main-content-wrap -->
     </div>
-    <!-- /main-content-wrap -->
-    <!-- bottom-page -->
-    <div class="bottom-page">
-        <div class="body-text">Copyright © 2024 Remos. Design with</div>
-        <i class="icon-heart"></i>
-        <div class="body-text">by <a href="https://themeforest.net/user/themesflat/portfolio">Themesflat</a> All rights
-            reserved.</div>
-    </div>
-    <!-- /bottom-page -->
 </div>
-<!-- /main-content -->
-
 <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
 <script src="./adminApi/domin.js"></script>
 <script src="./adminApi/category.js"></script>
-
 <?php include 'include/footer.php'; ?>
