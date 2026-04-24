@@ -1,6 +1,4 @@
-
-// const domin = 'http://microsite_backend.workarya.com';
-
+// ======================================================================= get categories ===========================================
 document.addEventListener("DOMContentLoaded", function () {
 
   const api = `${domin}/api/category/get`;
@@ -63,3 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch(err => console.error(err));
 
 });
+
+
+// ==================================================================  end categorys ===========================================
