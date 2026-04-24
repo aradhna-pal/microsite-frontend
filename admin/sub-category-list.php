@@ -26,7 +26,7 @@
                         <i class="icon-chevron-right"></i>
                     </li>
                     <li>
-                        <div class="text-tiny">All category</div>
+                        <div class="text-tiny">All Sub category</div>
                     </li>
                 </ul>
             </div>
@@ -55,7 +55,7 @@
                             </div>
                         </form>
                     </div>
-                    <a class="tf-button style-1 w208" href="new-category.php"><i class="icon-plus"></i>Add new</a>
+                    <a class="tf-button style-1 w208" href="new-subcategory.php"><i class="icon-plus"></i>Add new</a>
                 </div>
                 <div class="wg-table table-all-attribute">
                     <ul class="table-title flex gap20 mb-14">

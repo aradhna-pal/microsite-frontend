@@ -1,20 +1,29 @@
 // ======= DOMContentLoaded =======
 document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
-  const categoryId = urlParams.get("id");
+  const urlId = urlParams.get("id");
+  getCategories();
+  
 
-  const tableBody = document.getElementById("categoryTableBody");
-  if (tableBody) {
-    getCategories();
-  }
+  // Determine if the current page is related to Subcategories
+  const isSubcategory = window.location.pathname.toLowerCase().includes('subcategory') || 
+                        window.location.pathname.toLowerCase().includes('sub-category');
 
-  const form = document.getElementById("category-add");
-  if (form) {
-    if (categoryId) {
-      loadCategory(categoryId);      // ✅ pehle data load karo
-      updateCategory(categoryId);    // ✅ phir submit handler lagao
-    } else {
-      AddCategories();
+  if (isSubcategory) {
+    // --- Subcategory Initialization ---
+    const tableBody = document.getElementById("categoryTableBody") || document.getElementById("subCategoryTableBody");
+    if (tableBody) {
+      tableBody.id = "subCategoryTableBody"; // ensure correct ID mapping
+      getSubCategories();
+    }
+    
+    const form = document.getElementById("category-add") || document.getElementById("subcategory-add");
+    if (form) {
+      form.id = "subcategory-add";
+      populateCategoryDropdown().then(() => {
+        if (urlId) { loadSubCategory(urlId); updateSubCategory(urlId); } 
+        else { addSubCategory(); }
+      });
     }
   }
 });
@@ -288,5 +297,163 @@ async function deleteCategory(id) {
 }
 
 // Start Sub Catuegry -------------
+
+const subCategoryGet = `${domin}/api/subcategory/get`;
+const subCategoryAdd = `${domin}/api/subcategory/add`;
+const editSubCategory = `${domin}/api/subcategory/edit`;
+const deleteSubCategory = `${domin}/api/subcategory/delete`;
+
+// ======= POPULATE CATEGORY DROPDOWN =======
+async function populateCategoryDropdown() {
+  const dropdown = document.getElementById("parentCategory");
+  if (!dropdown) return;
+
+  try {
+    const response = await fetch(`${domin}/api/category/get`);
+    if (!response.ok) throw new Error("Failed to fetch categories");
+
+    const result = await response.json();
+    const categories = result.data || result;
+
+    dropdown.innerHTML = '<option value="" disabled selected>Select Category</option>';
+
+    categories.forEach(cat => {
+      const catId = cat.id || cat._id || cat.Id;
+      const catName = cat.name || cat.Name || "";
+      
+      const option = document.createElement("option");
+      option.value = catId;
+      option.textContent = catName;
+      dropdown.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Error loading categories for dropdown:", error);
+  }
+}
+
+// ======= GET ALL SUBCATEGORIES (list page) =======
+async function getSubCategories() {
+  const tableBody = document.getElementById("subCategoryTableBody");
+
+  try {
+    const response = await fetch(subCategoryGet);
+    if (!response.ok) throw new Error("Failed to fetch subcategories");
+
+    const data = await response.json();
+    console.log(data,getSubCategories);
+    
+    tableBody.innerHTML = "";
+
+    data.forEach((cat, index) => {
+      const catId = cat.id || cat._id || cat.Id;
+      const catName = cat.subCategoryName || cat.Name || "";
+      const catImg = cat.subCategoryImageUrl || cat.ImageUrl;
+      const catStatus = cat.status !== undefined ? cat.status : cat.Status;
+      const categoryName = cat.categoryName || cat.CategoryName || "";
+
+
+      const imgUrl = catImg
+        ? domin + catImg
+        : "https://via.placeholder.com/40x40?text=No+Img";
+
+      const statusBadge = (catStatus === true || catStatus === 1 || catStatus === "true")
+        ? `<span class="badge badge-success">Active</span>`
+        : `<span class="badge badge-danger">Inactive</span>`;
+
+      const row = `
+        <li class="attribute-item flex items-center gap20">
+          <div class="body-text" style="flex:0 0 60px; max-width:60px;">${index + 1}</div>
+          <div class="name flex items-center gap10">
+            <img src="${imgUrl}" style="width:40px;height:40px;border-radius:6px;object-fit:cover;">
+          </div>
+          <div class="body-title-2">${categoryName}</div>
+          <div class="body-title-2">${catName}</div>
+          <div class="body-text">${statusBadge}</div>
+          <div class="list-icon-function">
+            <div class="item edit" onclick="redirectToEditSubCategory('${catId}')">
+              <i class="icon-edit-3"></i>
+            </div>
+          </div>
+          <div class="list-icon-function">
+            <div class="item text-danger" onclick="removeSubCategory('${catId}')">
+              <i class="icon-trash-2"></i>
+            </div>
+          </div>
+        </li>`;
+
+      tableBody.insertAdjacentHTML("beforeend", row);
+    });
+
+  } catch (error) {
+    console.error("Error:", error);
+    tableBody.innerHTML = `<li class="body-text text-danger">Failed to load subcategories ❌</li>`;
+  }
+}
+
+async function removeSubCategory(id) {
+  const token = localStorage.getItem("authToken");
+
+  iziToast.question({
+    timeout: false,
+    overlay: true,
+    displayMode: 'once',
+    id: 'question',
+    zindex: 999,
+    title: 'Confirm',
+    message: 'Delete this subcategory?',
+    position: 'center',
+    buttons: [
+      ['<button><b>Yes</b></button>', async function (instance, toast) {
+        instance.hide({}, toast);
+
+        try {
+          const response = await fetch(`${deleteSubCategory}/${id}`, {
+            method: "DELETE",
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          });
+
+          const res = await response.json();
+
+          if (response.ok) {
+            iziToast.success({
+              title: "Deleted!",
+              message: res.message || "Subcategory deleted",
+              position: "topRight"
+            });
+
+            await getSubCategories();
+          } else {
+            iziToast.error({
+              title: "Error!",
+              message: res.message || "Delete failed",
+              position: "topRight"
+            });
+          }
+
+        } catch (error) {
+          console.log(error);
+          iziToast.error({
+            title: "Error!",
+            message: "Server error",
+            position: "topRight"
+          });
+        }
+      }],
+      
+      ['<button>No</button>', function (instance, toast) {
+        instance.hide({}, toast);
+      }]
+    ]
+  });
+}
+
+
+
+
+
+
+
 
  

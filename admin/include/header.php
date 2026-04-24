@@ -131,6 +131,11 @@
                                                     <div class="text">Category</div>
                                                 </a>
                                             </li>
+                                            <li class="sub-menu-item">
+                                                <a href="sub-category-list.php" class="">
+                                                    <div class="text">Sub Category</div>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </li>
                                      <li class="menu-item has-children">
