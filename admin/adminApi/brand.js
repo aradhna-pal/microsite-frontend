@@ -227,3 +227,81 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("editBrandForm");
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const id = new URLSearchParams(window.location.search).get("id");
+    const token = localStorage.getItem("authToken");
+
+    if (!id || !token) {
+      iziToast.error({
+        title: "Error",
+        message: "Missing ID or token",
+        position: "topRight"
+      });
+      return;
+    }
+
+    const formData = new FormData();
+
+    // exact keys required by API
+    formData.append(
+      "BrandName",
+      form.querySelector('input[name="text"]').value.trim()
+    );
+
+    formData.append(
+      "IsActive",
+      document.getElementById("statusToggle").checked ? "true" : "false"
+    );
+
+    const file = document.getElementById("myFile").files[0];
+    if (file) {
+      formData.append("ImageFile", file);
+    }
+
+    try {
+      const res = await fetch(`${domin}/api/admin/editbrand/${id}`, {
+        method: "PUT",   // IMPORTANT
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      const text = await res.text();
+      const data = text ? JSON.parse(text) : {};
+
+      if (res.ok) {
+        iziToast.success({
+          title: "Success",
+          message: "Brand updated successfully",
+          position: "topRight"
+        });
+
+        setTimeout(() => {
+          window.location.href = "brand-list.php";
+        }, 800);
+
+      } else {
+        iziToast.error({
+          title: "Error",
+          message: data.message || "Update failed",
+          position: "topRight"
+        });
+      }
+
+    } catch (err) {
+      console.error(err);
+      iziToast.error({
+        title: "Error",
+        message: "Server error",
+        position: "topRight"
+      });
+    }
+  });
+});
