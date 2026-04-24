@@ -47,6 +47,7 @@
     <script src="./adminApi/category.js"></script>
     
     <script src="./adminApi/size.js"></script>
+    <script src="./adminApi/brand.js"></script>
 
 
 </head>
@@ -141,6 +142,20 @@
                                             <li class="sub-menu-item">
                                                 <a href="size-list.php" class="">
                                                     <div class="text">Size list</div>
+                                                </a>
+                                            </li>
+                                           
+                                        </ul>
+                                    </li>
+                                     <li class="menu-item has-children">
+                                        <a href="javascript:void(0);" class="menu-item-button">
+                                            <div class="icon"><i class="icon-layers"></i></div>
+                                            <div class="text">Brand</div>
+                                        </a>
+                                        <ul class="sub-menu">
+                                            <li class="sub-menu-item">
+                                                <a href="brand-list.php" class="">
+                                                    <div class="text">Brand list</div>
                                                 </a>
                                             </li>
                                            
