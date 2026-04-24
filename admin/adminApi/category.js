@@ -6,21 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const tableBody = document.getElementById("categoryTableBody");
   if (tableBody) {
     getCategories();
-
-    // Event delegation for Edit and Delete actions
-    tableBody.addEventListener("click", (e) => {
-      const editBtn = e.target.closest(".edit");
-      if (editBtn) {
-        const id = editBtn.getAttribute("data-id");
-        window.location.href = `edit-category.php?id=${id}`;
-      }
-
-      const deleteBtn = e.target.closest(".trash");
-      if (deleteBtn) {
-        const id = deleteBtn.getAttribute("data-id");
-        deleteCategory(id);
-      }
-    });
   }
 
   const form = document.getElementById("category-add");
@@ -78,13 +63,13 @@ async function getCategories() {
           </div>
 
           <div class="list-icon-function">
-            <div class="item edit" data-id="${cat.id}">
+            <div class="item edit" onclick="editCategory('${cat.id}')">
               <i class="icon-edit-3"></i>
             </div>
           </div>
 
           <div class="list-icon-function">
-            <div class="item trash" data-id="${cat.id}">
+            <div class="item text-danger" onclick="deleteCategory('${cat.id}')">
               <i class="icon-trash-2"></i>
             </div>
           </div>
@@ -189,41 +174,57 @@ async function deleteCategory(id) {
 
   const token = localStorage.getItem("authToken");
 
-  Swal.fire({
-    title: "Are you sure?",
-    text: "This category will be deleted!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Yes, delete it!",
-  }).then(async (result) => {
+  iziToast.question({
+    timeout: 20000,
+    close: false,
+    overlay: true,
+    displayMode: 'once',
+    id: 'question',
+    zindex: 999,
+    title: 'Confirm',
+    message: 'Are you sure you want to delete this category?',
+    position: 'center',
+    buttons: [
+      ['<button><b>Yes, delete it!</b></button>', async function (instance, toast) {
+        instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
 
-    if (result.isConfirmed) {
+        try {
+          const response = await fetch(`${domin}/api/category/delete/${id}`, {
+            method: "DELETE",
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          });
 
-      try {
-        const response = await fetch(`${domin}/api/category/delete/${id}`, {
-          method: "DELETE",
-          headers: {
-            "Authorization": `Bearer ${token}`
+          const res = await response.json();
+
+          if (response.ok) {
+            iziToast.success({
+              title: "Deleted!",
+              message: res.message || "Category deleted",
+              position: "topRight"
+            });
+            getCategories(); // 🔄 reload list
+          } else {
+            iziToast.error({
+              title: "Error!",
+              message: res.message || "Delete failed",
+              position: "topRight"
+            });
           }
-        });
-
-        const res = await response.json();
-
-        if (response.ok) {
-          Swal.fire("Deleted!", res.message || "Category deleted", "success");
-
-          getCategories(); // 🔄 reload list
-        } else {
-          Swal.fire("Error!", res.message || "Delete failed", "error");
+        } catch (error) {
+          console.error(error);
+          iziToast.error({
+            title: "Error",
+            message: "Server error",
+            position: "topRight"
+          });
         }
-
-      } catch (error) {
-        console.error(error);
-        Swal.fire("Error!", "Server error", "error");
-      }
-
-    }
-
+      }, true],
+      ['<button>Cancel</button>', function (instance, toast) {
+        instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+      }]
+    ]
   });
 
 }
