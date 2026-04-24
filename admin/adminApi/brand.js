@@ -173,9 +173,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (res.ok && data.status !== false) {
         iziToast.success({ title: "Success", message: data.message || "Brand added successfully", position: "topRight" });
-        // setTimeout(() => {
-        //   window.location.href = "brand-list.php";
-        // }, 1000);
+        setTimeout(() => {
+          window.location.href = "brand-list.php";
+        }, 1000);
       } else {
         iziToast.error({ title: "Error", message: data.message || "Failed to add brand", position: "topRight" });
       }
@@ -227,3 +227,92 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("editBrandForm");
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const id = new URLSearchParams(window.location.search).get("id");
+    const token = localStorage.getItem("authToken");
+
+    if (!id || !token) {
+      iziToast.error({
+        title: "Error",
+        message: "Missing ID or token",
+        position: "topRight"
+      });
+      return;
+    }
+
+    const formData = new FormData();
+
+    // exact keys required by API
+    formData.append(
+      "BrandName",
+      form.querySelector('input[name="text"]').value.trim()
+    );
+
+    formData.append(
+      "IsActive",
+      document.getElementById("statusToggle").checked ? "true" : "false"
+    );
+
+    const fileInput = document.getElementById("myFile");
+    if (fileInput && fileInput.files[0]) {
+      formData.append("ImageFile", fileInput.files[0]);
+    } else {
+      // ✅ Append an empty string so the backend doesn't crash looking for a missing key
+      formData.append("ImageFile", "");
+    }
+
+    try {
+      const res = await fetch(`${domin}/api/admin/editbrand/${id}`, {
+        method: "PUT",   // IMPORTANT
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      // ✅ Catch PHP/HTML errors before parsing JSON
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const errorText = await res.text();
+        console.error("Backend Error (Not JSON):", errorText);
+        throw new Error("Backend did not return JSON. Check browser console.");
+      }
+
+      const data = await res.json();
+
+      if (res.ok && data.status !== false) {
+        iziToast.success({
+          title: "Success",
+          message: data.message || "Brand updated successfully",
+          position: "topRight"
+        });
+
+        setTimeout(() => {
+          window.location.href = "brand-list.php";
+        }, 800);
+
+      } else {
+        console.error("API Response Error:", data);
+        iziToast.error({
+          title: "Error",
+          message: data.message || "Update failed",
+          position: "topRight"
+        });
+      }
+
+    } catch (err) {
+      console.error("Catch Error:", err.message);
+      iziToast.error({
+        title: "Error",
+        message: err.message || "Server error occurred",
+        position: "topRight"
+      });
+    }
+  });
+});
