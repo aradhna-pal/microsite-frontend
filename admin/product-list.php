@@ -92,7 +92,7 @@
                     <ul class="flex flex-column">
                         <li class="product-item gap14">
                             <div class="image no-bg">
-                                <img src="images/products/41.png" alt="">
+                                <!-- <img src="images/products/41.png" alt=""> -->
                             </div>
                             <div class="flex items-center justify-between gap20 flex-grow">
                                 <div class="name">

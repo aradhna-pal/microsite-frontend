@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
         form.addEventListener("submit", async function (e) {
             e.preventDefault();
 
-            const loginApi = `${domin}api/admin/login`;
+            const loginApi = `${domin}/api/admin/login`;
             const formData = new FormData(form);
 
             try {

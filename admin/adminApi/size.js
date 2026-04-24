@@ -2,7 +2,7 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-  const api = `${domin}api/admin/getsize`;
+  const api = `${domin}/api/admin/getsize`;
   const tableBody = document.getElementById("sizeTableBody");
 
   fetch(api)
