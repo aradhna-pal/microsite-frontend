@@ -173,9 +173,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (res.ok && data.status !== false) {
         iziToast.success({ title: "Success", message: data.message || "Brand added successfully", position: "topRight" });
-        // setTimeout(() => {
-        //   window.location.href = "brand-list.php";
-        // }, 1000);
+        setTimeout(() => {
+          window.location.href = "brand-list.php";
+        }, 1000);
       } else {
         iziToast.error({ title: "Error", message: data.message || "Failed to add brand", position: "topRight" });
       }
@@ -259,9 +259,12 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("statusToggle").checked ? "true" : "false"
     );
 
-    const file = document.getElementById("myFile").files[0];
-    if (file) {
-      formData.append("ImageFile", file);
+    const fileInput = document.getElementById("myFile");
+    if (fileInput && fileInput.files[0]) {
+      formData.append("ImageFile", fileInput.files[0]);
+    } else {
+      // ✅ Append an empty string so the backend doesn't crash looking for a missing key
+      formData.append("ImageFile", "");
     }
 
     try {
@@ -273,13 +276,20 @@ document.addEventListener("DOMContentLoaded", () => {
         body: formData
       });
 
-      const text = await res.text();
-      const data = text ? JSON.parse(text) : {};
+      // ✅ Catch PHP/HTML errors before parsing JSON
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const errorText = await res.text();
+        console.error("Backend Error (Not JSON):", errorText);
+        throw new Error("Backend did not return JSON. Check browser console.");
+      }
 
-      if (res.ok) {
+      const data = await res.json();
+
+      if (res.ok && data.status !== false) {
         iziToast.success({
           title: "Success",
-          message: "Brand updated successfully",
+          message: data.message || "Brand updated successfully",
           position: "topRight"
         });
 
@@ -288,6 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 800);
 
       } else {
+        console.error("API Response Error:", data);
         iziToast.error({
           title: "Error",
           message: data.message || "Update failed",
@@ -296,10 +307,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
     } catch (err) {
-      console.error(err);
+      console.error("Catch Error:", err.message);
       iziToast.error({
         title: "Error",
-        message: "Server error",
+        message: err.message || "Server error occurred",
         position: "topRight"
       });
     }
