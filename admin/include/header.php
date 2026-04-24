@@ -46,9 +46,7 @@
     <script src="./adminApi/login.js"></script>
     <script src="./adminApi/category.js"></script>
     <script src="./adminApi/color.js"></script>
-
-    
-    
+    <script src="./adminApi/admin-signup.js"></script>
     <script src="./adminApi/size.js"></script>
     <script src="./adminApi/brand.js"></script>
     <script src="./adminApi/user.js"></script>
@@ -224,19 +222,11 @@
                                                     <div class="text">All user</div>
                                                 </a>
                                             </li>
-                                            <li class="sub-menu-item">
-                                                <a href="add-new-user.php" class="">
-                                                    <div class="text">Add new user</div>
-                                                </a>
-                                            </li>
-                                            <li class="sub-menu-item">
-                                                <a href="login.php" class="">
-                                                    <div class="text">Login</div>
-                                                </a>
-                                            </li>
+                                            
+                                           
                                             <li class="sub-menu-item">
                                                 <a href="sign-up.php" class="">
-                                                    <div class="text">Sign up</div>
+                                                    <div class="text">Admin Sign up</div>
                                                 </a>
                                             </li>
                                         </ul>
