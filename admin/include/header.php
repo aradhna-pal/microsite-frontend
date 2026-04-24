@@ -45,6 +45,9 @@
     <script src="./adminApi/domin.js"></script>
     <script src="./adminApi/login.js"></script>
     <script src="./adminApi/category.js"></script>
+    <script src="./adminApi/color.js"></script>
+
+    
     
     <script src="./adminApi/size.js"></script>
     <script src="./adminApi/brand.js"></script>
@@ -153,6 +156,20 @@
                                             <li class="sub-menu-item">
                                                 <a href="size-list.php" class="">
                                                     <div class="text">Size list</div>
+                                                </a>
+                                            </li>
+                                           
+                                        </ul>
+                                    </li>
+                                     <li class="menu-item has-children">
+                                        <a href="javascript:void(0);" class="menu-item-button">
+                                            <div class="icon"><i class="icon-layers"></i></div>
+                                            <div class="text">Color</div>
+                                        </a>
+                                        <ul class="sub-menu">
+                                            <li class="sub-menu-item">
+                                                <a href="color-list.php" class="">
+                                                    <div class="text">Color list</div>
                                                 </a>
                                             </li>
                                            
