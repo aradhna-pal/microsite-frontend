@@ -33,23 +33,25 @@
             <div class="wg-box">
                 <form class="form-new-product form-style-1" id="subcategory-add">
 
-                    <!-- Parent Category -->
-                    <fieldset class="name">
-                        <div class="body-title">Select Category <span class="tf-color-1">*</span></div>
-                        <div class="select">
-                            <select class="flex-grow" id="parentCategory" name="categoryId" required>
-                                <option value="" disabled selected>Select Category</option>
-                            </select>
-                        </div>
-                    </fieldset>
+                    <div class="gap22 cols">
+                        <!-- Parent Category -->
+                        <fieldset class="name">
+                            <div class="body-title">Select Category <span class="tf-color-1">*</span></div>
+                            <div class="select">
+                                <select class="flex-grow" id="parentCategory" name="categoryId" required>
+                                    <option value="" disabled selected>Select Category</option>
+                                </select>
+                            </div>
+                        </fieldset>
 
-                    <!-- Sub Category Name -->
-                    <fieldset class="name">
-                        <div class="body-title">
-                            Sub Category name <span class="tf-color-1">*</span>
-                        </div>
-                        <input class="flex-grow" type="text" id="categoryName" placeholder="Sub Category name" name="text" required>
-                    </fieldset>
+                        <!-- Sub Category Name -->
+                        <fieldset class="name">
+                            <div class="body-title">
+                                Sub Category name <span class="tf-color-1">*</span>
+                            </div>
+                            <input class="flex-grow" type="text" id="categoryName" placeholder="Sub Category name" name="text" required>
+                        </fieldset>
+                    </div>
 
                     <!-- Upload Image -->
                     <fieldset>
