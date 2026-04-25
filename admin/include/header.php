@@ -46,7 +46,6 @@
     <script src="./adminApi/login.js"></script>
     <script src="./adminApi/category.js"></script>
     <script src="./adminApi/color.js"></script>
-    <script src="./adminApi/admin-signup.js"></script>
     <script src="./adminApi/size.js"></script>
     <script src="./adminApi/brand.js"></script>
     <script src="./adminApi/user.js"></script>
