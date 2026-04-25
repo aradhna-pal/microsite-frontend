@@ -239,3 +239,84 @@ async function loadProductColors() {
         });
     } catch (err) { console.error(err); }
 }
+
+
+// get api
+
+
+
+// const domin = 'http://microsite_backend.workarya.com';
+const api = `${domin}/api/product/getproduct`;
+
+document.addEventListener("DOMContentLoaded", function () {
+  const list = document.getElementById("productlist");
+
+  fetch(api)
+    .then(res => res.json())
+    .then(products => {
+
+      list.innerHTML = "";
+
+      products.forEach(p => {
+
+        // ✅ Image full URL
+        const imgUrl = p.image
+          ? domin + p.image
+          : "images/no-image.png";
+
+        // ✅ Stock badge
+        const activeBadge = p.isActive > 0
+          ? `<div class="block-available">Active</div>`
+          : `<div class="block-not-available">Inactive</div>`;
+
+        const row = `
+          <li class="product-item gap14">
+            <div class="image no-bg">
+              <img src="${imgUrl}" alt="">
+            </div>
+
+            <div class="flex items-center justify-between gap20 flex-grow">
+
+              <div class="name">
+                <a href="#" class="body-title-2">${p.productName}</a>
+              </div>
+
+              <div class="body-text">#${p.id}</div>
+
+              <div class="body-text">₹${p.price}</div>
+
+              <div class="body-text">₹${p.discountPrice}</div>
+              <div class="body-text">${p.shortDescription}</div>
+              <div class="body-text">${p.categoryName}</div>
+              <div class="body-text">${p.colorNames}</div>
+              <div class="body-text">${p.sizeNames}</div>
+              <div class="body-text">${p.brandName}</div>
+
+              <div class="body-text">${p.stock}</div>
+
+              <div>${activeBadge}</div>
+
+              <div class="body-text">
+                ${new Date(p.createdAt).toLocaleDateString()}
+              </div>
+
+              <div class="list-icon-function">
+                <div class="item text-primary"><i class="icon-edit-3"></i></div>
+                
+              </div>
+              <div class="list-icon-function">
+                <div class="item text-danger"><i class="icon-trash-2"></i></div>
+              </div>
+
+            </div>
+          </li>
+        `;
+
+        list.insertAdjacentHTML("beforeend", row);
+      });
+
+    })
+    .catch(err => console.error("API Error:", err));
+});
+
+
