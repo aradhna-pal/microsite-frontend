@@ -299,6 +299,22 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+// ================= GET ACTIVE SIZES FOR DROPDOWNS =================
+async function getActiveSizes() {
+  try {
+    const res = await fetch(`${domin}/api/admin/getsize`);
+    let data = await res.json();
+    data = Array.isArray(data) ? data : (data.data || []);
+    return data.filter(size => {
+      const status = size.isActive !== undefined ? size.isActive : (size.IsActive !== undefined ? size.IsActive : size.isactive);
+      return status === true || status === 1 || String(status) === "true";
+    });
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
+
 
 
 // ===================== end update SIZE =====================

@@ -199,6 +199,25 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+// ================= GET ACTIVE COLORS FOR DROPDOWNS =================
+async function getActiveColors() {
+  try {
+    const token = localStorage.getItem("authToken");
+    const res = await fetch(`${domin}/api/admin/getcolor`, {
+      headers: { "Authorization": `Bearer ${token}` }
+    });
+    let data = await res.json();
+    data = Array.isArray(data) ? data : (data.data || []);
+    return data.filter(color => {
+      const status = color.isactive !== undefined ? color.isactive : (color.IsActive !== undefined ? color.IsActive : color.isActive);
+      return status === true || status === 1 || String(status) === "true";
+    });
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
+
 // ===========================end add color ===========================
 
 

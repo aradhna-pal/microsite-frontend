@@ -49,6 +49,7 @@
     <script src="./adminApi/size.js"></script>
     <script src="./adminApi/brand.js"></script>
     <script src="./adminApi/user.js"></script>
+    <script src="./adminApi/product.js"></script>
 
 
 </head>

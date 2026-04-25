@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// Event delegation to auto-filter Subcategories based on selected Category
+// Event delegation to auto-filter Subcategories based on selected Category (for Add/Edit SubCategory/ChildCategory pages)
 document.addEventListener("change", function(e) {
   if (e.target.id === "parentCategory") {
     const selectedCat = e.target.value;
@@ -364,15 +364,20 @@ async function populateCategoryDropdown() {
     const categories = result.data || result;
 
     dropdown.innerHTML = '<option value="" disabled selected>Select Category</option>';
+    const addedIds = new Set();
 
     categories.forEach(cat => {
       const catId = cat.id || cat._id || cat.Id;
       const catName = cat.name || cat.Name || "";
+      const catStatus = cat.status !== undefined ? cat.status : cat.Status;
       
-      const option = document.createElement("option");
-      option.value = catId;
-      option.textContent = catName;
-      dropdown.appendChild(option);
+      if (!addedIds.has(catId) && (catStatus === true || catStatus === 1 || String(catStatus) === "true")) {
+        addedIds.add(catId);
+        const option = document.createElement("option");
+        option.value = catId;
+        option.textContent = catName;
+        dropdown.appendChild(option);
+      }
     });
   } catch (error) {
     console.error("Error loading categories for dropdown:", error);
@@ -703,17 +708,22 @@ async function populateSubCategoryDropdown() {
     const subcategories = result.data || result;
 
     dropdown.innerHTML = '<option value="" disabled selected>Select Sub Category</option>';
+    const addedIds = new Set();
 
     subcategories.forEach(sub => {
       const subId = sub.id || sub._id || sub.Id;
       const subName = sub.subCategoryName || sub.SubCategoryName || sub.name || "";
       const catId = sub.categoryId || sub.CategoryId || "";
+      const subStatus = sub.status !== undefined ? sub.status : sub.Status;
       
-      const option = document.createElement("option");
-      option.value = subId;
-      option.setAttribute("data-category", catId);
-      option.textContent = subName;
-      dropdown.appendChild(option);
+      if (!addedIds.has(subId) && (subStatus === true || subStatus === 1 || String(subStatus) === "true")) {
+        addedIds.add(subId);
+        const option = document.createElement("option");
+        option.value = subId;
+        option.setAttribute("data-category", catId);
+        option.textContent = subName;
+        dropdown.appendChild(option);
+      }
     });
   } catch (error) {
     console.error("Error loading subcategories for dropdown:", error);

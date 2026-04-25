@@ -316,3 +316,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+// ================= GET ACTIVE BRANDS FOR DROPDOWNS =================
+async function getActiveBrands() {
+  try {
+    const res = await fetch(`${domin}/api/admin/getbrand`);
+    let data = await res.json();
+    data = Array.isArray(data) ? data : (data.data || []);
+    return data.filter(brand => {
+      const status = brand.isActive !== undefined ? brand.isActive : (brand.IsActive !== undefined ? brand.IsActive : brand.isactive);
+      return status === true || status === 1 || String(status) === "true";
+    });
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
