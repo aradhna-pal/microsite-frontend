@@ -39,7 +39,6 @@
     <!-- toster -->
        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
 <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
-
     <!-- scripts file  -->
     <script src="./adminApi/auth.js"></script>
     <script src="./adminApi/domin.js"></script>
@@ -50,8 +49,7 @@
     <script src="./adminApi/brand.js"></script>
     <script src="./adminApi/user.js"></script>
     <script src="./adminApi/product.js"></script>
-
-
+    <script src="./adminApi/custmor-logo.js"></script>
 </head>
 
 <body class="body">
@@ -182,6 +180,11 @@
                                             <li class="sub-menu-item">
                                                 <a href="brand-list.php" class="">
                                                     <div class="text">Brand list</div>
+                                                </a>
+                                            </li>
+                                            <li class="sub-menu-item">
+                                                <a href="customer-list.php" class="">
+                                                    <div class="text">Customer list</div>
                                                 </a>
                                             </li>
                                            
