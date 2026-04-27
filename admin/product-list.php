@@ -7,10 +7,10 @@
         <!-- main-content-wrap -->
         <div class="main-content-wrap">
             <div class="flex items-center flex-wrap justify-between gap20 mb-27">
-                <h3>Product List</h3>
+                <h3>All Products</h3>
                 <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                     <li>
-                        <a href="index.php">
+                        <a href="index-2.php">
                             <div class="text-tiny">Dashboard</div>
                         </a>
                     </li>
@@ -19,24 +19,19 @@
                     </li>
                     <li>
                         <a href="#">
-                            <div class="text-tiny">Ecommerce</div>
+                            <div class="text-tiny">Products</div>
                         </a>
                     </li>
                     <li>
                         <i class="icon-chevron-right"></i>
                     </li>
                     <li>
-                        <div class="text-tiny">Product List</div>
+                        <div class="text-tiny">All Products</div>
                     </li>
                 </ul>
             </div>
-            <!-- product-list -->
+            <!-- all-category -->
             <div class="wg-box">
-                <div class="title-box">
-                    <i class="icon-coffee"></i>
-                    <div class="body-text">Tip search by Product ID: Each product is provided with a unique ID, which
-                        you can rely on to find the exact product you need.</div>
-                </div>
                 <div class="flex items-center justify-between gap10 flex-wrap">
                     <div class="wg-filter flex-grow">
                         <div class="show">
@@ -60,332 +55,67 @@
                             </div>
                         </form>
                     </div>
-                    <a class="tf-button style-1 w208" href="add-product.php"><i class="icon-plus"></i>Add new</a>
+                    <a class="tf-button style-1 w208" href="add-product.php"><i class="icon-plus"></i>Add Product</a>
                 </div>
-                <div class="wg-table table-product-list">
-                    <ul class="table-title flex gap20 mb-14">
-                        <li>
-                            <div class="body-title">Product</div>
+                <div class="wg-table table-all-attribute" style="overflow-x: auto;">
+                    <ul class="table-title flex gap20 mb-14" style="white-space: nowrap; min-width: max-content;">
+                        <li style="flex:0 0 60px; max-width:60px;">
+                             <div class="body-title" >S.No</div>
                         </li>
-                        <li>
-                            <div class="body-title">Product ID</div>
+                        <li style="flex: 0 0 80px;">
+                            <div class="body-title">Image</div>
                         </li>
-                        <li>
-                            <div class="body-title">Price</div>
+                     
+                        <li style="flex: 0 0 150px;">
+                            <div class="body-title"> Product Name</div>
                         </li>
-                        <li>
-                            <div class="body-title">Quantity</div>
+                        <li style="flex: 0 0 150px;">
+                            <div class="body-title"> Short Description</div>
                         </li>
-                        <li>
-                            <div class="body-title">Sale</div>
+                        <li style="flex: 0 0 200px;">
+                            <div class="body-title">  Description</div>
                         </li>
-                        <li>
-                            <div class="body-title">Stock</div>
+                        <li style="flex: 0 0 80px;">
+                            <div class="body-title">  Price</div>
                         </li>
-                        <li>
-                            <div class="body-title">Start date</div>
+                        <li style="flex: 0 0 100px;">
+                            <div class="body-title">  Discount Price</div>
                         </li>
-                        <li>
-                            <div class="body-title">Action</div>
+                        <li style="flex: 0 0 80px;">
+                            <div class="body-title">  Stock</div>
+                        </li>
+                        <li style="flex: 0 0 120px;">
+                            <div class="body-title">  Category</div>
+                        </li>
+                        <li style="flex: 0 0 120px;">
+                            <div class="body-title"> Sub  Category</div>
+                        </li>
+                        <li style="flex: 0 0 120px;">
+                            <div class="body-title"> Child  Category</div>
+                        </li>
+                        <li style="flex: 0 0 100px;">
+                            <div class="body-title">  Brand</div>
+                        </li>
+                        <li style="flex: 0 0 100px;">
+                            <div class="body-title">  Size</div>
+                        </li>
+                        <li style="flex: 0 0 100px;">
+                            <div class="body-title">  Color</div>
+                        </li>
+                        <li style="flex: 0 0 80px;">
+                            <div class="body-title">Status</div>
+                        </li>
+                        <li style="flex: 0 0 60px;">
+                            <div class="body-title">Edit</div>
+                        </li>
+                        <li style="flex: 0 0 60px;">
+                            <div class="body-title">Delete</div>
                         </li>
                     </ul>
-                    <ul class="flex flex-column">
-                        <li class="product-item gap14">
-                            <div class="image no-bg">
-                                <!-- <img src="images/products/41.png" alt=""> -->
-                            </div>
-                            <div class="flex items-center justify-between gap20 flex-grow">
-                                <div class="name">
-                                    <a href="product-list.php" class="body-title-2">Dog Food, Chicken & Chicken Liver
-                                        Recipe...</a>
-                                </div>
-                                <div class="body-text">#7712309</div>
-                                <div class="body-text">$1,452.500</div>
-                                <div class="body-text">1,638</div>
-                                <div class="body-text">20</div>
-                                <div>
-                                    <div class="block-not-available">Out of stock</div>
-                                </div>
-                                <div class="body-text">$28,672.36</div>
-                                <div class="list-icon-function">
-                                    <div class="item eye">
-                                        <i class="icon-eye"></i>
-                                    </div>
-                                    <div class="item edit">
-                                        <i class="icon-edit-3"></i>
-                                    </div>
-                                    <div class="item trash">
-                                        <i class="icon-trash-2"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product-item gap14">
-                            <div class="image no-bg">
-                                <img src="images/products/42.png" alt="">
-                            </div>
-                            <div class="flex items-center justify-between gap20 flex-grow">
-                                <div class="name">
-                                    <a href="product-list.php" class="body-title-2">Grain Free Dry Dog Food | Rachael
-                                        Ray® Nutrish®</a>
-                                </div>
-                                <div class="body-text">#7712309</div>
-                                <div class="body-text">$1,452.500</div>
-                                <div class="body-text">1,638</div>
-                                <div class="body-text">20</div>
-                                <div>
-                                    <div class="block-not-available">Out of stock</div>
-                                </div>
-                                <div class="body-text">$28,672.36</div>
-                                <div class="list-icon-function">
-                                    <div class="item eye">
-                                        <i class="icon-eye"></i>
-                                    </div>
-                                    <div class="item edit">
-                                        <i class="icon-edit-3"></i>
-                                    </div>
-                                    <div class="item trash">
-                                        <i class="icon-trash-2"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product-item gap14">
-                            <div class="image no-bg">
-                                <img src="images/products/43.png" alt="">
-                            </div>
-                            <div class="flex items-center justify-between gap20 flex-grow">
-                                <div class="name">
-                                    <a href="product-list.php" class="body-title-2">Weruva Pumpkin Patch Up! Pumpkin
-                                        With Ginger...</a>
-                                </div>
-                                <div class="body-text">#7712309</div>
-                                <div class="body-text">$1,452.500</div>
-                                <div class="body-text">1,638</div>
-                                <div class="body-text">20</div>
-                                <div>
-                                    <div class="block-not-available">Out of stock</div>
-                                </div>
-                                <div class="body-text">$28,672.36</div>
-                                <div class="list-icon-function">
-                                    <div class="item eye">
-                                        <i class="icon-eye"></i>
-                                    </div>
-                                    <div class="item edit">
-                                        <i class="icon-edit-3"></i>
-                                    </div>
-                                    <div class="item trash">
-                                        <i class="icon-trash-2"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product-item gap14">
-                            <div class="image no-bg">
-                                <img src="images/products/44.png" alt="">
-                            </div>
-                            <div class="flex items-center justify-between gap20 flex-grow">
-                                <div class="name">
-                                    <a href="product-list.php" class="body-title-2">Milk-Bone Mini's Flavor Snacks Dog
-                                        Treats, 15 Ounce </a>
-                                </div>
-                                <div class="body-text">#7712309</div>
-                                <div class="body-text">$1,452.500</div>
-                                <div class="body-text">1,638</div>
-                                <div class="body-text">20</div>
-                                <div>
-                                    <div class="block-not-available">Out of stock</div>
-                                </div>
-                                <div class="body-text">$28,672.36</div>
-                                <div class="list-icon-function">
-                                    <div class="item eye">
-                                        <i class="icon-eye"></i>
-                                    </div>
-                                    <div class="item edit">
-                                        <i class="icon-edit-3"></i>
-                                    </div>
-                                    <div class="item trash">
-                                        <i class="icon-trash-2"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product-item gap14">
-                            <div class="image no-bg">
-                                <img src="images/products/45.png" alt="">
-                            </div>
-                            <div class="flex items-center justify-between gap20 flex-grow">
-                                <div class="name">
-                                    <a href="product-list.php" class="body-title-2">Milk-Bone Mini's Flavor Snacks Dog
-                                        Treats, 15 Ounce </a>
-                                </div>
-                                <div class="body-text">#7712309</div>
-                                <div class="body-text">$1,452.500</div>
-                                <div class="body-text">1,638</div>
-                                <div class="body-text">20</div>
-                                <div>
-                                    <div class="block-not-available">Out of stock</div>
-                                </div>
-                                <div class="body-text">$28,672.36</div>
-                                <div class="list-icon-function">
-                                    <div class="item eye">
-                                        <i class="icon-eye"></i>
-                                    </div>
-                                    <div class="item edit">
-                                        <i class="icon-edit-3"></i>
-                                    </div>
-                                    <div class="item trash">
-                                        <i class="icon-trash-2"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product-item gap14">
-                            <div class="image no-bg">
-                                <img src="images/products/46.png" alt="">
-                            </div>
-                            <div class="flex items-center justify-between gap20 flex-grow">
-                                <div class="name">
-                                    <a href="product-list.php" class="body-title-2">Weruva Pumpkin Patch Up! Dog & Cat
-                                        Food...</a>
-                                </div>
-                                <div class="body-text">#7712309</div>
-                                <div class="body-text">$1,452.500</div>
-                                <div class="body-text">1,638</div>
-                                <div class="body-text">20</div>
-                                <div>
-                                    <div class="block-not-available">Out of stock</div>
-                                </div>
-                                <div class="body-text">$28,672.36</div>
-                                <div class="list-icon-function">
-                                    <div class="item eye">
-                                        <i class="icon-eye"></i>
-                                    </div>
-                                    <div class="item edit">
-                                        <i class="icon-edit-3"></i>
-                                    </div>
-                                    <div class="item trash">
-                                        <i class="icon-trash-2"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product-item gap14">
-                            <div class="image no-bg">
-                                <img src="images/products/47.png" alt="">
-                            </div>
-                            <div class="flex items-center justify-between gap20 flex-grow">
-                                <div class="name">
-                                    <a href="product-list.php" class="body-title-2">Kristin Watson</a>
-                                </div>
-                                <div class="body-text">#7712309</div>
-                                <div class="body-text">$1,452.500</div>
-                                <div class="body-text">1,638</div>
-                                <div class="body-text">20</div>
-                                <div>
-                                    <div class="block-not-available">Out of stock</div>
-                                </div>
-                                <div class="body-text">$28,672.36</div>
-                                <div class="list-icon-function">
-                                    <div class="item eye">
-                                        <i class="icon-eye"></i>
-                                    </div>
-                                    <div class="item edit">
-                                        <i class="icon-edit-3"></i>
-                                    </div>
-                                    <div class="item trash">
-                                        <i class="icon-trash-2"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product-item gap14">
-                            <div class="image no-bg">
-                                <img src="images/products/48.png" alt="">
-                            </div>
-                            <div class="flex items-center justify-between gap20 flex-grow">
-                                <div class="name">
-                                    <a href="product-list.php" class="body-title-2">Kristin Watson</a>
-                                </div>
-                                <div class="body-text">#7712309</div>
-                                <div class="body-text">$1,452.500</div>
-                                <div class="body-text">1,638</div>
-                                <div class="body-text">20</div>
-                                <div>
-                                    <div class="block-not-available">Out of stock</div>
-                                </div>
-                                <div class="body-text">$28,672.36</div>
-                                <div class="list-icon-function">
-                                    <div class="item eye">
-                                        <i class="icon-eye"></i>
-                                    </div>
-                                    <div class="item edit">
-                                        <i class="icon-edit-3"></i>
-                                    </div>
-                                    <div class="item trash">
-                                        <i class="icon-trash-2"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product-item gap14">
-                            <div class="image no-bg">
-                                <img src="images/products/49.png" alt="">
-                            </div>
-                            <div class="flex items-center justify-between gap20 flex-grow">
-                                <div class="name">
-                                    <a href="product-list.php" class="body-title-2">Kristin Watson</a>
-                                </div>
-                                <div class="body-text">#7712309</div>
-                                <div class="body-text">$1,452.500</div>
-                                <div class="body-text">1,638</div>
-                                <div class="body-text">20</div>
-                                <div>
-                                    <div class="block-not-available">Out of stock</div>
-                                </div>
-                                <div class="body-text">$28,672.36</div>
-                                <div class="list-icon-function">
-                                    <div class="item eye">
-                                        <i class="icon-eye"></i>
-                                    </div>
-                                    <div class="item edit">
-                                        <i class="icon-edit-3"></i>
-                                    </div>
-                                    <div class="item trash">
-                                        <i class="icon-trash-2"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product-item gap14">
-                            <div class="image no-bg">
-                                <img src="images/products/50.png" alt="">
-                            </div>
-                            <div class="flex items-center justify-between gap20 flex-grow">
-                                <div class="name">
-                                    <a href="product-list.php" class="body-title-2">Kristin Watson</a>
-                                </div>
-                                <div class="body-text">#7712309</div>
-                                <div class="body-text">$1,452.500</div>
-                                <div class="body-text">1,638</div>
-                                <div class="body-text">20</div>
-                                <div>
-                                    <div class="block-not-available">Out of stock</div>
-                                </div>
-                                <div class="body-text">$28,672.36</div>
-                                <div class="list-icon-function">
-                                    <div class="item eye">
-                                        <i class="icon-eye"></i>
-                                    </div>
-                                    <div class="item edit">
-                                        <i class="icon-edit-3"></i>
-                                    </div>
-                                    <div class="item trash">
-                                        <i class="icon-trash-2"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
+                    <ul class="flex flex-column" id="productTableBody" style="min-width: max-content;">
+                     
+                    
+                      
                     </ul>
                 </div>
                 <div class="divider"></div>
@@ -410,7 +140,7 @@
                     </ul>
                 </div>
             </div>
-            <!-- /product-list -->
+            <!-- /all-category -->
         </div>
         <!-- /main-content-wrap -->
     </div>
@@ -425,8 +155,6 @@
     <!-- /bottom-page -->
 </div>
 <!-- /main-content -->
-
-
 
 
 <?php include 'include/footer.php'; ?>

@@ -1,16 +1,15 @@
 <?php include 'include/header.php'; ?>
-
 <!-- main-content -->
 <div class="main-content">
     <!-- main-content-wrap -->
     <div class="main-content-inner">
         <!-- main-content-wrap -->
-        <div class="main-content-wrap">
+                <div class="main-content-wrap">
             <div class="flex items-center flex-wrap justify-between gap20 mb-27">
                 <h3>Add Product</h3>
                 <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                     <li>
-                        <a href="index-2.php">
+                        <a href="index.php">
                             <div class="text-tiny">Dashboard</div>
                         </a>
                     </li>
@@ -18,147 +17,176 @@
                         <i class="icon-chevron-right"></i>
                     </li>
                     <li>
-                        <a href="#">
-                            <div class="text-tiny">Ecommerce</div>
+                        <a href="product-list.php">
+                            <div class="text-tiny">Product</div>
                         </a>
                     </li>
                     <li>
                         <i class="icon-chevron-right"></i>
                     </li>
                     <li>
-                        <div class="text-tiny">Add product</div>
+                        <div class="text-tiny">Add Product</div>
                     </li>
                 </ul>
             </div>
-            <!-- form-add-product -->
-            <form class="tf-section-2 form-add-product">
-                <div class="wg-box">
-                    <fieldset class="name">
-                        <div class="body-title mb-10">Product name <span class="tf-color-1">*</span>
+            <!-- new-product-wrap -->
+            <form class="form-new-product" id="form-add-product" enctype="multipart/form-data">
+                <div class="new-page-wrap">
+                    <div class="left">
+                        <div class="wg-box">
+                            <fieldset class="name mb-24">
+                                <div class="body-title mb-10">Product Name <span class="tf-color-1">*</span></div>
+                                <input class="" type="text" placeholder="Product Name" name="ProductName" tabindex="0" value="" aria-required="true" required="">
+                            </fieldset>
+                            <div class="flex gap24 mb-24">
+                                <fieldset class="name w-half">
+                                    <div class="body-title mb-10">SKU <span class="tf-color-1">*</span></div>
+                                    <input class="" type="text" placeholder="SKU" name="Sku" tabindex="0" value="" aria-required="true" required="">
+                                </fieldset>
+                                <fieldset class="name w-half">
+                                    <div class="body-title mb-10">Stock <span class="tf-color-1">*</span></div>
+                                    <input class="" type="number" placeholder="Stock" name="Stock" tabindex="0" value="" aria-required="true" required="">
+                                </fieldset>
+                            </div>
+                            <div class="flex gap24 mb-24">
+                                <fieldset class="name w-half">
+                                    <div class="body-title mb-10">Price <span class="tf-color-1">*</span></div>
+                                    <input class="" type="number" placeholder="Price" name="Price" tabindex="0" value="" aria-required="true" required="">
+                                </fieldset>
+                                <fieldset class="name w-half">
+                                    <div class="body-title mb-10">Discount Price</div>
+                                    <input class="" type="number" placeholder="Discount Price" name="DiscountPrice" tabindex="0" value="">
+                                </fieldset>
+                            </div>
+                            <fieldset class="description mb-24">
+                                <div class="body-title mb-10">Short Description <span class="tf-color-1">*</span></div>
+                                <textarea class="" name="ShortDescription" placeholder="Short Description" tabindex="0" aria-required="true" required=""></textarea>
+                            </fieldset>
+                            <fieldset class="content">
+                                <div class="body-title mb-10">Description</div>
+                                <!-- TinyMCE textarea allows for bullet points and full rich text editing -->
+                                <textarea class="textarea-tinymce" name="Description"></textarea>
+                            </fieldset>
                         </div>
-                        <input class="mb-10" type="text" placeholder="Enter product name" name="text" tabindex="0"
-                            value="" aria-required="true" required="">
-                        <div class="text-tiny">Do not exceed 20 characters when entering the product
-                            name.</div>
-                    </fieldset>
-                    <div class="gap22 cols">
-                        <fieldset class="category">
-                            <div class="body-title mb-10">Category <span class="tf-color-1">*</span>
-                            </div>
-                            <div class="select">
-                                <select class="">
-                                    <option>Choose category</option>
-                                    <option>Shop</option>
-                                    <option>Product</option>
-                                </select>
-                            </div>
-                        </fieldset>
-                        <fieldset class="male">
-                            <div class="body-title mb-10">Gender <span class="tf-color-1">*</span>
-                            </div>
-                            <div class="select">
-                                <select class="">
-                                    <option>Male</option>
-                                    <option>Female</option>
-                                    <option>Other</option>
-                                </select>
-                            </div>
-                        </fieldset>
                     </div>
-                    <fieldset class="brand">
-                        <div class="body-title mb-10">Brand <span class="tf-color-1">*</span></div>
-                        <div class="select">
-                            <select class="">
-                                <option>Choose category</option>
-                                <option>Shop</option>
-                                <option>Product</option>
-                            </select>
-                        </div>
-                    </fieldset>
-                    <fieldset class="description">
-                        <div class="body-title mb-10">Description <span class="tf-color-1">*</span>
-                        </div>
-                        <textarea class="mb-10" name="description" placeholder="Description" tabindex="0"
-                            aria-required="true" required=""></textarea>
-                        <div class="text-tiny">Do not exceed 100 characters when entering the
-                            product name.</div>
-                    </fieldset>
-                </div>
-                <div class="wg-box">
-                    <fieldset>
-                        <div class="body-title mb-10">Upload images</div>
-                        <div class="upload-image mb-16">
-                            <div class="item">
-                                <img src="images/upload/upload-1.png" alt="">
-                            </div>
-                            <div class="item">
-                                <img src="images/upload/upload-2.png" alt="">
-                            </div>
-                            <div class="item up-load">
-                                <label class="uploadfile" for="myFile">
-                                    <span class="icon">
-                                        <i class="icon-upload-cloud"></i>
-                                    </span>
-                                    <span class="text-tiny">Drop your images here or select <span class="tf-color">click
-                                            to browse</span></span>
-                                    <input type="file" id="myFile" name="filename">
-                                </label>
+                    <div class="right">
+                        <div class="wg-box">
+                            <div>
+                                <div class="body-title mb-10">Publish</div>
+                                <div class="flex gap10">
+                                    <button class="tf-button w-full" type="submit">Save Product</button>
+                                </div>
                             </div>
                         </div>
-                        <div class="body-text">You need to add at least 4 images. Pay attention to
-                            the quality of the pictures you add, comply with the background color
-                            standards. Pictures must be in certain dimensions. Notice that the
-                            product shows all the details</div>
-                    </fieldset>
-                    <div class="cols gap22">
-                        <fieldset class="name">
-                            <div class="body-title mb-10">Add size</div>
-                            <div class="select mb-10">
-                                <select class="">
-                                    <option>EU - 44</option>
-                                    <option>EU - 40</option>
-                                    <option>EU - 50</option>
-                                </select>
-                            </div>
-                            <div class="list-box-value mb-10">
-                                <div class="box-value-item">
-                                    <div class="body-text">EU - 38.5</div>
-                                </div>
-                                <div class="box-value-item">
-                                    <div class="body-text">EU - 39</div>
-                                </div>
-                                <div class="box-value-item">
-                                    <div class="body-text">EU - 40</div>
+                        <div class="wg-box">
+                            <div>
+                                <div class="body-title mb-10">Status</div>
+                                <div class="select">
+                                    <select class="" name="IsActive">
+                                        <option value="true">Active</option>
+                                        <option value="false">Inactive</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="list-box-value">
-                                <div class="box-value-item">
-                                    <div class="body-text">EU - 41.5</div>
-                                </div>
-                                <div class="box-value-item">
-                                    <div class="body-text">EU - 42</div>
-                                </div>
-                                <div class="box-value-item">
-                                    <div class="body-text">EU - 43</div>
+                        </div>
+                        <div class="wg-box">
+                            <div>
+                                <fieldset class="name mb-24">
+                                    <div class="body-title mb-10">Category</div>
+                                    <div class="select">
+                                        <select name="CategoryId" id="CategoryId" required>
+                                            <option value="">Select Category</option>
+                                        </select>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="name mb-24">
+                                    <div class="body-title mb-10">Sub Category</div>
+                                    <div class="select">
+                                        <select name="SubCategoryId" id="SubCategoryId">
+                                            <option value="">Select Sub Category</option>
+                                        </select>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="name mb-24">
+                                    <div class="body-title mb-10">Child Category</div>
+                                    <div class="select">
+                                        <select name="ChildCategoryId" id="ChildCategoryId">
+                                            <option value="">Select Child Category</option>
+                                        </select>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="name">
+                                    <div class="body-title mb-10">Brand</div>
+                                    <div class="select">
+                                        <select name="BrandId" id="BrandId">
+                                            <option value="">Select Brand</option>
+                                        </select>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="wg-box">
+                            <div>
+                            
+                                <fieldset class="name mb-24">
+                                    <div class="body-title mb-10">Sizes</div>
+                                    <div class="select">
+                                        <select name="SizeId" id="SizeId">
+                                            <option value="">Select Size</option>
+                                        </select>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="name">
+                                    <div class="body-title mb-10">Colors</div>
+                                    <div class="select">
+                                        <select name="ColorId" id="ColorId">
+                                            <option value="">Select Color</option>
+                                        </select>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="wg-box">
+                            <div>
+                                <div class="body-title mb-10">Main Image <span class="tf-color-1">*</span></div>
+                                <div class="upload-image style-1 mb-16" id="main-image-container">
+                                    <div class="item up-load">
+                                        <label class="uploadfile" for="ImageFile">
+                                            <div class="icon">
+                                                <i class="icon-upload-cloud"></i>
+                                            </div>
+                                            <span class="text-tiny">Drop your image here or <span class="tf-color">click to browse</span></span>
+                                            <input type="file" id="ImageFile" name="ImageFile" accept="image/*" required>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </fieldset>
-                        <fieldset class="name">
-                            <div class="body-title mb-10">Product date</div>
-                            <div class="select">
-                                <input type="date" name="date" value="2023-11-20">
+                        </div>
+                        <div class="wg-box">
+                            <div>
+                                <div class="body-title mb-10">Gallery Images</div>
+                                <div class="upload-image style-1 mb-16" id="gallery-container">
+                                    <div class="item up-load">
+                                        <label class="uploadfile" for="GalleryFiles">
+                                            <div class="icon">
+                                                <i class="icon-upload-cloud"></i>
+                                            </div>
+                                            <span class="text-tiny">Drop your images here or <span class="tf-color">click to browse</span></span>
+                                            <input type="file" id="GalleryFiles" name="GalleryFiles[]" multiple accept="image/*">
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
-                        </fieldset>
-                    </div>
-                    <div class="cols gap10">
-                        <button class="tf-button w-full" type="submit">Add product</button>
-                        <button class="tf-button style-1 w-full" type="submit">Save product</button>
-                        <a href="#" class="tf-button style-2 w-full">Schedule</a>
+                        </div>
                     </div>
                 </div>
             </form>
-            <!-- /form-add-product -->
+            <!-- /new-product-wrap -->
         </div>
+        <!-- /main-content-wrap -->
+    </div>
+    <!-- /main-content-wrap -->
+
         <!-- /main-content-wrap -->
     </div>
     <!-- /main-content-wrap -->
@@ -172,6 +200,41 @@
     <!-- /bottom-page -->
 </div>
 <!-- /main-content -->
+
+<script>
+    // Single image preview for Main Image
+    document.getElementById('ImageFile').addEventListener('change', function(event) {
+        const container = document.getElementById('main-image-container');
+        const existingPreview = container.querySelector('.preview-item');
+        if (existingPreview) existingPreview.remove();
+
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgHTML = `<div class="item preview-item"><img src="${e.target.result}" alt="" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;"></div>`;
+                container.insertAdjacentHTML('afterbegin', imgHTML);
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Multiple image preview for Gallery
+    document.getElementById('GalleryFiles').addEventListener('change', function(event) {
+        const container = document.getElementById('gallery-container');
+        const existingPreviews = container.querySelectorAll('.preview-item');
+        existingPreviews.forEach(el => el.remove());
+
+        Array.from(event.target.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgHTML = `<div class="item preview-item"><img src="${e.target.result}" alt="" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;"></div>`;
+                container.insertAdjacentHTML('afterbegin', imgHTML);
+            }
+            reader.readAsDataURL(file);
+        });
+    });
+</script>
 
 
 <?php include 'include/footer.php'; ?>

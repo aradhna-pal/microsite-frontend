@@ -30,7 +30,7 @@
                 </ul>
             </div>
             <!-- new-product-wrap -->
-            <form class="form-new-product" id="form-add-product" enctype="multipart/form-data">
+            <form class="form-new-product" id="editproduct" enctype="multipart/form-data">
                 <div class="new-page-wrap">
                     <div class="left">
                         <div class="wg-box">
