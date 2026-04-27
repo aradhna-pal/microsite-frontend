@@ -50,6 +50,8 @@
     <script src="./adminApi/user.js"></script>
     <script src="./adminApi/product.js"></script>
     <script src="./adminApi/custmor-logo.js"></script>
+    <script src="./adminApi/variant.js"></script>
+    
 </head>
 
 <body class="body">
@@ -115,6 +117,11 @@
                                             <li class="sub-menu-item">
                                                 <a href="product-list.php" class="">
                                                     <div class="text">Product List</div>
+                                                </a>
+                                            </li>
+                                            <li class="sub-menu-item">
+                                                <a href="variant-list.php" class="">
+                                                    <div class="text">Variant List</div>
                                                 </a>
                                             </li>
                                            
