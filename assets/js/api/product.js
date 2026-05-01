@@ -19,17 +19,23 @@ fetch(api)
       let pColors = parseArray(p.colorNames);
       let pVariants = parseArray(p.variants);
 
+      let mainGallery = parseArray(p.imageGallery);
+      let mainHoverImg = mainGallery.length > 0 ? mainGallery[0] : '';
+
       let gridColorMap = {};
       pColors.forEach(c => {
-         gridColorMap[c] = { image: p.image, price: p.price, name: p.productName };
+         gridColorMap[c] = { image: p.image, hoverImage: mainHoverImg, price: p.price, name: p.productName };
       });
       pVariants.forEach(v => {
          const vActive = v.isActive !== undefined ? v.isActive : (v.IsActive !== undefined ? v.IsActive : v.isactive);
          if (vActive === true || vActive === 1 || String(vActive).toLowerCase() === "true") {
             let vColors = parseArray(v.colorNames);
+            let vGallery = parseArray(v.imageGallery);
+            let vHoverImg = vGallery.length > 0 ? vGallery[0] : mainHoverImg;
+            
             vColors.forEach(c => {
                if (!gridColorMap[c]) {
-                  gridColorMap[c] = { image: v.image || p.image, price: v.price, name: v.variantName || p.productName };
+                  gridColorMap[c] = { image: v.image || p.image, hoverImage: vHoverImg, price: v.price, name: v.variantName || p.productName };
                }
             });
          }
@@ -42,11 +48,14 @@ fetch(api)
          if (i === 0) firstGridColor = c;
          gridColorHtml += `
             <a href="#" class="grid-color-swatch ${i===0?'active':''}" title="${c}" style="display: inline-block; margin-right: 5px;"
-               data-img="${vData.image}" data-price="${vData.price}" data-name="${vData.name}">
+               data-img="${vData.image}" data-hover-img="${vData.hoverImage || ''}" data-price="${vData.price}" data-name="${vData.name}">
                <span style="display:block;width:20px;height:20px;border-radius:50%;background:${c};border:1px solid #ccc"></span>
             </a>
          `;
       });
+
+      let firstGridData = firstGridColor && gridColorMap[firstGridColor] ? gridColorMap[firstGridColor] : { image: p.image, hoverImage: mainHoverImg };
+      let hoverHtml = firstGridData.hoverImage ? `<img src="${firstGridData.hoverImage}" alt="${p.productName}" class="product-image-hover grid-product-image-hover">` : '';
 
       row.innerHTML += `
         <div class="col-6 col-md-4 col-lg-4 col-xl-3">
@@ -55,7 +64,8 @@ fetch(api)
               
               <!-- ✅ Image click also sends id -->
               <a href="product.php?id=${p.id}&color=${encodeURIComponent(firstGridColor)}">
-                <img src="${p.image}" alt="${p.productName}" class="product-image grid-product-image">
+                <img src="${firstGridData.image}" alt="${p.productName}" class="product-image grid-product-image">
+                ${hoverHtml}
               </a>
 
               <div class="product-action-vertical">
@@ -609,6 +619,7 @@ document.addEventListener('click', function(e) {
 
     // Extract data
     const img = gridSwatch.getAttribute('data-img');
+    const hoverImg = gridSwatch.getAttribute('data-hover-img');
     const price = gridSwatch.getAttribute('data-price');
     const name = gridSwatch.getAttribute('data-name');
 
@@ -619,6 +630,19 @@ document.addEventListener('click', function(e) {
          const imgEl = productCard.querySelector('.grid-product-image');
          if (imgEl) imgEl.src = img;
       }
+      
+      if (hoverImg !== null) {
+         const hoverImgEl = productCard.querySelector('.grid-product-image-hover');
+         if (hoverImgEl && hoverImg) {
+             hoverImgEl.src = hoverImg;
+         } else if (!hoverImgEl && hoverImg) {
+             const imgLink = productCard.querySelector('figure.product-media a');
+             if (imgLink) imgLink.insertAdjacentHTML('beforeend', `<img src="${hoverImg}" alt="Hover image" class="product-image-hover grid-product-image-hover">`);
+         } else if (hoverImgEl && !hoverImg) {
+             hoverImgEl.remove();
+         }
+      }
+      
       if (price) {
          const priceEl = productCard.querySelector('.grid-product-price');
          if (priceEl) priceEl.innerText = '₹' + price;
