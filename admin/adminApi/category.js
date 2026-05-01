@@ -2,14 +2,16 @@
 document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
   const urlId = urlParams.get("id");
-  
 
   // Determine the current page
-  const isChildCategory = window.location.pathname.toLowerCase().includes('childcategory') || 
-                          window.location.pathname.toLowerCase().includes('child-category');
-  
-  const isSubcategory = !isChildCategory && (window.location.pathname.toLowerCase().includes('subcategory') || 
-                        window.location.pathname.toLowerCase().includes('sub-category'));
+  const isChildCategory =
+    window.location.pathname.toLowerCase().includes("childcategory") ||
+    window.location.pathname.toLowerCase().includes("child-category");
+
+  const isSubcategory =
+    !isChildCategory &&
+    (window.location.pathname.toLowerCase().includes("subcategory") ||
+      window.location.pathname.toLowerCase().includes("sub-category"));
 
   if (isChildCategory) {
     // --- Child Category Initialization ---
@@ -17,28 +19,43 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tableBody) {
       getChildCategories();
     }
-    
+
     const form = document.getElementById("childcategory-add");
     if (form) {
-      Promise.all([populateCategoryDropdown(), populateSubCategoryDropdown()]).then(() => {
-        if (urlId) { loadChildCategory(urlId); updateChildCategory(urlId); } 
-        else { addChildCategory(); }
+      Promise.all([
+        populateCategoryDropdown(),
+        populateSubCategoryDropdown(),
+      ]).then(() => {
+        if (urlId) {
+          loadChildCategory(urlId);
+          updateChildCategory(urlId);
+        } else {
+          addChildCategory();
+        }
       });
     }
   } else if (isSubcategory) {
     // --- Subcategory Initialization ---
-    const tableBody = document.getElementById("categoryTableBody") || document.getElementById("subCategoryTableBody");
+    const tableBody =
+      document.getElementById("categoryTableBody") ||
+      document.getElementById("subCategoryTableBody");
     if (tableBody) {
       tableBody.id = "subCategoryTableBody"; // ensure correct ID mapping
       getSubCategories();
     }
-    
-    const form = document.getElementById("category-add") || document.getElementById("subcategory-add");
+
+    const form =
+      document.getElementById("category-add") ||
+      document.getElementById("subcategory-add");
     if (form) {
       form.id = "subcategory-add";
       populateCategoryDropdown().then(() => {
-        if (urlId) { loadSubCategory(urlId); updateSubCategory(urlId); } 
-        else { addSubCategory(); }
+        if (urlId) {
+          loadSubCategory(urlId);
+          updateSubCategory(urlId);
+        } else {
+          addSubCategory();
+        }
       });
     }
   } else {
@@ -48,21 +65,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const form = document.getElementById("category-add");
     if (form) {
-      if (urlId) { loadCategory(urlId); updateCategory(urlId); } 
-      else { AddCategories(); }
+      if (urlId) {
+        loadCategory(urlId);
+        updateCategory(urlId);
+      } else {
+        AddCategories();
+      }
     }
   }
 });
 
-
 // Event delegation to auto-filter Subcategories based on selected Category (for Add/Edit SubCategory/ChildCategory pages)
-document.addEventListener("change", function(e) {
+document.addEventListener("change", function (e) {
   if (e.target.id === "parentCategory") {
     const selectedCat = e.target.value;
     const subCatDropdown = document.getElementById("subCategory");
     if (subCatDropdown) {
       const options = subCatDropdown.querySelectorAll("option");
-      options.forEach(opt => {
+      options.forEach((opt) => {
         if (opt.value === "") return;
         if (opt.getAttribute("data-category") === selectedCat) {
           opt.style.display = "";
@@ -74,7 +94,6 @@ document.addEventListener("change", function(e) {
     }
   }
 });
-
 
 // ======= GET ALL CATEGORIES (list page) =======
 async function getCategories() {
@@ -94,13 +113,13 @@ async function getCategories() {
       const catImg = cat.imageUrl || cat.ImageUrl;
       const catStatus = cat.status !== undefined ? cat.status : cat.Status;
 
-      const imgUrl = catImg
-        ? domin + catImg
-        : "https://via.placeholder.com/40x40?text=No+Img";
+      const imgUrl = catImg      
+      ;
 
-      const statusBadge = (catStatus === true || catStatus === 1 || catStatus === "true")
-        ? `<span class="badge badge-success">Active</span>`
-        : `<span class="badge badge-danger">Inactive</span>`;
+      const statusBadge =
+        catStatus === true || catStatus === 1 || catStatus === "true"
+          ? `<span class="badge badge-success">Active</span>`
+          : `<span class="badge badge-danger">Inactive</span>`;
 
       const row = `
         <li class="attribute-item flex items-center gap20">
@@ -111,7 +130,7 @@ async function getCategories() {
           <div class="body-title-2">${catName}</div>
           <div class="body-text">${statusBadge}</div>
           <div class="list-icon-function">
-            <div class="item edit" onclick="editCategory('${catId}')">
+            <div class="item text-primary" onclick="editCategory('${catId}')">
               <i class="icon-edit-3"></i>
             </div>
           </div>
@@ -124,7 +143,6 @@ async function getCategories() {
 
       tableBody.insertAdjacentHTML("beforeend", row);
     });
-
   } catch (error) {
     console.error("Error:", error);
     tableBody.innerHTML = `<li class="body-text text-danger">Failed to load categories ❌</li>`;
@@ -133,7 +151,7 @@ async function getCategories() {
 
 // ======= EDIT REDIRECT =======
 function editCategory(catId) {
-  window.location.href = `edit-category.php?id=${catId}`;  // ✅ apna sahi page naam rakho
+  window.location.href = `edit-category.php?id=${catId}`; // ✅ apna sahi page naam rakho
 }
 
 // ======= LOAD CATEGORY DATA IN FORM (edit page) =======
@@ -145,21 +163,27 @@ async function loadCategory(id) {
     const result = await response.json();
 
     // ✅ String vs Number dono cases handle karo
-    const category = result.find(cat =>
-      String(cat.id || cat._id || cat.Id) === String(id)
+    const category = result.find(
+      (cat) => String(cat.id || cat._id || cat.Id) === String(id),
     );
 
     if (!category) {
-      iziToast.error({ title: "Error", message: "Category not found", position: "topRight" });
+      iziToast.error({
+        title: "Error",
+        message: "Category not found",
+        position: "topRight",
+      });
       return;
     }
 
     // ✅ Name field fill karo
-    document.getElementById("categoryName").value = category.name || category.Name || "";
+    document.getElementById("categoryName").value =
+      category.name || category.Name || "";
 
     // ✅ Status toggle set karo
     const status = category.status ?? category.Status;
-    document.getElementById("statusToggle").checked = (status === true || status === 1 || status === "true");
+    document.getElementById("statusToggle").checked =
+      status === true || status === 1 || status === "true";
 
     // ✅ Image preview show karo (file input pe src nahi lagta — alag img tag chahiye)
     const imgUrl = category.imageUrl || category.ImageUrl;
@@ -170,15 +194,22 @@ async function loadCategory(id) {
         // agar preview img tag nahi hai HTML mein toh dynamically banao
         preview = document.createElement("img");
         preview.id = "imagePreview";
-        preview.style.cssText = "width:80px;height:80px;object-fit:cover;border-radius:8px;margin-top:10px;";
-        document.getElementById("myFile").closest(".upload-image").appendChild(preview);
+        preview.style.cssText =
+          "width:80px;height:80px;object-fit:cover;border-radius:8px;margin-top:10px;";
+        document
+          .getElementById("myFile")
+          .closest(".upload-image")
+          .appendChild(preview);
       }
-      preview.src = domin + imgUrl;
+      preview.src =  imgUrl;
     }
-
   } catch (error) {
     console.error("loadCategory error:", error);
-    iziToast.error({ title: "Error", message: "Failed to load category data", position: "topRight" });
+    iziToast.error({
+      title: "Error",
+      message: "Failed to load category data",
+      position: "topRight",
+    });
   }
 }
 
@@ -191,7 +222,11 @@ function updateCategory(id) {
 
     const token = localStorage.getItem("authToken");
     if (!token) {
-      iziToast.error({ title: "Error", message: "User not authenticated", position: "topRight" });
+      iziToast.error({
+        title: "Error",
+        message: "User not authenticated",
+        position: "topRight",
+      });
       return;
     }
 
@@ -200,20 +235,24 @@ function updateCategory(id) {
     const statusToggle = document.getElementById("statusToggle").checked;
 
     if (!categoryName) {
-      iziToast.error({ title: "Error", message: "Category name is required", position: "topRight" });
+      iziToast.error({
+        title: "Error",
+        message: "Category name is required",
+        position: "topRight",
+      });
       return;
     }
 
     const formData = new FormData();
     formData.append("Name", categoryName);
     formData.append("Status", statusToggle);
-    if (file) formData.append("ImageFile", file);   // ✅ sirf naya file ho toh append karo
+    if (file) formData.append("ImageFile", file); // ✅ sirf naya file ho toh append karo
 
     try {
       const response = await fetch(`${domin}/api/category/edit/${id}`, {
         method: "PUT",
-        headers: { "Authorization": `Bearer ${token}` },
-        body: formData
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
       });
 
       const result = await response.json();
@@ -222,20 +261,25 @@ function updateCategory(id) {
         iziToast.success({
           title: "Success",
           message: result.message || "Category updated successfully!",
-          position: "topRight"
+          position: "topRight",
         });
-        setTimeout(() => { window.location.href = "category-list.php"; }, 1500);
+        setTimeout(() => {
+          window.location.href = "category-list.php";
+        }, 1500);
       } else {
         iziToast.error({
           title: "Error",
           message: result.message || "Update failed",
-          position: "topRight"
+          position: "topRight",
         });
       }
-
     } catch (error) {
       console.error(error);
-      iziToast.error({ title: "Error", message: "Server error", position: "topRight" });
+      iziToast.error({
+        title: "Error",
+        message: "Server error",
+        position: "topRight",
+      });
     }
   });
 }
@@ -251,7 +295,11 @@ async function AddCategories() {
     const token = localStorage.getItem("authToken");
 
     if (!token) {
-      iziToast.error({ title: "Error", message: "User not authenticated", position: "topRight" });
+      iziToast.error({
+        title: "Error",
+        message: "User not authenticated",
+        position: "topRight",
+      });
       return;
     }
 
@@ -260,7 +308,11 @@ async function AddCategories() {
     const statusToggle = document.getElementById("statusToggle").checked;
 
     if (!categoryName || !file) {
-      iziToast.error({ title: "Error", message: "Please fill all fields", position: "topRight" });
+      iziToast.error({
+        title: "Error",
+        message: "Please fill all fields",
+        position: "topRight",
+      });
       return;
     }
 
@@ -272,8 +324,8 @@ async function AddCategories() {
     try {
       const response = await fetch(api, {
         method: "POST",
-        headers: { "Authorization": `Bearer ${token}` },
-        body: formData
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
       });
 
       const result = await response.json();
@@ -282,20 +334,23 @@ async function AddCategories() {
         iziToast.success({
           title: "Success",
           message: result.message || "Category added successfully",
-          position: "topRight"
+          position: "topRight",
         });
         form.reset();
       } else {
         iziToast.error({
           title: "Error",
           message: result.message || "Something went wrong",
-          position: "topRight"
+          position: "topRight",
         });
       }
-
     } catch (error) {
       console.error(error);
-      iziToast.error({ title: "Error", message: "Server error", position: "topRight" });
+      iziToast.error({
+        title: "Error",
+        message: "Server error",
+        position: "topRight",
+      });
     }
   });
 }
@@ -308,39 +363,58 @@ async function deleteCategory(id) {
     timeout: 20000,
     close: false,
     overlay: true,
-    displayMode: 'once',
-    id: 'question',
+    displayMode: "once",
+    id: "question",
     zindex: 999,
-    title: 'Confirm',
-    message: 'Are you sure you want to delete this category?',
-    position: 'center',
+    title: "Confirm",
+    message: "Are you sure you want to delete this category?",
+    position: "center",
     buttons: [
-      ['<button><b>Yes, delete it!</b></button>', async function (instance, toast) {
-        instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+      [
+        "<button><b>Yes, delete it!</b></button>",
+        async function (instance, toast) {
+          instance.hide({ transitionOut: "fadeOut" }, toast, "button");
 
-        try {
-          const response = await fetch(`${domin}/api/category/delete/${id}`, {
-            method: "DELETE",
-            headers: { "Authorization": `Bearer ${token}` }
-          });
+          try {
+            const response = await fetch(`${domin}/api/category/delete/${id}`, {
+              method: "DELETE",
+              headers: { Authorization: `Bearer ${token}` },
+            });
 
-          const res = await response.json();
+            const res = await response.json();
 
-          if (response.ok) {
-            iziToast.success({ title: "Deleted!", message: res.message || "Category deleted", position: "topRight" });
-            getCategories();
-          } else {
-            iziToast.error({ title: "Error!", message: res.message || "Delete failed", position: "topRight" });
+            if (response.ok) {
+              iziToast.success({
+                title: "Deleted!",
+                message: res.message || "Category deleted",
+                position: "topRight",
+              });
+              getCategories();
+            } else {
+              iziToast.error({
+                title: "Error!",
+                message: res.message || "Delete failed",
+                position: "topRight",
+              });
+            }
+          } catch (error) {
+            console.error(error);
+            iziToast.error({
+              title: "Error",
+              message: "Server error",
+              position: "topRight",
+            });
           }
-        } catch (error) {
-          console.error(error);
-          iziToast.error({ title: "Error", message: "Server error", position: "topRight" });
-        }
-      }, true],
-      ['<button>Cancel</button>', function (instance, toast) {
-        instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-      }]
-    ]
+        },
+        true,
+      ],
+      [
+        "<button>Cancel</button>",
+        function (instance, toast) {
+          instance.hide({ transitionOut: "fadeOut" }, toast, "button");
+        },
+      ],
+    ],
   });
 }
 
@@ -363,15 +437,19 @@ async function populateCategoryDropdown() {
     const result = await response.json();
     const categories = result.data || result;
 
-    dropdown.innerHTML = '<option value="" disabled selected>Select Category</option>';
+    dropdown.innerHTML =
+      '<option value="" disabled selected>Select Category</option>';
     const addedIds = new Set();
 
-    categories.forEach(cat => {
+    categories.forEach((cat) => {
       const catId = cat.id || cat._id || cat.Id;
       const catName = cat.name || cat.Name || "";
       const catStatus = cat.status !== undefined ? cat.status : cat.Status;
-      
-      if (!addedIds.has(catId) && (catStatus === true || catStatus === 1 || String(catStatus) === "true")) {
+
+      if (
+        !addedIds.has(catId) &&
+        (catStatus === true || catStatus === 1 || String(catStatus) === "true")
+      ) {
         addedIds.add(catId);
         const option = document.createElement("option");
         option.value = catId;
@@ -393,8 +471,8 @@ async function getSubCategories() {
     if (!response.ok) throw new Error("Failed to fetch subcategories");
 
     const data = await response.json();
-    console.log(data,getSubCategories);
-    
+    console.log(data, getSubCategories);
+
     tableBody.innerHTML = "";
 
     data.forEach((cat, index) => {
@@ -404,14 +482,14 @@ async function getSubCategories() {
       const catStatus = cat.status !== undefined ? cat.status : cat.Status;
       const categoryName = cat.categoryName || cat.CategoryName || "";
 
-
       const imgUrl = catImg
-        ? domin + catImg
+        ?  catImg
         : "https://via.placeholder.com/40x40?text=No+Img";
 
-      const statusBadge = (catStatus === true || catStatus === 1 || catStatus === "true")
-        ? `<span class="badge badge-success">Active</span>`
-        : `<span class="badge badge-danger">Inactive</span>`;
+      const statusBadge =
+        catStatus === true || catStatus === 1 || catStatus === "true"
+          ? `<span class="badge badge-success">Active</span>`
+          : `<span class="badge badge-danger">Inactive</span>`;
 
       const row = `
         <li class="attribute-item flex items-center gap20">
@@ -436,7 +514,6 @@ async function getSubCategories() {
 
       tableBody.insertAdjacentHTML("beforeend", row);
     });
-
   } catch (error) {
     console.error("Error:", error);
     tableBody.innerHTML = `<li class="body-text text-danger">Failed to load subcategories ❌</li>`;
@@ -449,59 +526,63 @@ async function removeSubCategory(id) {
   iziToast.question({
     timeout: false,
     overlay: true,
-    displayMode: 'once',
-    id: 'question',
+    displayMode: "once",
+    id: "question",
     zindex: 999,
-    title: 'Confirm',
-    message: 'Delete this subcategory?',
-    position: 'center',
+    title: "Confirm",
+    message: "Delete this subcategory?",
+    position: "center",
     buttons: [
-      ['<button><b>Yes</b></button>', async function (instance, toast) {
-        instance.hide({}, toast);
+      [
+        "<button><b>Yes</b></button>",
+        async function (instance, toast) {
+          instance.hide({}, toast);
 
-        try {
-          const response = await fetch(`${deleteSubCategory}/${id}`, {
-            method: "DELETE",
-            headers: {
-              "Authorization": `Bearer ${token}`
-            }
-          });
-
-          const res = await response.json();
-
-          if (response.ok) {
-            iziToast.success({
-              title: "Deleted!",
-              message: res.message || "Subcategory deleted",
-              position: "topRight"
+          try {
+            const response = await fetch(`${deleteSubCategory}/${id}`, {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             });
 
-            await getSubCategories();
-          } else {
+            const res = await response.json();
+
+            if (response.ok) {
+              iziToast.success({
+                title: "Deleted!",
+                message: res.message || "Subcategory deleted",
+                position: "topRight",
+              });
+
+              await getSubCategories();
+            } else {
+              iziToast.error({
+                title: "Error!",
+                message: res.message || "Delete failed",
+                position: "topRight",
+              });
+            }
+          } catch (error) {
+            console.log(error);
             iziToast.error({
               title: "Error!",
-              message: res.message || "Delete failed",
-              position: "topRight"
+              message: "Server error",
+              position: "topRight",
             });
           }
+        },
+      ],
 
-        } catch (error) {
-          console.log(error);
-          iziToast.error({
-            title: "Error!",
-            message: "Server error",
-            position: "topRight"
-          });
-        }
-      }],
-      
-      ['<button>No</button>', function (instance, toast) {
-        instance.hide({}, toast);
-      }]
-    ]
+      [
+        "<button>No</button>",
+        function (instance, toast) {
+          instance.hide({}, toast);
+        },
+      ],
+    ],
   });
 }
-
 
 // ======= EDIT REDIRECT FOR SUBCATEGORY =======
 function redirectToEditSubCategory(catId) {
@@ -515,44 +596,62 @@ async function loadSubCategory(id) {
     if (!response.ok) throw new Error("Failed to fetch subcategories");
 
     const result = await response.json();
-    
+
     // Find the specific subcategory from the list
-    const category = result.find(cat => String(cat.id || cat._id || cat.Id) === String(id));
+    const category = result.find(
+      (cat) => String(cat.id || cat._id || cat.Id) === String(id),
+    );
 
     if (!category) {
-      iziToast.error({ title: "Error", message: "Subcategory not found", position: "topRight" });
+      iziToast.error({
+        title: "Error",
+        message: "Subcategory not found",
+        position: "topRight",
+      });
       return;
     }
 
     // Fill SubCategory Name
     const nameInput = document.getElementById("categoryName");
-    if (nameInput) nameInput.value = category.subCategoryName || category.SubCategoryName || category.name || "";
+    if (nameInput)
+      nameInput.value =
+        category.subCategoryName ||
+        category.SubCategoryName ||
+        category.name ||
+        "";
 
     // Fill Parent Category Dropdown
     const parentCat = document.getElementById("parentCategory");
-    if (parentCat) parentCat.value = category.categoryId || category.CategoryId || "";
+    if (parentCat)
+      parentCat.value = category.categoryId || category.CategoryId || "";
 
     // Fill Status
     const status = category.status ?? category.Status;
     const statusToggle = document.getElementById("statusToggle");
-    if (statusToggle) statusToggle.checked = (status === true || status === 1 || status === "true");
+    if (statusToggle)
+      statusToggle.checked =
+        status === true || status === 1 || status === "true";
 
     // Show Image preview
-    const imgUrl = category.subCategoryImageUrl || category.imageUrl || category.ImageUrl;
+    const imgUrl =
+      category.subCategoryImageUrl || category.imageUrl || category.ImageUrl;
     let preview = document.getElementById("imagePreview");
     const icon = document.getElementById("uploadIcon");
     const text = document.getElementById("uploadText");
 
     if (imgUrl && preview) {
-      preview.src = domin + imgUrl;
+      preview.src =  imgUrl;
       preview.style.display = "block";
       if (icon) icon.style.display = "none";
       if (text) text.style.display = "none";
     }
-
   } catch (error) {
     console.error("loadSubCategory error:", error);
-    iziToast.error({ title: "Error", message: "Failed to load subcategory data", position: "topRight" });
+    iziToast.error({
+      title: "Error",
+      message: "Failed to load subcategory data",
+      position: "topRight",
+    });
   }
 }
 
@@ -566,21 +665,27 @@ function addSubCategory() {
 
     const token = localStorage.getItem("authToken");
     if (!token) {
-      iziToast.error({ title: "Error", message: "User not authenticated", position: "topRight" });
+      iziToast.error({
+        title: "Error",
+        message: "User not authenticated",
+        position: "topRight",
+      });
       return;
     }
 
-    const subCategoryName = document.getElementById("categoryName").value.trim();
+    const subCategoryName = document
+      .getElementById("categoryName")
+      .value.trim();
     const categoryId = document.getElementById("parentCategory").value;
     const fileInput = document.getElementById("myFile");
     const file = fileInput ? fileInput.files[0] : null;
     const statusToggle = document.getElementById("statusToggle").checked;
 
     if (!subCategoryName || !categoryId || !file) {
-      iziToast.error({ 
-        title: "Error", 
-        message: "Please fill all required fields including the image", 
-        position: "topRight" 
+      iziToast.error({
+        title: "Error",
+        message: "Please fill all required fields including the image",
+        position: "topRight",
       });
       return;
     }
@@ -594,8 +699,8 @@ function addSubCategory() {
     try {
       const response = await fetch(subCategoryAdd, {
         method: "POST", // ADD API IS POST
-        headers: { "Authorization": `Bearer ${token}` },
-        body: formData
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
       });
 
       const result = await response.json();
@@ -604,20 +709,26 @@ function addSubCategory() {
         iziToast.success({
           title: "Success",
           message: result.message || "Subcategory added successfully",
-          position: "topRight"
+          position: "topRight",
         });
         // Redirect after a short delay
-        setTimeout(() => { window.location.href = "sub-category-list.php"; }, 1500);
+        setTimeout(() => {
+          window.location.href = "sub-category-list.php";
+        }, 1500);
       } else {
         iziToast.error({
           title: "Error",
           message: result.message || "Something went wrong",
-          position: "topRight"
+          position: "topRight",
         });
       }
     } catch (error) {
       console.error(error);
-      iziToast.error({ title: "Error", message: "Server error", position: "topRight" });
+      iziToast.error({
+        title: "Error",
+        message: "Server error",
+        position: "topRight",
+      });
     }
   });
 }
@@ -632,18 +743,28 @@ function updateSubCategory(id) {
 
     const token = localStorage.getItem("authToken");
     if (!token) {
-      iziToast.error({ title: "Error", message: "User not authenticated", position: "topRight" });
+      iziToast.error({
+        title: "Error",
+        message: "User not authenticated",
+        position: "topRight",
+      });
       return;
     }
 
-    const subCategoryName = document.getElementById("categoryName").value.trim();
+    const subCategoryName = document
+      .getElementById("categoryName")
+      .value.trim();
     const categoryId = document.getElementById("parentCategory").value;
     const fileInput = document.getElementById("myFile");
     const file = fileInput ? fileInput.files[0] : null;
     const statusToggle = document.getElementById("statusToggle").checked;
 
     if (!subCategoryName || !categoryId) {
-      iziToast.error({ title: "Error", message: "Subcategory name and parent category are required", position: "topRight" });
+      iziToast.error({
+        title: "Error",
+        message: "Subcategory name and parent category are required",
+        position: "topRight",
+      });
       return;
     }
 
@@ -651,7 +772,7 @@ function updateSubCategory(id) {
     formData.append("SubCategoryName", subCategoryName);
     formData.append("CategoryId", categoryId);
     formData.append("Status", statusToggle);
-    
+
     // Only append ImageFile if the user actually uploaded a new image
     if (file) {
       formData.append("ImageFile", file);
@@ -660,8 +781,8 @@ function updateSubCategory(id) {
     try {
       const response = await fetch(`${editSubCategory}/${id}`, {
         method: "PUT", // EDIT API IS PUT
-        headers: { "Authorization": `Bearer ${token}` },
-        body: formData
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
       });
 
       const result = await response.json();
@@ -670,20 +791,26 @@ function updateSubCategory(id) {
         iziToast.success({
           title: "Success",
           message: result.message || "Subcategory updated successfully!",
-          position: "topRight"
+          position: "topRight",
         });
         // Redirect after a short delay
-        setTimeout(() => { window.location.href = "sub-category-list.php"; }, 1500);
+        setTimeout(() => {
+          window.location.href = "sub-category-list.php";
+        }, 1500);
       } else {
         iziToast.error({
           title: "Error",
           message: result.message || "Update failed",
-          position: "topRight"
+          position: "topRight",
         });
       }
     } catch (error) {
       console.error(error);
-      iziToast.error({ title: "Error", message: "Server error", position: "topRight" });
+      iziToast.error({
+        title: "Error",
+        message: "Server error",
+        position: "topRight",
+      });
     }
   });
 }
@@ -707,16 +834,21 @@ async function populateSubCategoryDropdown() {
     const result = await response.json();
     const subcategories = result.data || result;
 
-    dropdown.innerHTML = '<option value="" disabled selected>Select Sub Category</option>';
+    dropdown.innerHTML =
+      '<option value="" disabled selected>Select Sub Category</option>';
     const addedIds = new Set();
 
-    subcategories.forEach(sub => {
+    subcategories.forEach((sub) => {
       const subId = sub.id || sub._id || sub.Id;
-      const subName = sub.subCategoryName || sub.SubCategoryName || sub.name || "";
+      const subName =
+        sub.subCategoryName || sub.SubCategoryName || sub.name || "";
       const catId = sub.categoryId || sub.CategoryId || "";
       const subStatus = sub.status !== undefined ? sub.status : sub.Status;
-      
-      if (!addedIds.has(subId) && (subStatus === true || subStatus === 1 || String(subStatus) === "true")) {
+
+      if (
+        !addedIds.has(subId) &&
+        (subStatus === true || subStatus === 1 || String(subStatus) === "true")
+      ) {
         addedIds.add(subId);
         const option = document.createElement("option");
         option.value = subId;
@@ -744,16 +876,20 @@ async function getChildCategories() {
 
     data.forEach((cat, index) => {
       const catId = cat.id || cat._id || cat.Id;
-      const catName = cat.childCategoryName || cat.ChildCategoryName || cat.name || "";
+      const catName =
+        cat.childCategoryName || cat.ChildCategoryName || cat.name || "";
       const subCatName = cat.subCategoryName || cat.SubCategoryName || "";
       const categoryName = cat.categoryName || cat.CategoryName || "";
       const catImg = cat.childCategoryImageUrl || cat.imageUrl || cat.ImageUrl;
       const catStatus = cat.status !== undefined ? cat.status : cat.Status;
 
-      const imgUrl = catImg ? domin + catImg : "https://via.placeholder.com/40x40?text=No+Img";
-      const statusBadge = (catStatus === true || catStatus === 1 || catStatus === "true")
-        ? `<span class="badge badge-success">Active</span>`
-        : `<span class="badge badge-danger">Inactive</span>`;
+      const imgUrl = catImg
+        ?  catImg
+        : "https://via.placeholder.com/40x40?text=No+Img";
+      const statusBadge =
+        catStatus === true || catStatus === 1 || catStatus === "true"
+          ? `<span class="badge badge-success">Active</span>`
+          : `<span class="badge badge-danger">Inactive</span>`;
 
       const row = `
         <li class="attribute-item flex items-center justify-between gap20">
@@ -791,36 +927,54 @@ async function removeChildCategory(id) {
   iziToast.question({
     timeout: false,
     overlay: true,
-    displayMode: 'once',
-    id: 'question',
+    displayMode: "once",
+    id: "question",
     zindex: 999,
-    title: 'Confirm',
-    message: 'Delete this child category?',
-    position: 'center',
+    title: "Confirm",
+    message: "Delete this child category?",
+    position: "center",
     buttons: [
-      ['<button><b>Yes</b></button>', async function (instance, toast) {
-        instance.hide({}, toast);
-        try {
-          const response = await fetch(`${deleteChildCategory}/${id}`, {
-            method: "DELETE",
-            headers: { "Authorization": `Bearer ${token}` }
-          });
-          const res = await response.json();
-          if (response.ok) {
-            iziToast.success({ title: "Deleted!", message: res.message || "Child category deleted", position: "topRight" });
-            await getChildCategories();
-          } else {
-            iziToast.error({ title: "Error!", message: res.message || "Delete failed", position: "topRight" });
+      [
+        "<button><b>Yes</b></button>",
+        async function (instance, toast) {
+          instance.hide({}, toast);
+          try {
+            const response = await fetch(`${deleteChildCategory}/${id}`, {
+              method: "DELETE",
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            const res = await response.json();
+            if (response.ok) {
+              iziToast.success({
+                title: "Deleted!",
+                message: res.message || "Child category deleted",
+                position: "topRight",
+              });
+              await getChildCategories();
+            } else {
+              iziToast.error({
+                title: "Error!",
+                message: res.message || "Delete failed",
+                position: "topRight",
+              });
+            }
+          } catch (error) {
+            console.error(error);
+            iziToast.error({
+              title: "Error!",
+              message: "Server error",
+              position: "topRight",
+            });
           }
-        } catch (error) {
-          console.error(error);
-          iziToast.error({ title: "Error!", message: "Server error", position: "topRight" });
-        }
-      }],
-      ['<button>No</button>', function (instance, toast) {
-        instance.hide({}, toast);
-      }]
-    ]
+        },
+      ],
+      [
+        "<button>No</button>",
+        function (instance, toast) {
+          instance.hide({}, toast);
+        },
+      ],
+    ],
   });
 }
 
@@ -836,10 +990,16 @@ async function loadChildCategory(id) {
     if (!response.ok) throw new Error("Failed to fetch child categories");
 
     const result = await response.json();
-    const category = result.find(cat => String(cat.id || cat._id || cat.Id) === String(id));
+    const category = result.find(
+      (cat) => String(cat.id || cat._id || cat.Id) === String(id),
+    );
 
     if (!category) {
-      iziToast.error({ title: "Error", message: "Child Category not found", position: "topRight" });
+      iziToast.error({
+        title: "Error",
+        message: "Child Category not found",
+        position: "topRight",
+      });
       return;
     }
 
@@ -850,29 +1010,42 @@ async function loadChildCategory(id) {
     }
 
     const subCat = document.getElementById("subCategory");
-    if (subCat) subCat.value = category.subCategoryId || category.SubCategoryId || "";
+    if (subCat)
+      subCat.value = category.subCategoryId || category.SubCategoryId || "";
 
     const nameInput = document.getElementById("childCategoryName");
-    if (nameInput) nameInput.value = category.childCategoryName || category.ChildCategoryName || category.name || "";
+    if (nameInput)
+      nameInput.value =
+        category.childCategoryName ||
+        category.ChildCategoryName ||
+        category.name ||
+        "";
 
     const status = category.status ?? category.Status;
     const statusToggle = document.getElementById("statusToggle");
-    if (statusToggle) statusToggle.checked = (status === true || status === 1 || status === "true");
+    if (statusToggle)
+      statusToggle.checked =
+        status === true || status === 1 || status === "true";
 
-    const imgUrl = category.childCategoryImageUrl || category.imageUrl || category.ImageUrl;
+    const imgUrl =
+      category.childCategoryImageUrl || category.imageUrl || category.ImageUrl;
     let preview = document.getElementById("imagePreview");
     const icon = document.getElementById("uploadIcon");
     const text = document.getElementById("uploadText");
 
     if (imgUrl && preview) {
-      preview.src = domin + imgUrl;
+      preview.src =  imgUrl;
       preview.style.display = "block";
       if (icon) icon.style.display = "none";
       if (text) text.style.display = "none";
     }
   } catch (error) {
     console.error("loadChildCategory error:", error);
-    iziToast.error({ title: "Error", message: "Failed to load child category data", position: "topRight" });
+    iziToast.error({
+      title: "Error",
+      message: "Failed to load child category data",
+      position: "topRight",
+    });
   }
 }
 
@@ -884,9 +1057,16 @@ function addChildCategory() {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("authToken");
-    if (!token) return iziToast.error({ title: "Error", message: "User not authenticated", position: "topRight" });
+    if (!token)
+      return iziToast.error({
+        title: "Error",
+        message: "User not authenticated",
+        position: "topRight",
+      });
 
-    const childCategoryName = document.getElementById("childCategoryName").value.trim();
+    const childCategoryName = document
+      .getElementById("childCategoryName")
+      .value.trim();
     const categoryId = document.getElementById("parentCategory").value;
     const subCategoryId = document.getElementById("subCategory").value;
     const fileInput = document.getElementById("myFile");
@@ -894,7 +1074,11 @@ function addChildCategory() {
     const statusToggle = document.getElementById("statusToggle").checked;
 
     if (!childCategoryName || !categoryId || !subCategoryId || !file) {
-      return iziToast.error({ title: "Error", message: "Please fill all required fields", position: "topRight" });
+      return iziToast.error({
+        title: "Error",
+        message: "Please fill all required fields",
+        position: "topRight",
+      });
     }
 
     const formData = new FormData();
@@ -907,18 +1091,32 @@ function addChildCategory() {
     try {
       const response = await fetch(childCategoryAdd, {
         method: "POST", // ADD = POST
-        headers: { "Authorization": `Bearer ${token}` },
-        body: formData
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
       });
       const result = await response.json();
       if (response.ok) {
-        iziToast.success({ title: "Success", message: result.message || "Child category added", position: "topRight" });
-        setTimeout(() => { window.location.href = "child-category-list.php"; }, 1500);
+        iziToast.success({
+          title: "Success",
+          message: result.message || "Child category added",
+          position: "topRight",
+        });
+        setTimeout(() => {
+          window.location.href = "child-category-list.php";
+        }, 1500);
       } else {
-        iziToast.error({ title: "Error", message: result.message || "Something went wrong", position: "topRight" });
+        iziToast.error({
+          title: "Error",
+          message: result.message || "Something went wrong",
+          position: "topRight",
+        });
       }
     } catch (error) {
-      iziToast.error({ title: "Error", message: "Server error", position: "topRight" });
+      iziToast.error({
+        title: "Error",
+        message: "Server error",
+        position: "topRight",
+      });
     }
   });
 }
@@ -931,9 +1129,16 @@ function updateChildCategory(id) {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("authToken");
-    if (!token) return iziToast.error({ title: "Error", message: "User not authenticated", position: "topRight" });
+    if (!token)
+      return iziToast.error({
+        title: "Error",
+        message: "User not authenticated",
+        position: "topRight",
+      });
 
-    const childCategoryName = document.getElementById("childCategoryName").value.trim();
+    const childCategoryName = document
+      .getElementById("childCategoryName")
+      .value.trim();
     const categoryId = document.getElementById("parentCategory").value;
     const subCategoryId = document.getElementById("subCategory").value;
     const fileInput = document.getElementById("myFile");
@@ -941,7 +1146,11 @@ function updateChildCategory(id) {
     const statusToggle = document.getElementById("statusToggle").checked;
 
     if (!childCategoryName || !categoryId || !subCategoryId) {
-      return iziToast.error({ title: "Error", message: "Required fields are missing", position: "topRight" });
+      return iziToast.error({
+        title: "Error",
+        message: "Required fields are missing",
+        position: "topRight",
+      });
     }
 
     const formData = new FormData();
@@ -954,18 +1163,32 @@ function updateChildCategory(id) {
     try {
       const response = await fetch(`${editChildCategory}/${id}`, {
         method: "PUT", // EDIT = PUT
-        headers: { "Authorization": `Bearer ${token}` },
-        body: formData
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
       });
       const result = await response.json();
       if (response.ok) {
-        iziToast.success({ title: "Success", message: result.message || "Child category updated", position: "topRight" });
-        setTimeout(() => { window.location.href = "child-category-list.php"; }, 1500);
+        iziToast.success({
+          title: "Success",
+          message: result.message || "Child category updated",
+          position: "topRight",
+        });
+        setTimeout(() => {
+          window.location.href = "child-category-list.php";
+        }, 1500);
       } else {
-        iziToast.error({ title: "Error", message: result.message || "Update failed", position: "topRight" });
+        iziToast.error({
+          title: "Error",
+          message: result.message || "Update failed",
+          position: "topRight",
+        });
       }
     } catch (error) {
-      iziToast.error({ title: "Error", message: "Server error", position: "topRight" });
+      iziToast.error({
+        title: "Error",
+        message: "Server error",
+        position: "topRight",
+      });
     }
   });
 }

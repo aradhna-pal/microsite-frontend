@@ -18,8 +18,8 @@ async function loadBrands() {
         : `<span class="badge badge-danger">Inactive</span>`;
 
       const imgPath = item.brandImage.startsWith("/")
-        ? `${domin}${item.brandImage}`
-        : `${domin}/${item.brandImage}`;
+        ? `${item.brandImage}`
+        : `${item.brandImage}`;
 
       const row = `
         <li class="attribute-item flex items-center justify-between gap20">

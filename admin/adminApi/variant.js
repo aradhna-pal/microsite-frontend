@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     variants.forEach((item, index) => {
 
       const imageUrl = item.image
-        ? `${domin}${item.image}`
+        ? `${item.image}`
         : "https://via.placeholder.com/60x60?text=No+Image";
 
       const statusBadge = item.isActive
@@ -425,7 +425,7 @@ async function prefillVariantData(id) {
       if (mainImgContainer) {
         const preview = document.createElement("div");
         preview.className = "item preview-item";
-        preview.innerHTML = `<img src="${domin}${variant.image}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">`;
+        preview.innerHTML = `<img src="${variant.image}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">`;
         mainImgContainer.insertAdjacentElement('afterbegin', preview);
       }
     }

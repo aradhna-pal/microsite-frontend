@@ -264,7 +264,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     products.forEach((item, index) => {
 
       const imageUrl = item.image 
-        ? `${domin}${item.image}` 
+        ? `${item.image}` 
         : "https://via.placeholder.com/60x60?text=No+Image";
 
       const statusBadge = item.isActive
@@ -546,7 +546,7 @@ async function prefillProductData(id) {
             const mainImgContainer = document.getElementById("main-image-container");
             if (mainImgContainer) {
                 const preview = document.createElement("img");
-                preview.src = domin + product.image;
+                preview.src =  product.image;
                 preview.style.cssText = "width:80px;height:80px;object-fit:cover;border-radius:8px;margin-top:10px;";
                 mainImgContainer.appendChild(preview);
             }

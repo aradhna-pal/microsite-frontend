@@ -1,4 +1,3 @@
-
 const domain = "http://microsite_backend.workarya.com";
 const api = `${domain}/api/product/getproduct`;
 
@@ -9,14 +8,14 @@ fetch(api)
     row.innerHTML = "";
 
     products.forEach(p => {
-      const slug = p.slug;
-
       row.innerHTML += `
         <div class="col-6 col-md-4 col-lg-4 col-xl-3">
           <div class="product product-7 text-center">
             <figure class="product-media">
-              <a href="product.php?slug=${slug} ">
-                <img src="${domain}${p.image}" alt="${p.productName}" class="product-image">
+              
+              <!-- ✅ Image click also sends id -->
+              <a href="product.php?id=${p.id}">
+                <img src="${p.image}" alt="${p.productName}" class="product-image">
               </a>
 
               <div class="product-action-vertical">
@@ -24,7 +23,7 @@ fetch(api)
                   <span>add to wishlist</span>
                 </a>
 
-                <a href="popup/quickView.html?slug=${slug}" 
+                <a href="popup/quickView.html?id=${p.id}" 
                    class="btn-product-icon btn-quickview" 
                    title="Quick view">
                   <span>Quick view</span>
@@ -60,12 +59,12 @@ fetch(api)
   })
   .catch(err => console.error(err));
 
-
   
 
   
 
-// const domain = "http://microsite_backend.workarya.com";
+// const 
+//  = "http://microsite_backend.workarya.com";
 
 
 
@@ -120,8 +119,8 @@ function loadProduct(p){
   // Main image
   const main = document.getElementById("product-zoom");
   if (main) {
-    main.src = domain + p.image;
-    main.setAttribute("data-zoom-image", domain + p.image);
+    main.src =  p.image;
+    main.setAttribute("data-zoom-image",  p.image);
   }
 
   // Gallery
@@ -133,9 +132,9 @@ function loadProduct(p){
     images.forEach((img, i) => {
       gallery.innerHTML += `
         <a class="product-gallery-item ${i===0?'active':''}" href="#"
-           data-image="${domain+img}"
-           data-zoom-image="${domain+img}">
-           <img src="${domain+img}" alt="">
+           data-image="${img}"
+           data-zoom-image="${img}">
+           <img src="${img}" alt="">
         </a>
       `;
     });
