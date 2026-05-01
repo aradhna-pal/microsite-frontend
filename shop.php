@@ -23,8 +23,8 @@
                         <div class="toolbox-left">
                             <div class="toolbox-info">
                                 Showing <span>9 of 56</span> Products
-                            </div><!-- End .toolbox-info -->
-                        </div><!-- End .toolbox-left -->
+                            </div>
+                        </div>
 
                     
                     </div><!-- End .toolbox -->

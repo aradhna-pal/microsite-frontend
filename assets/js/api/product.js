@@ -114,10 +114,77 @@ fetch(api)
     // 1) Main Shop Page Grid
     const row = document.getElementById("productRow");
     if (row) {
-      row.innerHTML = "";
-      products.forEach(p => {
-        row.innerHTML += getProductCardHTML(p, "col-6 col-md-4 col-lg-4 col-xl-3");
-      });
+      const itemsPerPage = 50;
+      let currentPage = 1;
+      const totalItems = products.length;
+      const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+      const toolboxInfo = document.querySelector(".toolbox-info span");
+      const paginationWrap = document.querySelector(".pagination");
+
+      function renderPage(page) {
+        if (page < 1) page = 1;
+        if (page > totalPages) page = totalPages;
+        currentPage = page;
+
+        row.innerHTML = "";
+        const start = (page - 1) * itemsPerPage;
+        const end = Math.min(start + itemsPerPage, totalItems);
+        const paginatedItems = products.slice(start, end);
+
+        paginatedItems.forEach(p => {
+          row.innerHTML += getProductCardHTML(p, "col-6 col-md-4 col-lg-4 col-xl-3");
+        });
+
+        if (toolboxInfo) {
+          toolboxInfo.innerText = `${end > 0 ? start + 1 : 0}-${end} of ${totalItems}`;
+        }
+
+        if (paginationWrap) {
+          let pgHtml = `
+            <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1" aria-disabled="${currentPage === 1}">
+                    <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
+                </a>
+            </li>
+          `;
+
+          for (let i = 1; i <= totalPages; i++) {
+            pgHtml += `<li class="page-item ${i === currentPage ? 'active' : ''}" ${i === currentPage ? 'aria-current="page"' : ''}>
+                <a class="page-link page-num" href="#" data-page="${i}">${i}</a>
+            </li>`;
+          }
+
+          pgHtml += `
+            <li class="page-item-total" style="margin-left: 10px; margin-right: 10px; display: flex; align-items: center;">of ${totalPages}</li>
+            <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                <a class="page-link page-link-next" href="#" aria-label="Next">
+                    Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+                </a>
+            </li>
+          `;
+          paginationWrap.innerHTML = pgHtml;
+        }
+      }
+
+      renderPage(currentPage);
+
+      if (paginationWrap) {
+        paginationWrap.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = e.target.closest('a.page-link');
+          if (!target) return;
+
+          if (target.classList.contains('page-link-prev') && currentPage > 1) {
+            renderPage(currentPage - 1);
+          } else if (target.classList.contains('page-link-next') && currentPage < totalPages) {
+            renderPage(currentPage + 1);
+          } else if (target.classList.contains('page-num')) {
+            renderPage(parseInt(target.getAttribute('data-page')));
+          }
+          
+          window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top of the list when page changes
+        });
+      }
     }
 
     // 2) Featured Products (Homepage Carousel)
