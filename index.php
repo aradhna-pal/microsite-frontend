@@ -299,7 +299,7 @@
               
             </div>
         </div><!-- End .container-fluid -->
-    </div><!-- End .bg-light-2 pt-4 pb-4 -->
+    </div>
 
     <div class="mb-6"></div><!-- End .mb-6 -->
 
