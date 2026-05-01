@@ -8114,7 +8114,7 @@ a:focus {
   .product-nav-thumbs span {
     display: flex;
     align-items: center;
-    width: 4.4rem;
+    /* width: 4.4rem; */
     height: 4.4rem;
     border-radius: .2rem;
     border: .2rem solid #fff;
@@ -8125,6 +8125,7 @@ a:focus {
     .product-nav-thumbs span:hover,
     .product-nav-thumbs span:focus {
       box-shadow: 0 0 0 0.1rem #cccccc; } */
+      
     .product-nav-thumbs a:last-child,
     .product-nav-thumbs span:last-child {
       margin-right: 0; }

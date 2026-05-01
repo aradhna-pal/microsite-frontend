@@ -12,10 +12,8 @@ function parseArray(val) {
 fetch(api)
   .then(res => res.json())
   .then(products => {
-    const row = document.getElementById("productRow");
-    row.innerHTML = "";
 
-    products.forEach(p => {
+    function getProductCardHTML(p, wrapperClass) {
       let pColors = parseArray(p.colorNames);
       let pVariants = parseArray(p.variants);
 
@@ -57,8 +55,7 @@ fetch(api)
       let firstGridData = firstGridColor && gridColorMap[firstGridColor] ? gridColorMap[firstGridColor] : { image: p.image, hoverImage: mainHoverImg };
       let hoverHtml = firstGridData.hoverImage ? `<img src="${firstGridData.hoverImage}" alt="${p.productName}" class="product-image-hover grid-product-image-hover">` : '';
 
-      row.innerHTML += `
-        <div class="col-6 col-md-4 col-lg-4 col-xl-3">
+      let innerHTML = `
           <div class="product product-7 text-center">
             <figure class="product-media">
               
@@ -73,14 +70,14 @@ fetch(api)
                   <span>add to wishlist</span>
                 </a>
 
-                          <button 
-              type="button"
-              class="btn-product-icon btn-quickview"
-              data-id="${p.id}"
-              data-color="${firstGridColor}"
-              title="Quick view">
-              <span>Quick view</span>
-            </button>
+                <button 
+                  type="button"
+                  class="btn-product-icon btn-quickview"
+                  data-id="${p.id}"
+                  data-color="${firstGridColor}"
+                  title="Quick view">
+                  <span>Quick view</span>
+                </button>
               </div>
 
               <div class="product-action">
@@ -110,9 +107,55 @@ fetch(api)
               </div>
             </div>
           </div>
-        </div>
       `;
-    });
+      return wrapperClass ? `<div class="${wrapperClass}">${innerHTML}</div>` : innerHTML;
+    }
+
+    // 1) Main Shop Page Grid
+    const row = document.getElementById("productRow");
+    if (row) {
+      row.innerHTML = "";
+      products.forEach(p => {
+        row.innerHTML += getProductCardHTML(p, "col-6 col-md-4 col-lg-4 col-xl-3");
+      });
+    }
+
+    // 2) Featured Products (Homepage Carousel)
+    const featuredTab = document.getElementById("featured-women-tab");
+    if (featuredTab) {
+      const carousel = featuredTab.querySelector(".owl-carousel");
+      if (carousel) {
+        if (window.jQuery && $(carousel).hasClass('owl-loaded')) {
+          $(carousel).trigger('destroy.owl.carousel').removeClass('owl-loaded owl-hidden');
+          $(carousel).find('.owl-stage-outer').children().unwrap();
+        }
+        carousel.innerHTML = "";
+        const featuredProducts = [...products].sort(() => 0.5 - Math.random()).slice(0, 8);
+        featuredProducts.forEach(p => {
+          carousel.innerHTML += getProductCardHTML(p, "");
+        });
+        setTimeout(() => {
+          if (window.jQuery && $.fn.owlCarousel) {
+            let options = $(carousel).data('owl-options') || { nav: false, dots: true, margin: 20, loop: false, responsive: { 0: { items:2 }, 480: { items:2 }, 768: { items:3 }, 992: { items:4 }, 1200: { items:5, nav: true } } };
+            $(carousel).owlCarousel(options);
+          }
+        }, 100);
+      }
+    }
+
+    // 3) New Arrivals (Homepage Grid)
+    const newArrivalsTab = document.getElementById("new-women-tab");
+    if (newArrivalsTab) {
+      const rowContainer = newArrivalsTab.querySelector(".row");
+      if (rowContainer) {
+        rowContainer.innerHTML = "";
+        const newArrivals = [...products].sort(() => 0.5 - Math.random()).slice(0, 10);
+        newArrivals.forEach(p => {
+          rowContainer.innerHTML += getProductCardHTML(p, "col-6 col-md-4 col-lg-3 col-xl-5col");
+        });
+      }
+    }
+
   })
   .catch(err => console.error(err));
 
