@@ -8120,11 +8120,11 @@ a:focus {
     border: .2rem solid #fff;
     margin-right: .4rem;
     transition: box-shadow .35s ease; }
-    .product-nav-thumbs a.active, .product-nav-thumbs a:hover, .product-nav-thumbs a:focus,
+    /* .product-nav-thumbs a.active, .product-nav-thumbs a:hover, .product-nav-thumbs a:focus,
     .product-nav-thumbs span.active,
     .product-nav-thumbs span:hover,
     .product-nav-thumbs span:focus {
-      box-shadow: 0 0 0 0.1rem #cccccc; }
+      box-shadow: 0 0 0 0.1rem #cccccc; } */
     .product-nav-thumbs a:last-child,
     .product-nav-thumbs span:last-child {
       margin-right: 0; }
