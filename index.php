@@ -714,7 +714,7 @@
         </div><!-- End .tab-content -->
 
         <div class="more-container text-center mt-2">
-            <a href="#" class="btn btn-outline-dark-3 btn-more"><span>Load more</span><i
+            <a href="shop.php" class="btn btn-outline-dark-3 btn-more"><span>Load more</span><i
                     class="icon-long-arrow-right"></i></a>
         </div><!-- End .more-container -->
 
