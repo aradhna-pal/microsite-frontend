@@ -89,7 +89,7 @@
                             <i class="icon-bars"></i>
                         </button>
 
-                        <a href="index.html" class="logo">
+                        <a href="index.php" class="logo">
                             <img src="assets/images/demos/demo-7/logo.png" alt="Molla Logo" width="200" height="25">
                         </a>
 
