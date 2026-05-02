@@ -11,11 +11,7 @@ function parseArray(val) {
   return Array.isArray(val) ? val : [];
 }
 
-fetch(api)
-  .then(res => res.json())
-  .then(products => {
-
-    function getProductCardHTML(p, wrapperClass, showCheckbox = true) {
+window.getProductCardHTML = function(p, wrapperClass, showCheckbox = true) {
       let pColors = parseArray(p.colorNames);
       let pVariants = parseArray(p.variants);
 
@@ -115,9 +111,9 @@ fetch(api)
           </div>
       `;
       return wrapperClass ? `<div class="${wrapperClass}">${innerHTML}</div>` : innerHTML;
-    }
+}
 
-    // 1) Main Shop Page Grid
+window.renderShopGrid = function(products) {
     const row = document.getElementById("productRow");
     if (row) {
       const itemsPerPage = 50;
@@ -137,9 +133,13 @@ fetch(api)
         const end = Math.min(start + itemsPerPage, totalItems);
         const paginatedItems = products.slice(start, end);
 
-        paginatedItems.forEach(p => {
-          row.innerHTML += getProductCardHTML(p, "col-6 col-md-4 col-lg-4 col-xl-3");
-        });
+        if (paginatedItems.length === 0) {
+          row.innerHTML = "<p class='text-center w-100' style='padding: 50px 0;'>No products found.</p>";
+        } else {
+          paginatedItems.forEach(p => {
+            row.innerHTML += window.getProductCardHTML(p, "col-6 col-md-4 col-lg-4 col-xl-3");
+          });
+        }
 
         if (toolboxInfo) {
           const selectAllChecked = paginatedItems.length > 0 && paginatedItems.every(p => selectedProductIds.has(String(p.id))) ? "checked" : "";
@@ -182,8 +182,10 @@ fetch(api)
 
       renderPage(currentPage);
 
-      if (paginationWrap) {
-        paginationWrap.addEventListener('click', function(e) {
+      const newPaginationWrap = paginationWrap ? paginationWrap.cloneNode(true) : null;
+      if (paginationWrap && newPaginationWrap) {
+        paginationWrap.parentNode.replaceChild(newPaginationWrap, paginationWrap);
+        newPaginationWrap.addEventListener('click', function(e) {
           e.preventDefault();
           const target = e.target.closest('a.page-link');
           if (!target) return;
@@ -200,6 +202,14 @@ fetch(api)
         });
       }
     }
+};
+
+fetch(api)
+  .then(res => res.json())
+  .then(products => {
+
+    // 1) Main Shop Page Grid
+    window.renderShopGrid(products);
 
     // 2) Featured Products (Homepage Carousel)
     const featuredTab = document.getElementById("featured-women-tab");
@@ -213,7 +223,7 @@ fetch(api)
         carousel.innerHTML = "";
         const featuredProducts = [...products].sort(() => 0.5 - Math.random()).slice(0, 8);
         featuredProducts.forEach(p => {
-          carousel.innerHTML += getProductCardHTML(p, "", false);
+          carousel.innerHTML += window.getProductCardHTML(p, "", false);
         });
         setTimeout(() => {
           if (window.jQuery && $.fn.owlCarousel) {
@@ -232,7 +242,7 @@ fetch(api)
         rowContainer.innerHTML = "";
         const newArrivals = [...products].sort(() => 0.5 - Math.random()).slice(0, 10);
         newArrivals.forEach(p => {
-          rowContainer.innerHTML += getProductCardHTML(p, "col-6 col-md-4 col-lg-3 col-xl-5col", false);
+          rowContainer.innerHTML += window.getProductCardHTML(p, "col-6 col-md-4 col-lg-3 col-xl-5col", false);
         });
       }
     }

@@ -17,7 +17,7 @@ fetch(sizeApi)
             <input type="checkbox"
                    class="custom-control-input size-checkbox"
                    id="${id}"
-                   value="${s.sizeName}">
+                   value="${s.id}">
             <label class="custom-control-label" for="${id}">
               ${s.sizeName}
             </label>
@@ -52,7 +52,7 @@ fetch(brandApi)
             <input type="checkbox"
                    class="custom-control-input brand-checkbox"
                    id="${id}"
-                   value="${b.brandName}">
+                   value="${b.id}">
             <label class="custom-control-label" for="${id}">
               ${b.brandName}
             </label>
@@ -291,6 +291,60 @@ function updateActiveFilters() {
     const label = c.getAttribute('title') || 'Color';
     addTag(c.getAttribute('data-id'), label, 'color');
   });
+
+  // Price Slider Tag
+  const priceSlider = document.getElementById('price-slider');
+  if (priceSlider && priceSlider.noUiSlider) {
+    const prices = priceSlider.noUiSlider.get();
+    const options = priceSlider.noUiSlider.options;
+    const defaultMin = Array.isArray(options.range.min) ? options.range.min[0] : options.range.min;
+    const defaultMax = Array.isArray(options.range.max) ? options.range.max[0] : options.range.max;
+    if (Math.round(prices[0]) != Math.round(defaultMin) || Math.round(prices[1]) != Math.round(defaultMax)) {
+        addTag('price-slider-tag', `Price: ₹${Math.round(prices[0])} - ₹${Math.round(prices[1])}`, 'price');
+    }
+  }
+
+  applyFilters();
+}
+
+function applyFilters() {
+  const catIds = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(cb => cb.value);
+  const subCatIds = Array.from(document.querySelectorAll('.subcategory-checkbox:checked')).map(cb => cb.value);
+  const childCatIds = Array.from(document.querySelectorAll('.child-checkbox:checked')).map(cb => cb.value);
+  const sizeIds = Array.from(document.querySelectorAll('.size-checkbox:checked')).map(cb => cb.value);
+  const brandIds = Array.from(document.querySelectorAll('.brand-checkbox:checked')).map(cb => cb.value);
+  const colorIds = Array.from(document.querySelectorAll('.color-item.selected')).map(el => el.getAttribute('data-id'));
+
+  const searchInput = document.getElementById('q');
+  const searchText = searchInput ? searchInput.value.trim() : '';
+
+  const searchParams = new URLSearchParams();
+  catIds.forEach(id => searchParams.append('categoryId', id));
+  subCatIds.forEach(id => searchParams.append('subCategoryId', id));
+  childCatIds.forEach(id => searchParams.append('childCategoryId', id));
+  brandIds.forEach(id => searchParams.append('brandId', id));
+  sizeIds.forEach(id => searchParams.append('sizeIds', id));
+  colorIds.forEach(id => searchParams.append('colorIds', id));
+  
+  if (searchText) searchParams.append('search', searchText);
+
+  let filterUrl = `${domain}/api/product/filter`;
+  const queryString = searchParams.toString();
+  if (queryString) {
+    filterUrl += `?${queryString}`;
+  } else {
+    filterUrl = `${domain}/api/product/getproduct`;
+  }
+
+  if (typeof window.renderShopGrid === 'function') {
+    fetch(filterUrl)
+      .then(res => res.json())
+      .then(res => {
+        let products = Array.isArray(res) ? res : (res.data || []);
+        window.renderShopGrid(products);
+      })
+      .catch(err => console.error(err));
+  }
 }
 
 // Function to remove a filter tag
@@ -305,6 +359,15 @@ window.removeFilter = function(id, type) {
     const el = document.querySelector(`.color-item[data-id="${id}"]`);
     if (el) {
       el.classList.remove('selected');
+    }
+  } else if (type === 'price') {
+    const priceSlider = document.getElementById('price-slider');
+    if (priceSlider && priceSlider.noUiSlider) {
+      priceSlider.noUiSlider.reset();
+      const priceText = document.getElementById('filter-price-range');
+      if (priceText) {
+         priceText.innerText = `₹${Math.round(Array.isArray(priceSlider.noUiSlider.options.range.min) ? priceSlider.noUiSlider.options.range.min[0] : priceSlider.noUiSlider.options.range.min)} - ₹${Math.round(Array.isArray(priceSlider.noUiSlider.options.range.max) ? priceSlider.noUiSlider.options.range.max[0] : priceSlider.noUiSlider.options.range.max)}`;
+      }
     }
   }
   updateActiveFilters();
@@ -343,6 +406,13 @@ document.addEventListener("click", function (e) {
     });
     // Remove color selection
     document.querySelectorAll('.color-item.selected').forEach(c => c.classList.remove('selected'));
+    
+    // Reset Price slider
+    const priceSlider = document.getElementById('price-slider');
+    if (priceSlider && priceSlider.noUiSlider) {
+      priceSlider.noUiSlider.reset();
+    }
+
     updateActiveFilters();
   }
 });
@@ -350,4 +420,59 @@ document.addEventListener("click", function (e) {
 // Init active filters display on page load
 document.addEventListener('DOMContentLoaded', () => {
   updateActiveFilters();
+
+  // Search Form Handler
+  const searchInput = document.getElementById('q');
+  if (searchInput) {
+    const searchForm = searchInput.closest('form');
+    if (searchForm) {
+      searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        applyFilters();
+      });
+    }
+    searchInput.addEventListener('search', function() {
+      if (!this.value) applyFilters();
+    });
+
+    // Real-time search as user types (with debounce)
+    let searchTimeout;
+    searchInput.addEventListener('input', function() {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        applyFilters();
+      }, 400); // 400ms delay to avoid overloading the API
+    });
+  }
+
+  // Hook Price Slider
+  setTimeout(() => {
+    const priceSlider = document.getElementById('price-slider');
+    const minPriceInput = document.getElementById('minPrice');
+    const maxPriceInput = document.getElementById('maxPrice');
+
+    if (priceSlider && priceSlider.noUiSlider) {
+      
+      // Sync slider to inputs automatically as it moves
+      priceSlider.noUiSlider.on('update', function (values, handle) {
+        if (handle === 0 && minPriceInput) minPriceInput.value = Math.round(values[0]);
+        if (handle === 1 && maxPriceInput) maxPriceInput.value = Math.round(values[1]);
+      });
+
+      priceSlider.noUiSlider.on('change', function () {
+        updateActiveFilters();
+      });
+
+      // Sync inputs directly to slider when a user types a price
+      const setSlider = () => {
+         const min = minPriceInput && minPriceInput.value !== "" ? parseInt(minPriceInput.value) : null;
+         const max = maxPriceInput && maxPriceInput.value !== "" ? parseInt(maxPriceInput.value) : null;
+         priceSlider.noUiSlider.set([min, max]);
+         updateActiveFilters();
+      };
+
+      if (minPriceInput) minPriceInput.addEventListener('change', setSlider);
+      if (maxPriceInput) maxPriceInput.addEventListener('change', setSlider);
+    }
+  }, 500); // Small delay to let template main.js initialize the slider
 });

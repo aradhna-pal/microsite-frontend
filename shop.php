@@ -268,6 +268,17 @@
                                         </div><!-- End .filter-price-text -->
 
                                         <div id="price-slider"></div><!-- End #price-slider -->
+
+                                        <div class="mt-2" style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                                            <div>
+                                                <label for="minPrice" style="margin-bottom:0; font-size:12px;">From</label>
+                                                <input type="number" id="minPrice" data-type="input" min="0" max="200000" value="0" class="form-control" style="margin-bottom:0; padding: 5px 10px; height: 35px;">
+                                            </div>
+                                            <div>
+                                                <label for="maxPrice" style="margin-bottom:0; font-size:12px;">To</label>
+                                                <input type="number" id="maxPrice" data-type="input" min="0" max="200000" value="200000" class="form-control" style="margin-bottom:0; padding: 5px 10px; height: 35px;">
+                                            </div>
+                                        </div>
                                     </div><!-- End .filter-price -->
                                 </div><!-- End .widget-body -->
                             </div><!-- End .collapse -->
