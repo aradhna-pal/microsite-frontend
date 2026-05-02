@@ -1,6 +1,8 @@
 var domain = "http://microsite_backend.workarya.com";
 var api = `${domain}/api/product/getproduct`;
 
+const selectedProductIds = new Set();
+
 function parseArray(val) {
   if (!val) return [];
   if (typeof val === 'string') {
@@ -13,7 +15,7 @@ fetch(api)
   .then(res => res.json())
   .then(products => {
 
-    function getProductCardHTML(p, wrapperClass) {
+    function getProductCardHTML(p, wrapperClass, showCheckbox = true) {
       let pColors = parseArray(p.colorNames);
       let pVariants = parseArray(p.variants);
 
@@ -55,8 +57,12 @@ fetch(api)
       let firstGridData = firstGridColor && gridColorMap[firstGridColor] ? gridColorMap[firstGridColor] : { image: p.image, hoverImage: mainHoverImg };
       let hoverHtml = firstGridData.hoverImage ? `<img src="${firstGridData.hoverImage}" alt="${p.productName}" class="product-image-hover grid-product-image-hover">` : '';
 
+      const isChecked = selectedProductIds.has(String(p.id)) ? "checked" : "";
+      const checkboxHtml = showCheckbox ? `<input type="checkbox" class="product-select-cb" value="${p.id}" ${isChecked} style="position: absolute; top: 15px; left: 15px; z-index: 10; width: 18px; height: 18px; cursor: pointer;">` : "";
+
       let innerHTML = `
-          <div class="product product-7 text-center">
+          <div class="product product-7 text-center" style="position: relative;">
+            ${checkboxHtml}
             <figure class="product-media">
               
               <!-- ✅ Image click also sends id -->
@@ -118,7 +124,7 @@ fetch(api)
       let currentPage = 1;
       const totalItems = products.length;
       const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
-      const toolboxInfo = document.querySelector(".toolbox-info span");
+      const toolboxInfo = document.querySelector(".toolbox-info");
       const paginationWrap = document.querySelector(".pagination");
 
       function renderPage(page) {
@@ -136,7 +142,15 @@ fetch(api)
         });
 
         if (toolboxInfo) {
-          toolboxInfo.innerText = `${end > 0 ? start + 1 : 0}-${end} of ${totalItems}`;
+          const selectAllChecked = paginatedItems.length > 0 && paginatedItems.every(p => selectedProductIds.has(String(p.id))) ? "checked" : "";
+          toolboxInfo.innerHTML = `Showing <span>${end > 0 ? start + 1 : 0}-${end} of ${totalItems}</span> Products
+          <span style="margin-left: 20px; font-weight: bold; align-items: center; gap: 5px;">
+             <input type="checkbox" id="selectAllProducts" ${selectAllChecked} style="width: 16px; height: 16px; cursor: pointer; margin: 0;">
+             <label for="selectAllProducts" style="margin: 0; cursor: pointer;">Select All</label>
+          </span>
+          <span style="margin-left: 20px; color: #030303; font-weight: bold;">
+             Selected: <span id="selectedProductCount">${selectedProductIds.size}</span>
+          </span>`;
         }
 
         if (paginationWrap) {
@@ -199,7 +213,7 @@ fetch(api)
         carousel.innerHTML = "";
         const featuredProducts = [...products].sort(() => 0.5 - Math.random()).slice(0, 8);
         featuredProducts.forEach(p => {
-          carousel.innerHTML += getProductCardHTML(p, "");
+          carousel.innerHTML += getProductCardHTML(p, "", false);
         });
         setTimeout(() => {
           if (window.jQuery && $.fn.owlCarousel) {
@@ -218,7 +232,7 @@ fetch(api)
         rowContainer.innerHTML = "";
         const newArrivals = [...products].sort(() => 0.5 - Math.random()).slice(0, 10);
         newArrivals.forEach(p => {
-          rowContainer.innerHTML += getProductCardHTML(p, "col-6 col-md-4 col-lg-3 col-xl-5col");
+          rowContainer.innerHTML += getProductCardHTML(p, "col-6 col-md-4 col-lg-3 col-xl-5col", false);
         });
       }
     }
@@ -713,6 +727,44 @@ document.addEventListener('click', function(e) {
     }
   }
 });
+
+// --- Handle Product Checkbox Selections ---
+document.addEventListener('change', function(e) {
+  if (e.target.classList.contains('product-select-cb')) {
+    if (e.target.checked) {
+      selectedProductIds.add(e.target.value);
+    } else {
+      selectedProductIds.delete(e.target.value);
+    }
+    updateSelectionUI();
+  }
+  
+  if (e.target.id === 'selectAllProducts') {
+    const isChecked = e.target.checked;
+    document.querySelectorAll('.product-select-cb').forEach(cb => {
+      cb.checked = isChecked;
+      if (isChecked) {
+        selectedProductIds.add(cb.value);
+      } else {
+        selectedProductIds.delete(cb.value);
+      }
+    });
+    updateSelectionUI();
+  }
+});
+
+function updateSelectionUI() {
+  const countEl = document.getElementById('selectedProductCount');
+  if (countEl) {
+    countEl.innerText = selectedProductIds.size;
+  }
+  const selectAllCb = document.getElementById('selectAllProducts');
+  if (selectAllCb) {
+    const cbs = document.querySelectorAll('.product-select-cb');
+    const checkedCbs = document.querySelectorAll('.product-select-cb:checked');
+    selectAllCb.checked = (cbs.length > 0 && cbs.length === checkedCbs.length);
+  }
+}
 
 // --- Handle Grid Color Swatch Click ---
 document.addEventListener('click', function(e) {
