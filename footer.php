@@ -321,7 +321,7 @@
                         <div class="tab-content" id="tab-content-5">
                             <div class="tab-pane fade show active" id="signin" role="tabpanel"
                                 aria-labelledby="signin-tab">
-                                <form action="#">
+                                <form action="#" id="loginForm">
                                     <div class="form-group">
                                         <label for="singin-email">Username or email address *</label>
                                         <input type="text" class="form-control" id="singin-email" name="singin-email"

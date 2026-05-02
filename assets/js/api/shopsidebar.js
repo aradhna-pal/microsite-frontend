@@ -326,6 +326,15 @@ function applyFilters() {
   sizeIds.forEach(id => searchParams.append('sizeIds', id));
   colorIds.forEach(id => searchParams.append('colorIds', id));
   
+  const priceSlider = document.getElementById('price-slider');
+  if (priceSlider && priceSlider.noUiSlider) {
+    const prices = priceSlider.noUiSlider.get();
+    if (prices && prices.length === 2) {
+      searchParams.append('minPrice', Math.round(prices[0]));
+      searchParams.append('maxPrice', Math.round(prices[1]));
+    }
+  }
+
   if (searchText) searchParams.append('search', searchText);
 
   let filterUrl = `${domain}/api/product/filter`;
