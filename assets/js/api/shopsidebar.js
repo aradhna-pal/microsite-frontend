@@ -68,7 +68,7 @@ fetch(brandApi)
   // ============================================= color =========================================
 
 
-// const domain = "http://microsite_backend.workarya.com";
+
 const colorApi = `${domain}/api/admin/getcolor`;
 
 fetch(colorApi)
@@ -99,6 +99,7 @@ fetch(colorApi)
       });
   })
   .catch(err => console.error(err));
+
 
 
 
@@ -165,27 +166,7 @@ fetch(catApi)
     });
   });
 }
-// function loadSubCategories(catId, subList) {
-//   fetch(subApi)
-//     .then(res => res.json())
-//     .then(subs => {
-//       const filtered = subs.filter(s => s.categoryId == catId && s.status);
 
-//       filtered.forEach(s => {
-//         subList.innerHTML += `
-//           <li class="sub-item" style="list-style:none; margin-top:6px;">
-//             <input type="checkbox"
-//                    class="subcategory-checkbox"
-//                    id="sub-${s.id}"
-//                    value="${s.id}">
-//             <label for="sub-${s.id}">
-//               ${s.subCategoryName}
-//             </label>
-//           </li>
-//         `;
-//       });
-//     });
-// }
 function loadSubCategories(catId, subList) {
   fetch(subApi)
     .then(res => res.json())
@@ -345,12 +326,7 @@ document.addEventListener("click", function (e) {
   const colorItem = e.target.closest('.color-item');
   if (colorItem) {
     e.preventDefault();
-    if (colorItem.classList.contains("selected")) {
-      colorItem.classList.remove("selected");
-    } else {
-      document.querySelectorAll(".color-item").forEach(x => x.classList.remove("selected"));
-      colorItem.classList.add("selected");
-    }
+    colorItem.classList.toggle("selected");
     updateActiveFilters();
   }
 

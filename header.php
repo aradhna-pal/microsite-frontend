@@ -76,7 +76,7 @@
                                     </li>
                                 </ul>
                             </li>
-                        </ul><!-- End .top-menu -->
+                        </ul> 
                     </div><!-- End .header-right -->
                 </div><!-- End .container-fluid -->
             </div><!-- End .header-top -->
