@@ -515,7 +515,16 @@ function openQuickViewModal(prodId, selectedColor) {
                     <div class="details-filter-row details-row-size">
                         <label for="qty">Qty:</label>
                         <div class="product-details-quantity">
-                            <input type="number" id="qty" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
+                            <input type="number" id="qty" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required style="display: none;">
+                            <div class="input-group input-spinner">
+                                <div class="input-group-prepend">
+                                    <button style="min-width: 26px" class="btn btn-decrement btn-spinner" type="button"><i class="icon-minus"></i></button>
+                                </div>
+                                <input type="text" style="text-align: center" class="form-control" required value="1" readonly>
+                                <div class="input-group-append">
+                                    <button style="min-width: 26px" class="btn btn-increment btn-spinner" type="button"><i class="icon-plus"></i></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -874,6 +883,31 @@ document.addEventListener("click", function (e) {
       sizes.forEach(
         (s) => (sizeEl.innerHTML += `<option value="${s}">${s}</option>`),
       );
+    }
+  }
+});
+
+// --- Handle Product Details Quantity Increment/Decrement ---
+document.addEventListener("click", function(e) {
+  const incBtn = e.target.closest(".product-details-quantity .btn-increment");
+  const decBtn = e.target.closest(".product-details-quantity .btn-decrement");
+
+  if (incBtn || decBtn) {
+    e.preventDefault();
+    const container = (incBtn || decBtn).closest(".product-details-quantity");
+    const hiddenInput = container.querySelector("input[type='number']");
+    const visibleInput = container.querySelector("input[type='text']");
+
+    if (hiddenInput && visibleInput) {
+      let currentVal = parseInt(visibleInput.value) || 1;
+      const min = parseInt(hiddenInput.getAttribute("min")) || 1;
+      const max = parseInt(hiddenInput.getAttribute("max")) || 10;
+
+      if (incBtn && currentVal < max) currentVal++;
+      else if (decBtn && currentVal > min) currentVal--;
+
+      visibleInput.value = currentVal;
+      hiddenInput.value = currentVal;
     }
   }
 });

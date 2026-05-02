@@ -19,7 +19,13 @@ window.loadCart = async function() {
       el.innerText = data.totalItems || 0;
     });
     document.querySelectorAll('.cart-total-price').forEach(el => {
-      el.innerText = `$${data.grandTotal || 0}`; // Using backend grandTotal
+      el.innerText = `₹${data.grandTotal || 0}`; // Using backend grandTotal
+    });
+    document.querySelectorAll('.summary-subtotal td:last-child').forEach(el => {
+      el.innerText = `₹${data.grandTotal || 0}`;
+    });
+    document.querySelectorAll('.summary-total td:last-child').forEach(el => {
+      el.innerText = `₹${data.grandTotal || 0}`;
     });
 
     if (!data.status || !data.data || !data.data.length) {
@@ -162,6 +168,67 @@ document.addEventListener("click", async function (e) {
       }
     } catch (err) {
       console.error("Update Qty Error:", err);
+    }
+  }
+});
+
+// --- Handle Remove Item and Clear Cart ---
+document.addEventListener("click", async function (e) {
+  // 1. Remove Single Item (X button in table & dropdown)
+  const removeBtn = e.target.closest(".btn-remove");
+  if (removeBtn) {
+    e.preventDefault();
+    const id = removeBtn.getAttribute("data-id");
+    if (!id) return;
+
+    const token = localStorage.getItem("token");
+    let guestId = localStorage.getItem("guestId");
+    let headers = {};
+    if (token) headers["Authorization"] = "Bearer " + token;
+    else if (guestId) headers["guestId"] = guestId;
+
+    try {
+      removeBtn.style.pointerEvents = "none"; // Disable temporarily to prevent multiple clicks
+      const res = await fetch(`${domain}/api/cart/delete/${id}`, {
+        method: "DELETE",
+        headers: headers
+      });
+      
+      if (res.ok) {
+        iziToast.success({ title: "Removed", message: "Item removed from cart", position: "topRight", timeout: 2000 });
+        if (typeof window.loadCart === "function") window.loadCart(); // Refresh the cart layout immediately
+      } else {
+        removeBtn.style.pointerEvents = "auto";
+      }
+    } catch (err) {
+      console.error("Remove Item Error:", err);
+      removeBtn.style.pointerEvents = "auto";
+    }
+  }
+
+  // 2. Clear Entire Cart
+  const clearBtn = e.target.closest("#btn-clear-cart");
+  if (clearBtn) {
+    e.preventDefault();
+    
+    const token = localStorage.getItem("token");
+    let guestId = localStorage.getItem("guestId");
+    let headers = {};
+    if (token) headers["Authorization"] = "Bearer " + token;
+    else if (guestId) headers["guestId"] = guestId;
+
+    try {
+      const res = await fetch(`${domain}/api/cart/clearcart`, {
+        method: "DELETE",
+        headers: headers
+      });
+      
+      if (res.ok) {
+        iziToast.success({ title: "Cleared", message: "Cart cleared successfully", position: "topRight" });
+        if (typeof window.loadCart === "function") window.loadCart();
+      }
+    } catch (err) {
+      console.error("Clear Cart Error:", err);
     }
   }
 });
