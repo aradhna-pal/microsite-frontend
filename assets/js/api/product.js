@@ -27,7 +27,7 @@ window.getProductCardHTML = function (p, wrapperClass, showCheckbox = true) {
     gridColorMap[c] = {
       image: p.image,
       hoverImage: mainHoverImg,
-      price: p.discountPrice,
+      price: p.discountPrice > 0 ? p.discountPrice : p.price,
       name: p.productName,
     };
   });
@@ -52,7 +52,7 @@ window.getProductCardHTML = function (p, wrapperClass, showCheckbox = true) {
           gridColorMap[c] = {
             image: v.image || p.image,
             hoverImage: vHoverImg,
-            price: v.discountPrice,
+            price: v.discountPrice > 0 ? v.discountPrice : (v.price > 0 ? v.price : (p.discountPrice > 0 ? p.discountPrice : p.price)),
             name: v.variantName || p.productName,
           };
         }
@@ -67,7 +67,7 @@ window.getProductCardHTML = function (p, wrapperClass, showCheckbox = true) {
     if (i === 0) firstGridColor = c;
     gridColorHtml += `
             <a href="#" class="grid-color-swatch ${i === 0 ? "active" : ""}" title="${c}" style="display: inline-block; margin-right: 5px;"
-               data-img="${vData.image}" data-hover-img="${vData.hoverImage || ""}" data-price="${vData.discountPrice}" data-name="${vData.name}">
+               data-img="${vData.image}" data-hover-img="${vData.hoverImage || ""}" data-price="${vData.price || 0}" data-name="${vData.name}">
                <span style="display:block;width:20px;height:20px;border-radius:50%;background:${c};border:1px solid #ccc"></span>
             </a>
          `;
@@ -131,7 +131,7 @@ window.getProductCardHTML = function (p, wrapperClass, showCheckbox = true) {
               </h3>
 
               <div class="product-price grid-product-price">
-                ₹${p.discountPrice}
+                ₹${p.discountPrice > 0 ? p.discountPrice : p.price}
               </div>
               
               <div class="product-nav product-nav-thumbs mt-1">
@@ -413,7 +413,7 @@ function openQuickViewModal(prodId, selectedColor) {
         colorMap[c] = {
           id: p.id,
           name: p.productName,
-          price: p.discountPrice,
+          price: p.discountPrice > 0 ? p.discountPrice : p.price,
           image: p.image,
           sizes: mainSizes,
           gallery: p.imageGallery || [],
@@ -439,7 +439,7 @@ function openQuickViewModal(prodId, selectedColor) {
             colorMap[c] = {
               id: v.id,
               name: v.variantName || p.productName,
-              price: v.discountPrice || p.discountPrice,
+              price: v.discountPrice > 0 ? v.discountPrice : (v.price > 0 ? v.price : (p.discountPrice > 0 ? p.discountPrice : p.price)),
               image: v.image || p.image,
               sizes: vSizes.length > 0 ? vSizes : mainSizes,
               gallery:
@@ -459,7 +459,7 @@ function openQuickViewModal(prodId, selectedColor) {
         let sizesStr = JSON.stringify(vData.sizes).replace(/"/g, "&quot;");
         let galleryStr = JSON.stringify(vData.gallery).replace(/"/g, "&quot;");
         colorHtml += `
-         <a href="#" class="color-swatch ${i === 0 ? "active" : ""}" title="${c}" data-id="${vData.id || p.id}" data-name="${vData.name || ""}" data-price="${vData.discountPrice || 0}" data-image="${vData.image || ""}" data-sizes="${sizesStr}" data-gallery="${galleryStr}">
+         <a href="#" class="color-swatch ${i === 0 ? "active" : ""}" title="${c}" data-id="${vData.id || p.id}" data-name="${vData.name || ""}" data-price="${vData.price || 0}" data-image="${vData.image || ""}" data-sizes="${sizesStr}" data-gallery="${galleryStr}">
             <span style="display:inline-block;width:25px;height:25px;border-radius:50%;background:${c};border:1px solid #ccc;margin-right:5px;"></span>
          </a>`;
       });
@@ -489,7 +489,7 @@ function openQuickViewModal(prodId, selectedColor) {
                 </div>
                 <div class="col-lg-5 col-md-6">
                     <h2 class="product-title">${p.productName || ""}</h2>
-                    <h3 class="product-price">₹${p.discountPrice || 0}</h3>
+                    <h3 class="product-price">₹${p.discountPrice > 0 ? p.discountPrice : p.price}</h3>
                     <div class="ratings-container">
                         <div class="ratings">
                             <div class="ratings-val" style="width: 80%;"></div>
@@ -604,7 +604,8 @@ function loadProduct(p) {
   if (pName) pName.innerText = p.productName || "";
 
   const pPrice = document.getElementById("pPrice");
-  if (pPrice) pPrice.innerText = `₹${p.discountPrice || 0}`;
+  if (pPrice) pPrice.innerText = `₹${p.discountPrice > 0 ? p.discountPrice : p.price}`;
+ 
 
   const sdec = document.getElementById("sdec");
   if (sdec) sdec.innerText = p.shortDescription || "";
@@ -663,7 +664,7 @@ function loadProduct(p) {
     colorMap[c] = {
       id: p.id,
       name: p.productName,
-      price: p.discountPrice,
+      price: p.discountPrice > 0 ? p.discountPrice : p.price,
       image: p.image,
       sizes: mainSizes,
       gallery: p.imageGallery || [],
@@ -689,7 +690,7 @@ function loadProduct(p) {
         colorMap[c] = {
           id: v.id,
           name: v.variantName || p.productName,
-          price: v.discountPrice || p.discountPrice,
+          price: v.discountPrice > 0 ? v.discountPrice : (v.price > 0 ? v.price : (p.discountPrice > 0 ? p.discountPrice : p.price)),
           image: v.image || p.image,
           sizes: vSizes.length > 0 ? vSizes : mainSizes,
           gallery:
@@ -711,7 +712,7 @@ function loadProduct(p) {
       let sizesStr = JSON.stringify(vData.sizes).replace(/"/g, "&quot;");
       let galleryStr = JSON.stringify(vData.gallery).replace(/"/g, "&quot;");
       colors.innerHTML += `
-        <a href="#" class="color-swatch ${i === 0 ? "active" : ""}" title="${c}" style="display: inline-block; margin-right: 5px;" data-id="${vData.id || p.id}" data-name="${vData.name || ""}" data-price="${vData.discountPrice || 0}" data-image="${vData.image || ""}" data-sizes="${sizesStr}" data-gallery="${galleryStr}">
+        <a href="#" class="color-swatch ${i === 0 ? "active" : ""}" title="${c}" style="display: inline-block; margin-right: 5px;" data-id="${vData.id || p.id}" data-name="${vData.name || ""}" data-price="${vData.price || 0}" data-image="${vData.image || ""}" data-sizes="${sizesStr}" data-gallery="${galleryStr}">
           <span style="display:block;width:25px;height:25px;border-radius:50%;background:${c};border:1px solid #ccc"></span>
         </a>
       `;
