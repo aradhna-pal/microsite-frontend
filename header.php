@@ -41,6 +41,7 @@
    <script src="assets/js/api/shopsidebar.js"></script>
    <script src="assets/js/api/cart.js"></script>
    <script src="assets/js/api/login.js"></script>
+   <script src="assets/js/api/checkout.js"></script>
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
 <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
 

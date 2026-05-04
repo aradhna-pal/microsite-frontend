@@ -232,3 +232,24 @@ document.addEventListener("click", async function (e) {
     }
   }
 });
+
+// --- Protect Checkout Links ---
+document.addEventListener("click", function (e) {
+  const checkoutBtn = e.target.closest('a[href*="checkout.php"]');
+  if (checkoutBtn) {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      e.preventDefault(); // Stop navigation
+      iziToast.warning({
+        title: "Login Required",
+        message: "Please log in to proceed to checkout.",
+        position: "topRight"
+      });
+      // Open the login modal automatically
+      const loginModalLink = document.querySelector('a[href="#signin-modal"]');
+      if (loginModalLink) {
+        loginModalLink.click();
+      }
+    }
+  }
+});
