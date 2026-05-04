@@ -32,10 +32,7 @@
                                 <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab"
                                     aria-controls="tab-orders" aria-selected="false">Orders</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="tab-downloads-link" data-toggle="tab" href="#tab-downloads"
-                                    role="tab" aria-controls="tab-downloads" aria-selected="false">Downloads</a>
-                            </li>
+                          
                             <li class="nav-item">
                                 <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address"
                                     role="tab" aria-controls="tab-address" aria-selected="false">Adresses</a>
@@ -48,6 +45,8 @@
                                 <a class="nav-link" href="#">Sign Out</a>
                             </li>
                         </ul>
+
+                        
                     </aside><!-- End .col-lg-3 -->
 
                     <div class="col-10">
@@ -96,12 +95,8 @@
 
                             </div>
 
-                            <div class="tab-pane fade" id="tab-downloads" role="tabpanel"
-                                aria-labelledby="tab-downloads-link">
-                                <p>No downloads available yet.</p>
-                                <a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i
-                                        class="icon-long-arrow-right"></i></a>
-                            </div><!-- .End .tab-pane -->
+                           
+                            
 
                             <div class="tab-pane fade" id="tab-address" role="tabpanel"
                                 aria-labelledby="tab-address-link">
