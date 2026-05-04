@@ -39,12 +39,14 @@ const brandApi = `${domain}/api/admin/getbrand`;
 
 fetch(brandApi)
   .then(res => res.json())
-  .then(brands => {
+  .then(result => {
+    if (!result.status) return;
+
     const box = document.getElementById("brandFilter");
     box.innerHTML = "";
 
-    brands.forEach((b, i) => {
-      const id = `brand-${i+1}`;
+    result.data.forEach((b, i) => {
+      const id = `brand-${i + 1}`;
 
       box.innerHTML += `
         <div class="filter-item">
@@ -61,7 +63,7 @@ fetch(brandApi)
       `;
     });
   })
-  .catch(err => console.error(err));
+  .catch(err => console.error("Brand load error:", err));
 
 
 
@@ -319,9 +321,9 @@ function applyFilters() {
   const searchText = searchInput ? searchInput.value.trim() : '';
 
   const searchParams = new URLSearchParams();
-  catIds.forEach(id => searchParams.append('categoryId', id));
-  subCatIds.forEach(id => searchParams.append('subCategoryId', id));
-  childCatIds.forEach(id => searchParams.append('childCategoryId', id));
+  catIds.forEach(id => searchParams.append('categoryIds', id));
+  subCatIds.forEach(id => searchParams.append('subCategoryIds', id));
+  childCatIds.forEach(id => searchParams.append('childCategoryIds', id));
   brandIds.forEach(id => searchParams.append('brandId', id));
   sizeIds.forEach(id => searchParams.append('sizeIds', id));
   colorIds.forEach(id => searchParams.append('colorIds', id));
@@ -455,33 +457,5 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Hook Price Slider
-  setTimeout(() => {
-    const priceSlider = document.getElementById('price-slider');
-    const minPriceInput = document.getElementById('minPrice');
-    const maxPriceInput = document.getElementById('maxPrice');
-
-    if (priceSlider && priceSlider.noUiSlider) {
-      
-      // Sync slider to inputs automatically as it moves
-      priceSlider.noUiSlider.on('update', function (values, handle) {
-        if (handle === 0 && minPriceInput) minPriceInput.value = Math.round(values[0]);
-        if (handle === 1 && maxPriceInput) maxPriceInput.value = Math.round(values[1]);
-      });
-
-      priceSlider.noUiSlider.on('change', function () {
-        updateActiveFilters();
-      });
-
-      // Sync inputs directly to slider when a user types a price
-      const setSlider = () => {
-         const min = minPriceInput && minPriceInput.value !== "" ? parseInt(minPriceInput.value) : null;
-         const max = maxPriceInput && maxPriceInput.value !== "" ? parseInt(maxPriceInput.value) : null;
-         priceSlider.noUiSlider.set([min, max]);
-         updateActiveFilters();
-      };
-
-      if (minPriceInput) minPriceInput.addEventListener('change', setSlider);
-      if (maxPriceInput) maxPriceInput.addEventListener('change', setSlider);
-    }
-  }, 500); // Small delay to let template main.js initialize the slider
+  // Small delay to let template main.js initialize the slider
 });

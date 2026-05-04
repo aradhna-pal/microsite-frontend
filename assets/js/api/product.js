@@ -190,7 +190,8 @@ window.renderShopGrid = function (products) {
           </span>
           <span style="margin-left: 20px; color: #030303; font-weight: bold;">
              Selected: <span id="selectedProductCount">${selectedProductIds.size}</span>
-          </span>`;
+          </span>
+          <button id="addSelectedToCart" class="btn btn-outline-primary-2 btn-sm" style="margin-left: 20px; padding: 5px 15px; min-width: 130px; border-radius: 4px;">Add Selected to Cart</button>`;
       }
 
       if (paginationWrap) {
@@ -1101,6 +1102,99 @@ document.addEventListener("click", function (e) {
           );
         });
       }
+    }
+  }
+});
+
+// --- Handle Add Selected Products to Cart ---
+document.addEventListener("click", async function (e) {
+  if (e.target.id === "addSelectedToCart") {
+    e.preventDefault();
+
+    if (selectedProductIds.size === 0) {
+      iziToast.warning({
+        title: "Warning",
+        message: "Please select at least one product",
+        position: "topRight"
+      });
+      return;
+    }
+
+    const btn = e.target;
+    const originalHtml = btn.innerHTML;
+    btn.innerHTML = 'Adding...';
+    btn.style.pointerEvents = 'none';
+
+    const formData = new FormData();
+    const productsArray = Array.from(selectedProductIds).map(id => ({
+      productId: id,
+      quantity: 1
+    }));
+    
+    Array.from(selectedProductIds).forEach(id => {
+      formData.append("productIds[]", id);
+      formData.append("quantities[]", 1);
+    });
+    // Fallback payload styles to match different backend implementations
+    formData.append("products", JSON.stringify(productsArray));
+
+    const token = localStorage.getItem("token");
+    let guestId = localStorage.getItem("guestId");
+    let headers = {};
+    if (token) headers["Authorization"] = "Bearer " + token;
+    else if (guestId) headers["guestId"] = guestId;
+
+    try {
+      const res = await fetch(`${domain}/api/cart/add-multiple`, {
+        method: "POST",
+        headers: headers,
+        body: formData,
+      });
+
+      const data = await res.json();
+      
+      btn.innerHTML = originalHtml;
+      btn.style.pointerEvents = 'auto';
+
+      if (data.status) {
+        if (data.guestId && !token) localStorage.setItem("guestId", data.guestId);
+        
+        document.querySelectorAll('.cart-count').forEach(el => {
+            el.innerText = parseInt(el.innerText || 0) + selectedProductIds.size;
+        });
+        
+        if (typeof window.loadCart === 'function') {
+            window.loadCart();
+        }
+
+        // Clear selection
+        selectedProductIds.clear();
+        updateSelectionUI();
+        document.querySelectorAll(".product-select-cb").forEach(cb => cb.checked = false);
+        const selectAllCb = document.getElementById("selectAllProducts");
+        if (selectAllCb) selectAllCb.checked = false;
+
+        iziToast.success({
+          title: "Success",
+          message: data.message || "Selected products added to cart",
+          position: "topRight"
+        });
+      } else {
+        iziToast.error({
+          title: "Error",
+          message: data.message || "Failed to add products",
+          position: "topRight"
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      btn.innerHTML = originalHtml;
+      btn.style.pointerEvents = 'auto';
+      iziToast.error({
+        title: "Server Error",
+        message: "Something went wrong",
+        position: "topRight"
+      });
     }
   }
 });
