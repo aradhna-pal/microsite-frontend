@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                     // Redirect to home or success page after 2 seconds
                     setTimeout(() => {
-                        window.location.href = "index.php"; 
+                        window.location.href = "dashboard.php"; 
                     }, 2000);
                 } else {
                     submitBtn.innerHTML = originalBtnText;
