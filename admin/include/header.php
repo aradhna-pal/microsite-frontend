@@ -51,6 +51,8 @@
     <script src="./adminApi/product.js"></script>
     <script src="./adminApi/custmor-logo.js"></script>
     <script src="./adminApi/variant.js"></script>
+    <script src="./adminApi/order.js"></script>
+    <script src="./adminApi/order-detail.js"></script>
     
 </head>
 

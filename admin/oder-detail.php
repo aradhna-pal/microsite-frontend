@@ -7,7 +7,7 @@
                             <!-- main-content-wrap -->
                             <div class="main-content-wrap">
                                 <div class="flex items-center flex-wrap justify-between gap20 mb-27">
-                                    <h3>Order #123783</h3>
+                                    <h3 id="order-page-title">Order Details</h3>
                                     <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                                         <li>
                                             <a href="index.php"><div class="text-tiny">Dashboard</div></a>
@@ -16,7 +16,7 @@
                                             <i class="icon-chevron-right"></i>
                                         </li>
                                         <li>
-                                            <a href="#"><div class="text-tiny">Order</div></a>
+                                            <a href="oder-list.php"><div class="text-tiny">Order</div></a>
                                         </li>
                                         <li>
                                             <i class="icon-chevron-right"></i>
@@ -28,7 +28,7 @@
                                             <i class="icon-chevron-right"></i>
                                         </li>
                                         <li>
-                                            <div class="text-tiny">Order #123783</div>
+                                            <div class="text-tiny" id="breadcrumb-order-id">Loading...</div>
                                         </li>
                                     </ul>
                                 </div>
@@ -60,64 +60,8 @@
                                                         </div>
                                                     </li>
                                                 </ul>
-                                                <ul class="flex flex-column">
-                                                    <li class="product-item gap14">
-                                                        <div class="image no-bg">
-                                                            <img src="images/products/41.png" alt="">
-                                                        </div>
-                                                        <div class="flex items-center justify-between gap40 flex-grow">
-                                                            <div class="name">
-                                                                <div class="text-tiny mb-1">Product name</div>
-                                                                <a href="product-list.php" class="body-title-2">Kristin Watson</a>
-                                                            </div>
-                                                            <div class="name">
-                                                                <div class="text-tiny mb-1">Quantity</div>
-                                                                <div class="body-title-2">1</div>
-                                                            </div>
-                                                            <div class="name">
-                                                                <div class="text-tiny mb-1">Price</div>
-                                                                <div class="body-title-2">$50.47</div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="product-item gap14">
-                                                        <div class="image no-bg">
-                                                            <img src="images/products/44.png" alt="">
-                                                        </div>
-                                                        <div class="flex items-center justify-between gap40 flex-grow">
-                                                            <div class="name">
-                                                                <div class="text-tiny mb-1">Product name</div>
-                                                                <a href="product-list.php" class="body-title-2">Kristin Watson</a>
-                                                            </div>
-                                                            <div class="name">
-                                                                <div class="text-tiny mb-1">Quantity</div>
-                                                                <div class="body-title-2">1</div>
-                                                            </div>
-                                                            <div class="name">
-                                                                <div class="text-tiny mb-1">Price</div>
-                                                                <div class="body-title-2">$50.47</div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="product-item gap14">
-                                                        <div class="image no-bg">
-                                                            <img src="images/products/43.png" alt="">
-                                                        </div>
-                                                        <div class="flex items-center justify-between gap40 flex-grow">
-                                                            <div class="name">
-                                                                <div class="text-tiny mb-1">Product name</div>
-                                                                <a href="product-list.php" class="body-title-2">Kristin Watson</a>
-                                                            </div>
-                                                            <div class="name">
-                                                                <div class="text-tiny mb-1">Quantity</div>
-                                                                <div class="body-title-2">1</div>
-                                                            </div>
-                                                            <div class="name">
-                                                                <div class="text-tiny mb-1">Price</div>
-                                                                <div class="body-title-2">$50.47</div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
+                                                <ul class="flex flex-column" id="order-items-list">
+                                                    <!-- Items will be dynamically populated by JS here -->
                                                 </ul>
                                             </div>
                                         </div>
@@ -134,22 +78,14 @@
                                                 <ul class="flex flex-column gap14">
                                                     <li class="cart-totals-item">
                                                         <span class="body-text">Subtotal:</span>
-                                                        <span class="body-title-2">$70.13</span>
+                                                        <span class="body-title-2" id="cart-subtotal">₹0.00</span>
                                                     </li>
-                                                    <li class="divider"></li>
-                                                    <li class="cart-totals-item">
-                                                        <span class="body-text">Shipping:</span>
-                                                        <span class="body-title-2">$10.00</span>
-                                                    </li>
-                                                    <li class="divider"></li>
-                                                    <li class="cart-totals-item">
-                                                        <span class="body-text">Tax (GST):</span>
-                                                        <span class="body-title-2">$5.00</span>
-                                                    </li>
+                                                  
+                                                   
                                                     <li class="divider"></li>
                                                     <li class="cart-totals-item">
                                                         <span class="body-title">Total price:</span>
-                                                        <span class="body-title tf-color-1">$90.58</span>
+                                                        <span class="body-title tf-color-1" id="cart-total">₹0.00</span>
                                                     </li>
                                                   
                                                 </ul>
@@ -161,24 +97,28 @@
                                             <div class="body-title">Summary</div>
                                             <div class="summary-item">
                                                 <div class="body-text">Order ID</div>
-                                                <div class="body-title-2">#192847</div>
+                                                <div class="body-title-2" id="summary-order-id">#</div>
                                             </div>
                                             <div class="summary-item">
                                                 <div class="body-text">Date</div>
-                                                <div class="body-title-2">20 Nov 2023</div>
+                                                <div class="body-title-2" id="summary-date">-</div>
+                                            </div>
+                                            <div class="summary-item">
+                                                <div class="body-text">Status</div>
+                                                <div class="body-title-2" id="summary-status">-</div>
                                             </div>
                                             <div class="summary-item">
                                                 <div class="body-text">Total</div>
-                                                <div class="body-title-2 tf-color-1">$948.5</div>
+                                                <div class="body-title-2 tf-color-1" id="summary-total">₹0.00</div>
                                             </div>
                                         </div>
                                         <div class="wg-box mb-20 gap10">
                                             <div class="body-title">Shipping Address</div>
-                                            <div class="body-text">3517 W. Gray St. Utica, Pennsylvania 57867</div>
+                                            <div class="body-text" id="shipping-address" style="line-height: 1.6;">Loading...</div>
                                         </div>
                                         <div class="wg-box mb-20 gap10">
                                             <div class="body-title">Payment Method</div>
-                                            <div class="body-text">Pay on Delivery (Cash/Card). Cash on delivery (COD) available. Card/Net banking acceptance subject to device availability.</div>
+                                            <div class="body-text" id="payment-method">Loading...</div>
                                         </div>
                                         <div class="wg-box gap10">
                                             <div class="body-title">Expected Date Of Delivery</div>
@@ -202,4 +142,5 @@
                     </div>
                     <!-- /main-content -->
 
+                    <script src="adminApi/order-detail.js"></script>
                     <?php include 'include/footer.php'; ?>
