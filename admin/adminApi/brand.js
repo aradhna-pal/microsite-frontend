@@ -1,4 +1,4 @@
-// const domin = "http://microsite_backend.workarya.com/";
+// const domin = "http://microsite_backend.workarya.com";
 
 document.addEventListener("DOMContentLoaded", loadBrands);
 
@@ -8,28 +8,25 @@ async function loadBrands() {
 
   try {
     const res = await fetch(`${domin}/api/admin/getbrand`);
-    const data = await res.json();
+    const result = await res.json();
+
+    if (!result.status || !Array.isArray(result.data)) return;
 
     tableBody.innerHTML = "";
 
-    data.forEach((item, index) => {
+    result.data.forEach((item, index) => {
       const statusBadge = item.isActive
         ? `<span class="badge badge-success">Active</span>`
         : `<span class="badge badge-danger">Inactive</span>`;
 
-      const imgPath = item.brandImage.startsWith("/")
-        ? `${item.brandImage}`
-        : `${item.brandImage}`;
-
       const row = `
         <li class="attribute-item flex items-center justify-between gap20">
-          
           <div class="body-text" style="flex:0 0 60px; max-width:60px;">
             ${index + 1}
           </div>
 
           <div class="name">
-            <img src="${imgPath}" 
+            <img src="${item.brandImage}"
                  style="width:40px;height:40px;object-fit:contain;" />
           </div>
 
@@ -52,7 +49,6 @@ async function loadBrands() {
               <i class="icon-trash-2"></i>
             </div>
           </div>
-
         </li>
       `;
 
@@ -85,21 +81,35 @@ async function deleteBrand(id) {
 
         instance.hide({}, toast);
 
-        const res = await fetch(`${domin}/api/admin/deletebrand/${id}`, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-
-        if (res.ok) {
-          iziToast.success({
-            title: "Deleted",
-            message: "Brand deleted successfully",
-            position: "topRight"
+        try {
+          const res = await fetch(`${domin}/api/admin/deletebrand/${id}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
           });
 
-          loadBrands();
+          if (res.ok) {
+            iziToast.success({
+              title: "Deleted",
+              message: "Brand deleted successfully",
+              position: "topRight"
+            });
+
+            // ✅ GET API again and reload page
+            await loadBrands();
+            setTimeout(() => location.reload(), 1200);
+          } else {
+            const msg = await res.text();
+            iziToast.error({
+              title: "Error",
+              message: msg || "Delete failed",
+              position: "topRight"
+            });
+          }
+
+        } catch (err) {
+          console.error(err);
         }
 
       }, true],
