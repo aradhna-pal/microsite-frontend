@@ -49,6 +49,7 @@ window.loadCart = async function() {
       const qty = item.quantity;
       const total = item.totalprice || (price * qty);
       const prodId = item.productId || item.productid || item.product_id;
+      const varId = item.variantId || item.variantid || (item.variantIds && item.variantIds.length ? item.variantIds[0] : "") || "";
 
       rows += `
         <tr>
@@ -68,11 +69,11 @@ window.loadCart = async function() {
                 <input type="number" class="form-control" value="${qty}" min="1" max="10" step="1" data-decimals="0" required="" style="display: none;">
                 <div class="input-group input-spinner">
                     <div class="input-group-prepend">
-                        <button style="min-width: 26px" class="btn btn-decrement btn-spinner qty-btn" type="button" data-id="${prodId}" data-change="-1"><i class="icon-minus"></i></button>
+                        <button style="min-width: 26px" class="btn btn-decrement btn-spinner qty-btn" type="button" data-id="${prodId}" data-variant-id="${varId}" data-change="-1"><i class="icon-minus"></i></button>
                     </div>
                     <input type="text" style="text-align: center" class="form-control" required="" value="${qty}" readonly>
                     <div class="input-group-append">
-                        <button style="min-width: 26px" class="btn btn-increment btn-spinner qty-btn" type="button" data-id="${prodId}" data-change="1"><i class="icon-plus"></i></button>
+                        <button style="min-width: 26px" class="btn btn-increment btn-spinner qty-btn" type="button" data-id="${prodId}" data-variant-id="${varId}" data-change="1"><i class="icon-plus"></i></button>
                     </div>
                 </div>
             </div>
@@ -141,10 +142,14 @@ document.addEventListener("click", async function (e) {
     }
 
     const productId = qtyBtn.getAttribute("data-id");
+    const variantId = qtyBtn.getAttribute("data-variant-id");
     const change = qtyBtn.getAttribute("data-change");
 
     const formData = new FormData();
     formData.append("productId", productId);
+    if (variantId) {
+      formData.append("variantId", variantId);
+    }
     formData.append("change", change);
 
     const token = localStorage.getItem("token");

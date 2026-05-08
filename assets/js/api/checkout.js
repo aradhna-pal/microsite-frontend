@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             data.cartItems.forEach(item => {
                 rows += `
                     <tr>
-                        <td><a href="product.php?id=${item.productid}">${item.productName}</a> <br><small style="color: #ccc;">Qty: ${item.quantity}</small></td>
+                        <td><a href="product.php?id=${item.productid}">${item.name}</a> <br><small style="color: #ccc;">Qty: ${item.quantity}</small></td>
                         <td>₹${item.totalprice}</td>
                     </tr>
                 `;
