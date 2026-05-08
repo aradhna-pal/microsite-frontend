@@ -171,7 +171,6 @@ function showOrderDetailsModal(order, items) {
             const v = item.variants[0];
             variantName = variantName || v.variantname || v.variantName;
             if (v.sizes && v.sizes.length > 0) sizes = v.sizes;
-            if (v.image) itemImage = v.image;
         }
 
         if (sizes.length > 0) extraDetails.push(`Size: ${sizes.join(", ")}`);
