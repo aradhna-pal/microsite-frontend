@@ -62,6 +62,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <td class="p-3"><span style="background-color: #c96; color: #fff; padding: 4px 8px; border-radius: 3px; font-size: 1.2rem;">${status}</span></td>
                         <td class="p-3">${formattedDate}</td>
                         <td class="p-3"><a href="#" class="btn btn-outline-primary-2 btn-sm view-order-details" data-id="${order.id}" data-order="${orderJson}">View Details</a></td>
+                        <td class="p-3"><a href="#" class="btn btn-outline-primary-2 btn-sm download-pdf" data-id="${order.id}">Download </a></td>
                     </tr>
                 `;
             });
@@ -283,4 +284,170 @@ function showOrderDetailsModal(order, items) {
     if (window.jQuery && window.jQuery.fn.modal) {
         window.jQuery('#orderDetailsModal').modal('show');
     }
+}
+
+// --- Handle Download PDF Click ---
+document.addEventListener("click", async function (e) {
+    const btn = e.target.closest(".download-pdf");
+    if (btn) {
+        e.preventDefault();
+        const orderId = btn.getAttribute("data-id");
+        if (!orderId) return;
+
+        const originalText = btn.innerText;
+        btn.innerText = "Downloading...";
+        btn.style.pointerEvents = "none";
+
+        try {
+            // Dynamically load html2pdf if not present
+            if (typeof window.html2pdf === 'undefined') {
+                await new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+                    script.onload = resolve;
+                    script.onerror = reject;
+                    document.head.appendChild(script);
+                });
+            }
+
+            const token = localStorage.getItem("token");
+            const res = await fetch(`${domain}/api/checkout/order/${orderId}`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+            const data = await res.json();
+            
+            btn.innerText = originalText;
+            btn.style.pointerEvents = "auto";
+
+            if (data.status && data.order) {
+                generateOrderPDF(data.order, data.orderItems || []);
+            } else {
+                if (typeof iziToast !== 'undefined') {
+                    iziToast.error({ title: "Error", message: data.message || "Failed to load order for PDF.", position: "topRight" });
+                }
+            }
+        } catch (err) {
+            console.error("PDF Download error:", err);
+            btn.innerText = originalText;
+            btn.style.pointerEvents = "auto";
+            if (typeof iziToast !== 'undefined') {
+                iziToast.error({ title: "Error", message: "Something went wrong while generating PDF.", position: "topRight" });
+            }
+        }
+    }
+});
+
+function generateOrderPDF(order, items) {
+    const formattedDate = new Date(order.createdAt || order.createdat || new Date()).toLocaleString();
+
+    let productsHtml = '<div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: flex-start;">';
+    
+    // Dynamic Grid Sizing based on total products
+    const itemWidth = items.length === 1 ? '100%' : items.length === 2 ? 'calc(50% - 10px)' : items.length === 3 ? 'calc(33.33% - 14px)' : 'calc(25% - 15px)';
+    const imageHeight = items.length === 1 ? '350px' : items.length === 2 ? '250px' : '150px';
+
+    items.forEach((item, index) => {
+        let extraDetails = [];
+        if (item.brandName) extraDetails.push(`Brand: ${item.brandName}`);
+        
+        let sizes = item.sizeNames || [];
+        let colors = item.colorNames || [];
+        let variantName = item.variantName;
+        let itemImage = item.image || "https://via.placeholder.com/150";
+
+        // Gather all swatches (Main + Variants)
+        let swatches = [];
+        let addedColors = new Set();
+        
+        if (item.colorNames && item.colorNames.length > 0) {
+            swatches.push({ color: item.colorNames[0] });
+            addedColors.add(item.colorNames[0]);
+        }
+        
+        if (item.variants && Array.isArray(item.variants)) {
+            item.variants.forEach(v => {
+                if (v.colors && v.colors.length > 0 && !addedColors.has(v.colors[0])) {
+                    swatches.push({ color: v.colors[0] });
+                    addedColors.add(v.colors[0]);
+                }
+            });
+        }
+
+        if (item.variants && Array.isArray(item.variants) && item.variants.length > 0) {
+            const v = item.variants[0];
+            variantName = variantName || v.variantname || v.variantName;
+            if (v.sizes && v.sizes.length > 0) sizes = v.sizes;
+            if (v.colors && v.colors.length > 0) colors = v.colors;
+            if (v.image) itemImage = v.image;
+        }
+
+        if (sizes.length > 0) extraDetails.push(`Size: ${sizes.join(", ")}`);
+        if (variantName) extraDetails.push(`Variant: ${variantName}`);
+
+        // Combine Category, Sub-Category, and Child-Category
+        let catString = [item.categoryName, item.subCategoryName, item.childCategoryName].filter(Boolean).join(' > ');
+
+        let swatchesHtml = "";
+        if (swatches.length > 0) {
+            swatchesHtml = `<div style="display: flex; gap: 5px; justify-content: center; margin-top: 10px; align-items: center;">`;
+            swatches.forEach(s => {
+                swatchesHtml += `<span title="${s.color}" style="display: inline-block; width: 16px; height: 16px; border-radius: 50%; background-color: ${s.color}; border: 1px solid #ccc;"></span>`;
+            });
+            swatchesHtml += `</div>`;
+        }
+
+        productsHtml += `
+            <div style="width: ${itemWidth}; box-sizing: border-box; border: 1px solid #eaeaea; border-radius: 8px; padding: 15px; text-align: center; background: #fff; margin-bottom: 20px; page-break-inside: avoid; break-inside: avoid;">
+                <img src="${itemImage}" alt="${item.productName}" style="width: 100%; height: ${imageHeight}; object-fit: cover; margin-bottom: 10px;">
+                <h6 style="margin: 0 0 5px 0; font-size: 16px; color: #333;">${item.productName}</h6>
+                ${catString ? `<div style="font-size: 11px; color: #999; margin-bottom: 5px;">${catString}</div>` : ''}
+                <div style="font-size: 12px; color: #777; margin-bottom: 8px; min-height: 26px;">${extraDetails.join(' | ')}</div>
+                <div style="font-size: 15px; font-weight: bold; color: #c96;">₹${item.totalPrice > 0 ? item.totalPrice : (item.discountPrice > 0 ? item.discountPrice * item.quantity : item.price * item.quantity)}</div>
+                ${swatchesHtml}
+            </div>
+        `;
+
+        // Force a page break after every 8 items (but don't add an empty page at the very end)
+        if ((index + 1) % 8 === 0 && index !== items.length - 1) {
+            productsHtml += `</div><div class="html2pdf__page-break" style="page-break-before: always; clear: both;"></div><div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: flex-start; padding-top: 10px;">`;
+        }
+    });
+    
+    productsHtml += '</div>';
+
+    const pdfContainer = document.createElement('div');
+    pdfContainer.style.background = '#fff';
+    pdfContainer.style.fontFamily = 'Arial, sans-serif';
+    pdfContainer.style.color = '#333';
+    pdfContainer.style.width = '700px';
+
+    pdfContainer.innerHTML = `
+       <div style="text-align:center; margin-bottom:30px; border-bottom:2px solid #f4f4f4; padding-bottom:20px;">
+  <img
+    src="assets/images/demos/demo-7/logo.png"
+    alt="Logo"
+    style="width:250px; height:auto; margin-bottom:10px;"
+    onerror="this.style.display='none'">
+</div>
+        
+        ${productsHtml}
+        
+        <div style="margin-top: 40px; text-align: center; color: #999; font-size: 12px; border-top: 1px solid #f4f4f4; padding-top: 15px;">
+            Thank you for shopping with us!
+        </div>
+    `;
+
+    const opt = {
+        margin:       0.4,
+        filename:     `Invoice_Order_${order.id}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' },
+        pagebreak:    { mode: 'css' }
+    };
+
+    html2pdf().set(opt).from(pdfContainer).save();
 }
