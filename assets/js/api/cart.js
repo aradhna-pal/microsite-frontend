@@ -115,6 +115,16 @@ window.loadCart = async function() {
     }
     dropdownCarts.forEach(el => {
       el.innerHTML = dropHtml;
+      
+      // Apply scrollbar if there are more than 5 items
+      if (data.data.length > 5) {
+          el.style.maxHeight = "420px"; // Estimated height for 5 items
+          el.style.overflowY = "auto";
+          el.style.overflowX = "hidden";
+      } else {
+          el.style.maxHeight = "none";
+          el.style.overflowY = "visible";
+      }
     });
 
   } catch (err) {
