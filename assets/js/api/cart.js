@@ -45,9 +45,10 @@ window.loadCart = async function() {
     let dropHtml = "";
 
     data.data.forEach(item => {
-      const price =  item.discountPrice;
+      const price =  item.price;
       const qty = item.quantity;
       const total = item.totalprice || (price * qty);
+      const prodId = item.productId || item.productid || item.product_id;
 
       rows += `
         <tr>
@@ -56,7 +57,7 @@ window.loadCart = async function() {
               <figure class="product-media">
                 <img src="${item.image}" width="80">
               </figure>
-              <h3 class="product-title">${item.productName}</h3>
+              <h3 class="product-title">${item.name}</h3>
             </div>
           </td>
 
@@ -67,11 +68,11 @@ window.loadCart = async function() {
                 <input type="number" class="form-control" value="${qty}" min="1" max="10" step="1" data-decimals="0" required="" style="display: none;">
                 <div class="input-group input-spinner">
                     <div class="input-group-prepend">
-                        <button style="min-width: 26px" class="btn btn-decrement btn-spinner qty-btn" type="button" data-id="${item.productid}" data-change="-1"><i class="icon-minus"></i></button>
+                        <button style="min-width: 26px" class="btn btn-decrement btn-spinner qty-btn" type="button" data-id="${prodId}" data-change="-1"><i class="icon-minus"></i></button>
                     </div>
                     <input type="text" style="text-align: center" class="form-control" required="" value="${qty}" readonly>
                     <div class="input-group-append">
-                        <button style="min-width: 26px" class="btn btn-increment btn-spinner qty-btn" type="button" data-id="${item.productid}" data-change="1"><i class="icon-plus"></i></button>
+                        <button style="min-width: 26px" class="btn btn-increment btn-spinner qty-btn" type="button" data-id="${prodId}" data-change="1"><i class="icon-plus"></i></button>
                     </div>
                 </div>
             </div>
@@ -89,7 +90,7 @@ window.loadCart = async function() {
         <div class="product">
             <div class="product-cart-details">
                 <h4 class="product-title">
-                    <a href="product.php?id=${item.productid}">${item.productName}</a>
+                    <a href="product.php?id=${prodId}">${item.name}</a>
                 </h4>
 
                 <span class="cart-product-info">
@@ -99,7 +100,7 @@ window.loadCart = async function() {
             </div>
 
             <figure class="product-image-container">
-                <a href="product.php?id=${item.productid}" class="product-image">
+                <a href="product.php?id=${prodId}" class="product-image">
                     <img src="${item.image}" alt="${item.productName}">
                 </a>
             </figure>

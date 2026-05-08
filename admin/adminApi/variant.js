@@ -33,31 +33,31 @@ document.addEventListener("DOMContentLoaded", async function () {
             <img src="${imageUrl}" style="width:60px;height:60px;object-fit:cover;border-radius:6px;">
           </div>
 
-          <div style="flex:0 0 150px;" class="body-text">
+          <div style="flex:0 0 150px; overflow: hidden; text-overflow: ellipsis;" class="body-text" title="${item.variantName ?? ''}">
             ${item.variantName ?? '-'}
           </div>
 
-          <div style="flex:0 0 80px;" class="body-text">
+          <div style="flex:0 0 80px; overflow: hidden; text-overflow: ellipsis;" class="body-text" title="₹ ${item.price}">
             ₹ ${item.price}
           </div>
 
-          <div style="flex:0 0 100px;" class="body-text">
+          <div style="flex:0 0 100px; overflow: hidden; text-overflow: ellipsis;" class="body-text" title="₹ ${item.discountPrice}">
             ₹ ${item.discountPrice}
           </div>
 
-          <div style="flex:0 0 80px;" class="body-text">
+          <div style="flex:0 0 80px; overflow: hidden; text-overflow: ellipsis;" class="body-text" title="${item.stock}">
             ${item.stock}
           </div>
 
-          <div style="flex:0 0 120px;" class="body-text">
+          <div style="flex:0 0 120px; overflow: hidden; text-overflow: ellipsis;" class="body-text" title="${item.sku ?? ''}">
             ${item.sku ?? '-'}
           </div>
 
-          <div style="flex:0 0 100px;" class="body-text">
+          <div style="flex:0 0 100px; overflow: hidden; text-overflow: ellipsis;" class="body-text" title="${item.sizeNames ?? ''}">
             ${item.sizeNames ?? '-'}
           </div>
 
-          <div style="flex:0 0 100px;" class="body-text">
+          <div style="flex:0 0 100px; overflow: hidden; text-overflow: ellipsis;" class="body-text" title="${item.colorNames ?? ''}">
             ${item.colorNames ?? '-'}
           </div>
 

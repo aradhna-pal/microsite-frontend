@@ -53,6 +53,8 @@
     <script src="./adminApi/variant.js"></script>
     <script src="./adminApi/order.js"></script>
     <script src="./adminApi/order-detail.js"></script>
+    <script src="./adminApi/contact.js"></script>
+
     
 </head>
 
@@ -241,6 +243,23 @@
                                                     <div class="text">Admin Sign up</div>
                                                 </a>
                                             </li>
+                                        </ul>
+                                    </li>
+
+                                     <li class="menu-item has-children">
+                                        <a href="javascript:void(0);" class="menu-item-button">
+                                            <div class="icon"><i class="icon-user"></i></div>
+                                            <div class="text">Enquiries</div>
+                                        </a>
+                                        <ul class="sub-menu">
+                                            <li class="sub-menu-item">
+                                                <a href="enquiries.php" class="">
+                                                    <div class="text">All enquiries</div>
+                                                </a>
+                                            </li>
+                                            
+                                           
+                                           
                                         </ul>
                                     </li>
                                     <li class="menu-item has-children">

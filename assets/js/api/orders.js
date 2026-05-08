@@ -43,6 +43,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const items = order.totalItems || 0;
                 const payment = order.paymentMethod || order.paymentmethod || 'N/A';
                 
+                // Store the order list details safely in the button
+                const orderJson = encodeURIComponent(JSON.stringify(order));
+
                 rows += `
                     <tr>
                         <td class="p-3">#${orderId}</td>
@@ -58,7 +61,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <td class="p-3">${payment}</td>
                         <td class="p-3"><span style="background-color: #c96; color: #fff; padding: 4px 8px; border-radius: 3px; font-size: 1.2rem;">${status}</span></td>
                         <td class="p-3">${formattedDate}</td>
-                        <td class="p-3"><a href="#" class="btn btn-outline-primary-2 btn-sm view-order-details" data-id="${order.id}">View Details</a></td>
+                        <td class="p-3"><a href="#" class="btn btn-outline-primary-2 btn-sm view-order-details" data-id="${order.id}" data-order="${orderJson}">View Details</a></td>
                     </tr>
                 `;
             });
@@ -78,7 +81,16 @@ document.addEventListener("click", async function (e) {
     if (btn) {
         e.preventDefault();
         const orderId = btn.getAttribute("data-id");
+        const orderDataRaw = btn.getAttribute("data-order");
         if (!orderId) return;
+
+        // Extract the order info from the list
+        let listOrder = {};
+        if (orderDataRaw) {
+            try {
+                listOrder = JSON.parse(decodeURIComponent(orderDataRaw));
+            } catch (err) {}
+        }
 
         const originalText = btn.innerText;
         btn.innerText = "Loading...";
@@ -98,7 +110,9 @@ document.addEventListener("click", async function (e) {
             btn.style.pointerEvents = "auto";
 
             if (data.status && data.order) {
-                showOrderDetailsModal(data.order, data.orderItems || []);
+                // Merge the list info with the detail API response
+                const mergedOrder = { ...listOrder, ...data.order };
+                showOrderDetailsModal(mergedOrder, data.orderItems || []);
             } else {
                 if (typeof iziToast !== 'undefined') {
                     iziToast.error({ title: "Error", message: data.message || "Failed to load order details.", position: "topRight" });
@@ -125,13 +139,65 @@ function showOrderDetailsModal(order, items) {
     if (existingModal) existingModal.remove();
 
     let itemsHtml = "";
-    items.forEach(item => {
+    items.forEach((item, index) => {
+        // Extract additional details like Size, Brand, and Variant
+        let extraDetails = [];
+        if (item.brandName) extraDetails.push(`Brand: ${item.brandName}`);
+        
+        let sizes = item.sizeNames || [];
+        let variantName = item.variantName;
+        let itemImage = item.image || "";
+
+        // Gather swatches (Main + Variants)
+        let swatches = [];
+        let addedColors = new Set();
+        
+        if (item.colorNames && item.colorNames.length > 0) {
+            swatches.push({ color: item.colorNames[0], image: item.image || "" });
+            addedColors.add(item.colorNames[0]);
+        }
+        
+        if (item.variants && Array.isArray(item.variants)) {
+            item.variants.forEach(v => {
+                if (v.colors && v.colors.length > 0 && !addedColors.has(v.colors[0])) {
+                    swatches.push({ color: v.colors[0], image: v.image || item.image });
+                    addedColors.add(v.colors[0]);
+                }
+            });
+        }
+
+        // Handle variant details if available
+        if (item.variants && Array.isArray(item.variants) && item.variants.length > 0) {
+            const v = item.variants[0];
+            variantName = variantName || v.variantname || v.variantName;
+            if (v.sizes && v.sizes.length > 0) sizes = v.sizes;
+            if (v.image) itemImage = v.image;
+        }
+
+        if (sizes.length > 0) extraDetails.push(`Size: ${sizes.join(", ")}`);
+        if (variantName) extraDetails.push(`Variant: ${variantName}`);
+
+        let extraHtml = extraDetails.length > 0 ? `<div style="font-size: 1.2rem; color: #777; margin-top: 4px;">${extraDetails.join(' | ')}</div>` : "";
+
+        let swatchesHtml = "";
+        if (swatches.length > 0) {
+            swatchesHtml = `<div style="display: flex; gap: 5px; margin-top: 6px; align-items: center;"><span style="font-size: 1.2rem; color: #777;">Color:</span>`;
+            swatches.forEach(s => {
+                swatchesHtml += `<span title="${s.color}" onclick="document.getElementById('order-item-img-${index}').src='${s.image}'" style="display: inline-block; width: 16px; height: 16px; border-radius: 50%; background-color: ${s.color}; border: 1px solid #ccc; cursor: pointer;"></span>`;
+            });
+            swatchesHtml += `</div>`;
+        }
+
         itemsHtml += `
             <tr>
                 <td>
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <img src="${item.image}" alt="${item.productName}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
-                        <a href="product.php?id=${item.productId}">${item.productName}</a>
+                        <img id="order-item-img-${index}" src="${itemImage}" alt="${item.productName}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
+                        <div>
+                            <a href="product.php?id=${item.productId}" style="font-weight: 500;">${item.productName}</a>
+                            ${extraHtml}
+                            ${swatchesHtml}
+                        </div>
                     </div>
                 </td>
                 <td>₹${item.discountPrice > 0 ? item.discountPrice : item.price}</td>
@@ -147,6 +213,17 @@ function showOrderDetailsModal(order, items) {
 
     const formattedDate = new Date(order.createdAt || order.createdat || new Date()).toLocaleString();
 
+    // Safe Fallbacks for missing details to avoid "undefined" text
+    const name = `${order.firstName || ''} ${order.lastName || ''}`.trim() || 'N/A';
+    const email = order.email || 'N/A';
+    const phone = order.mobile || 'N/A';
+    const addressParts = [order.address, order.city, order.state, order.country].filter(Boolean).join(', ');
+    const fullAddress = addressParts ? `${addressParts}${order.pincode ? ' - ' + order.pincode : ''}` : 'N/A';
+    const totalItemsCount = order.totalItems || items.reduce((sum, item) => sum + (parseInt(item.quantity) || 1), 0);
+    const grandTotal = order.grandTotal || '0.00';
+    const status = order.orderStatus || order.status || 'Pending';
+    const paymentMethod = order.paymentMethod || 'N/A';
+
     const modalHtml = `
         <div class="modal fade" id="orderDetailsModal" tabindex="-1" role="dialog" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -161,18 +238,18 @@ function showOrderDetailsModal(order, items) {
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <h6>Billing & Shipping Address</h6>
-                                <p class="mb-0"><strong>Name:</strong> ${order.firstName} ${order.lastName}</p>
-                                <p class="mb-0"><strong>Email:</strong> ${order.email}</p>
-                                <p class="mb-0"><strong>Phone:</strong> ${order.mobile}</p>
-                                <p class="mb-0"><strong>Address:</strong> ${order.address}, ${order.city}, ${order.state} - ${order.pincode}, ${order.country}</p>
+                                <p class="mb-0"><strong>Name:</strong> ${name}</p>
+                                <p class="mb-0"><strong>Email:</strong> ${email}</p>
+                                <p class="mb-0"><strong>Phone:</strong> ${phone}</p>
+                                <p class="mb-0"><strong>Address:</strong> ${fullAddress}</p>
                             </div>
                             <div class="col-md-6">
                                 <h6>Order Summary</h6>
                                 <p class="mb-0"><strong>Date:</strong> ${formattedDate}</p>
-                                <p class="mb-0"><strong>Payment Method:</strong> ${order.paymentMethod}</p>
-                                <p class="mb-0"><strong>Status:</strong> <span class="badge" style="background-color: #c96; color: #fff; font-size: 1.1rem; font-weight: 400;">${order.orderStatus}</span></p>
-                                <p class="mb-0"><strong>Total Items:</strong> ${order.totalItems}</p>
-                                <p class="mb-0"><strong>Grand Total:</strong> <span style="font-weight: bold; color: #c96;">₹${order.grandTotal}</span></p>
+                                <p class="mb-0"><strong>Payment Method:</strong> ${paymentMethod}</p>
+                                <p class="mb-0"><strong>Status:</strong> <span class="badge" style="background-color: #c96; color: #fff; font-size: 1.1rem; font-weight: 400; text-transform: capitalize;">${status}</span></p>
+                                <p class="mb-0"><strong>Total Items:</strong> ${totalItemsCount}</p>
+                                <p class="mb-0"><strong>Grand Total:</strong> <span style="font-weight: bold; color: #c96;">₹${grandTotal}</span></p>
                             </div>
                         </div>
                         

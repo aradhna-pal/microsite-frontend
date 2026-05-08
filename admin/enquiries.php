@@ -7,7 +7,7 @@
         <!-- main-content-wrap -->
         <div class="main-content-wrap">
             <div class="flex items-center flex-wrap justify-between gap20 mb-27">
-                <h3>All Variant</h3>
+                <h3>All Enquiries</h3>
                 <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                     <li>
                         <a href="index-2.php">
@@ -19,14 +19,14 @@
                     </li>
                     <li>
                         <a href="#">
-                            <div class="text-tiny">Variant</div>
+                            <div class="text-tiny">Enquiries</div>
                         </a>
                     </li>
                     <li>
                         <i class="icon-chevron-right"></i>
                     </li>
                     <li>
-                        <div class="text-tiny">All Variants</div>
+                        <div class="text-tiny">All Enquiries</div>
                     </li>
                 </ul>
             </div>
@@ -55,53 +55,61 @@
                             </div>
                         </form>
                     </div>
-                    <a class="tf-button style-1 w208" href="add-variant.php"><i class="icon-plus"></i>Add Variant</a>
                 </div>
-                <div class="wg-table table-all-attribute" style="overflow-x: auto;">
-                    <ul class="table-title flex gap20 mb-14" style="white-space: nowrap; min-width: max-content;">
+                <div class="wg-table table-all-attribute">
+                    <ul class="table-title flex gap20 mb-14">
                         <li style="flex:0 0 60px; max-width:60px;">
                              <div class="body-title" >S.No</div>
                         </li>
-                        <li style="flex: 0 0 80px; overflow: hidden; text-overflow: ellipsis;">
-                            <div class="body-title">Image</div>
+                        <li>
+                            <div class="body-title">Name</div>
                         </li>
                      
-                        <li style="flex: 0 0 150px; overflow: hidden; text-overflow: ellipsis;">
-                            <div class="body-title"> Variant Name</div>
+                        <li>
+                            <div class="body-title">Email</div>
                         </li>
-                      
-                        <li style="flex: 0 0 80px; overflow: hidden; text-overflow: ellipsis;">
-                            <div class="body-title">  Price</div>
+                        <li>
+                            <div class="body-title">Subject</div>
                         </li>
-                        <li style="flex: 0 0 100px; overflow: hidden; text-overflow: ellipsis;">
-                            <div class="body-title">  Discount Price</div>
+                        <li>
+                            <div class="body-title">Message</div>
                         </li>
-                        <li style="flex: 0 0 80px; overflow: hidden; text-overflow: ellipsis;">
-                            <div class="body-title">  Stock</div>
+                        <li>
+                            <div class="body-title">Phone No.</div>
                         </li>
-                        <li style="flex: 0 0 120px; overflow: hidden; text-overflow: ellipsis;">
-                            <div class="body-title">  Sku</div>
+                        <li>
+                            <div class="body-title">Date</div>
                         </li>
-                        
-                      
-                        <li style="flex: 0 0 100px; overflow: hidden; text-overflow: ellipsis;">
-                            <div class="body-title">  Size</div>
-                        </li>
-                        <li style="flex: 0 0 100px; overflow: hidden; text-overflow: ellipsis;">
-                            <div class="body-title">  Color</div>
-                        </li>
-                        <li style="flex: 0 0 80px; overflow: hidden; text-overflow: ellipsis;">
-                            <div class="body-title">Status</div>
-                        </li>
-                        <li style="flex: 0 0 60px;">
-                            <div class="body-title">Edit</div>
-                        </li>
-                        <li style="flex: 0 0 60px;">
+                     
+                        <li>
                             <div class="body-title">Delete</div>
                         </li>
                     </ul>
-                    <ul class="flex flex-column" id="variantTableBody" style="min-width: max-content;">
-                     
+                    <ul class="flex flex-column" id="contactTableBody">
+                        <li class="attribute-item flex items-center justify-between gap20 ">
+                             <div class="body-text">1</div>
+                            <div class="name">
+                                <a href="product-list.php" class="body-title-2">Dried food</a>
+                            </div>
+                          
+                            <div class="body-text">1,638</div>
+                            <div class="body-text">20</div>
+                          
+                            <div class="list-icon-function">
+                               
+                                <div class="item edit">
+                                    <i class="icon-edit-3"></i>
+                                </div>
+                              
+                            </div>
+                            <div class="list-icon-function">
+                               
+                             
+                                <div class="item trash">
+                                    <i class="icon-trash-2"></i>
+                                </div>
+                            </div>
+                        </li>
                     
                       
                     </ul>

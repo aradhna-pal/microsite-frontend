@@ -90,7 +90,7 @@
 							sed, urna.</p>
 					</div><!-- End .text-center -->
 
-					<form action="#" class="contact-form mb-2">
+					<form action="#" id="addenquiry" class="contact-form mb-2">
 						<div class="row">
 							<div class="col-sm-4">
 								<label for="cname" class="sr-only">Name</label>
@@ -121,7 +121,7 @@
 								<i class="icon-long-arrow-right"></i>
 							</button>
 						</div><!-- End .text-center -->
-					</form><!-- End .contact-form -->
+					</form>
 				</div><!-- End .col-md-9 col-lg-7 -->
 			</div><!-- End .row -->
 		</div><!-- End .container -->

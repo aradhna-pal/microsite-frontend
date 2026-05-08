@@ -43,6 +43,7 @@
    <script src="assets/js/api/login.js"></script>
    <script src="assets/js/api/checkout.js"></script>
    <script src="assets/js/api/orders.js"></script>
+    <script src="assets/js/api/enquiry.js"></script>
 
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
 <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>

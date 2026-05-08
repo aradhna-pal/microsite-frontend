@@ -923,6 +923,7 @@ document.addEventListener("click", async function (e) {
   e.preventDefault();
 
   const productId = btn.getAttribute("data-id");
+  const variantId = btn.getAttribute("data-variant-id");
 
   // Get quantity if selected (e.g., from product details page)
   let qty = 1;
@@ -932,7 +933,10 @@ document.addEventListener("click", async function (e) {
   }
 
   const formData = new FormData();
-  formData.append("productId", productId);
+  formData.append("productIds", productId);
+  if (variantId) {
+      formData.append("variantId", variantId);
+  }
   formData.append("quantity", qty);
 
   const token = localStorage.getItem("token");
@@ -946,7 +950,7 @@ document.addEventListener("click", async function (e) {
     btn.innerHTML = '<span>Adding...</span>';
     btn.style.pointerEvents = 'none';
 
-    const res = await fetch(`${domain}/api/cart/add`, {
+    const res = await fetch(`${domain}/api/cart/add-multiple`, {
       method: "POST",
       headers: headers,
       body: formData,
