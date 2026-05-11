@@ -1,0 +1,23 @@
+﻿<?php
+$pageTitle = 'Contact';
+$currentPage = 'contact';
+include '_header.php';
+?>
+
+<section class="card p-4 shadow-sm">
+    <h2 class="mb-3">Contact Us</h2>
+    <p class="mb-2"><strong>Address:</strong> <span id="msContactAddress">-</span></p>
+    <p class="mb-2"><strong>Email:</strong> <span id="msContactEmail">-</span></p>
+    <p class="mb-4"><strong>Mobile:</strong> <span id="msContactMobile">-</span></p>
+
+    <form>
+        <div class="row g-3">
+            <div class="col-md-6"><input class="form-control" type="text" placeholder="Your Name"></div>
+            <div class="col-md-6"><input class="form-control" type="email" placeholder="Your Email"></div>
+            <div class="col-12"><textarea class="form-control" rows="4" placeholder="Message"></textarea></div>
+        </div>
+        <button type="button" class="btn ms-btn mt-3">Send Message</button>
+    </form>
+</section>
+
+<?php include '_footer.php'; ?>
