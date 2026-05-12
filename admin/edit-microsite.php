@@ -16,6 +16,7 @@
                 <fieldset class="name w-half"><div class="body-title mb-10">Slug *</div><input id="micrositeSlug" type="text" required></fieldset>
                 <fieldset class="name w-half"><div class="body-title mb-10">Domain (comma separated)</div><input id="micrositeDomain" type="text"></fieldset>
               </div>
+              <fieldset class="name mb-24"><div class="body-title mb-10">Microsite URL</div><input id="micrositeUrl" type="url" placeholder="https://example.com/your-microsite"></fieldset>
               <fieldset class="name mb-24"><div class="body-title mb-10">Heading</div><input id="micrositeHeading" type="text"></fieldset>
               <fieldset class="description mb-24"><div class="body-title mb-10">Content</div><textarea id="micrositeContent"></textarea></fieldset>
               <div class="flex gap24 mb-24">

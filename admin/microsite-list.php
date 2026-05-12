@@ -32,6 +32,7 @@
             <li style="flex:0 0 170px;"><div class="body-title">Name</div></li>
             <li style="flex:0 0 130px;"><div class="body-title">Slug</div></li>
             <li style="flex:0 0 170px;"><div class="body-title">Domain</div></li>
+            <li style="flex:0 0 200px;"><div class="body-title">URL</div></li>
             <li style="flex:0 0 180px;"><div class="body-title">Updated</div></li>
             <li style="flex:0 0 100px;"><div class="body-title">Status</div></li>
             <li style="flex:0 0 70px;"><div class="body-title">Edit</div></li>

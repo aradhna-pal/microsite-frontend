@@ -41,6 +41,21 @@ async function initMicrositeListPage() {
     return `${domin}/${cleanPath}`;
   }
 
+  function getMicrositeUrlField(item) {
+    if (!item) return "";
+    const raw = item.url ?? item.Url ?? item.micrositeUrl ?? item.MicrositeUrl ?? item.siteUrl ?? item.SiteUrl;
+    return raw != null ? String(raw).trim() : "";
+  }
+
+  function escapeHtmlMicrosite(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
   function formatMicrositeDateTime(value) {
     if (!value) return "-";
     const date = new Date(value);
@@ -97,6 +112,12 @@ async function initMicrositeListPage() {
     rows.forEach((item) => {
       const logo = resolveAssetUrl(item.logoImage) || "https://via.placeholder.com/60x60?text=No";
       const domain = Array.isArray(item.domains) && item.domains.length > 0 ? item.domains[0] : "-";
+      const siteUrl = getMicrositeUrlField(item);
+      const hrefRaw = siteUrl && /^https?:\/\//i.test(siteUrl) ? siteUrl : siteUrl ? `https://${siteUrl}` : "";
+      const urlCell =
+        siteUrl !== ""
+          ? `<div style="flex:0 0 200px;overflow:hidden;text-overflow:ellipsis;" class="body-text" title="${escapeHtmlMicrosite(siteUrl)}"><a href="${escapeHtmlMicrosite(hrefRaw)}" target="_blank" rel="noopener noreferrer" class="text-primary">${escapeHtmlMicrosite(siteUrl)}</a></div>`
+          : `<div style="flex:0 0 200px;" class="body-text">-</div>`;
       const rowDateTime = formatMicrositeDateTime(
         item.updatedAt || item.updatedat || item.createdAt || item.createdat || item.startDate
       );
@@ -108,6 +129,7 @@ async function initMicrositeListPage() {
           <div style="flex:0 0 170px;" class="body-text">${item.name ?? "-"}</div>
           <div style="flex:0 0 130px;" class="body-text">${item.slug ?? "-"}</div>
           <div style="flex:0 0 170px;" class="body-text">${domain}</div>
+          ${urlCell}
           <div style="flex:0 0 180px;" class="body-text">${rowDateTime}</div>
           <div style="flex:0 0 100px;">${statusBadge(item.status)}</div>
           <div style="flex:0 0 70px;" class="list-icon-function"><div class="item text-primary" onclick="editMicrositeRow(${item.id})"><i class="icon-edit-3"></i></div></div>
@@ -156,11 +178,13 @@ async function initMicrositeListPage() {
       if (!key) return renderMicrositeRows(allMicrosites);
       const filtered = allMicrosites.filter((item) => {
         const domainText = Array.isArray(item.domains) ? item.domains.join(" ") : "";
+        const urlText = getMicrositeUrlField(item).toLowerCase();
         return (
           String(item.id).includes(key) ||
           (item.name ?? "").toLowerCase().includes(key) ||
           (item.slug ?? "").toLowerCase().includes(key) ||
-          domainText.toLowerCase().includes(key)
+          domainText.toLowerCase().includes(key) ||
+          urlText.includes(key)
         );
       });
       renderMicrositeRows(filtered);
@@ -196,6 +220,7 @@ async function initMicrositeFormPage() {
   const endDateInput = document.getElementById("micrositeEndDate");
   const statusInput = document.getElementById("micrositeStatus");
   const domainInput = document.getElementById("micrositeDomain");
+  const urlInput = document.getElementById("micrositeUrl");
   const themeHeaderColor = document.getElementById("themeHeaderColor");
   const themeHeaderColorPicker = document.getElementById("themeHeaderColorPicker");
   const themeTextColor = document.getElementById("themeTextColor");
@@ -449,6 +474,10 @@ async function initMicrositeFormPage() {
     startDateInput.value = toDateInputValue(data.startDate);
     endDateInput.value = toDateInputValue(data.endDate);
     domainInput.value = Array.isArray(data.domains) ? data.domains.join(", ") : "";
+    if (urlInput) {
+      const u = data.url ?? data.Url ?? data.micrositeUrl ?? data.MicrositeUrl ?? data.siteUrl ?? data.SiteUrl;
+      urlInput.value = u != null ? String(u).trim() : "";
+    }
     statusInput.value = String(Boolean(data.status));
     renderPreviewFromUrl(logoPreviewContainer, data.logoImage);
     renderPreviewFromUrl(bannerPreviewContainer, data.bannerImage);
@@ -492,6 +521,7 @@ async function initMicrositeFormPage() {
     if (endDateInput.value) formData.append("EndDate", endDateInput.value);
     formData.append("Status", String(statusInput.value === "true"));
     parseDomains(domainInput.value).forEach((d) => formData.append("Domains", d));
+    if (urlInput) formData.append("Url", urlInput.value.trim());
     formData.append("ThemeJson", JSON.stringify({
       headerColor: themeHeaderColor?.value?.trim() || "",
       textColor: themeTextColor?.value?.trim() || "",
