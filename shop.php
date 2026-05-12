@@ -272,11 +272,11 @@
                                         <div class="mt-2" style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
                                             <div>
                                                 <label for="minPrice" style="margin-bottom:0; font-size:12px;">From</label>
-                                                <input type="number" id="minPrice" class="form-control" min="0" max="200000" value="0" style="margin-bottom: 0px; padding: 5px 10px; height: 35px;">
+                                                <input type="number" id="minPrice" class="form-control" style="margin-bottom: 0px; padding: 5px 10px; height: 35px;">
                                             </div>
                                             <div>
                                                 <label for="maxPrice" style="margin-bottom:0; font-size:12px;">To</label>
-                                                <input type="number" id="maxPrice" class="form-control" min="0" max="200000" value="1000" style="margin-bottom: 0px; padding: 5px 10px; height: 35px;">
+                                                <input type="number" id="maxPrice" class="form-control"   style="margin-bottom: 0px; padding: 5px 10px; height: 35px;">
                                             </div>
                                         </div>
                                     </div><!-- End .filter-price -->
