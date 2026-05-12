@@ -51,10 +51,7 @@
     <script src="./adminApi/product.js"></script>
     <script src="./adminApi/custmor-logo.js"></script>
     <script src="./adminApi/variant.js"></script>
-    <script src="./adminApi/order.js"></script>
-    <script src="./adminApi/order-detail.js"></script>
-    <script src="./adminApi/contact.js"></script>
-
+    <script src="./adminApi/microsite.js"></script>
     
 </head>
 
@@ -107,6 +104,30 @@
                             <div class="center-item">
                                 <div class="center-heading">All page</div>
                                 <ul class="menu-list">
+                                    <li class="menu-item has-children">
+                                        <a href="javascript:void(0);" class="menu-item-button">
+                                            <div class="icon"><i class="icon-shopping-cart"></i></div>
+                                            <div class="text">Microsite</div>
+                                        </a>
+                                        <ul class="sub-menu">
+                                            <li class="sub-menu-item">
+                                                <a href="microsite-list.php" class="">
+                                                    <div class="text">All Microsite</div>
+                                                </a>
+                                            </li>
+                                            <li class="sub-menu-item">
+                                                <a href="assigned-products.php" class="">
+                                                    <div class="text">Assigned Products</div>
+                                                </a>
+                                            </li>
+                                            <li class="sub-menu-item">
+                                                <a href="microsite-orders.php" class="">
+                                                    <div class="text">Microsites Order</div>
+                                                </a>
+                                            </li>
+                                           
+                                        </ul>
+                                    </li>
                                     <li class="menu-item has-children">
                                         <a href="javascript:void(0);" class="menu-item-button">
                                             <div class="icon"><i class="icon-shopping-cart"></i></div>
