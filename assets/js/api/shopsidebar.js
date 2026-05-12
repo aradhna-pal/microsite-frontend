@@ -294,16 +294,28 @@ function updateActiveFilters() {
     addTag(c.getAttribute('data-id'), label, 'color');
   });
 
-  // Price Slider Tag
+  // Price Slider / Input Tag
+  const minPriceInput = document.getElementById('minPrice');
+  const maxPriceInput = document.getElementById('maxPrice');
   const priceSlider = document.getElementById('price-slider');
+
+  let defaultMin = 0;
+  let defaultMax = 1000;
+
   if (priceSlider && priceSlider.noUiSlider) {
-    const prices = priceSlider.noUiSlider.get();
     const options = priceSlider.noUiSlider.options;
-    const defaultMin = Array.isArray(options.range.min) ? options.range.min[0] : options.range.min;
-    const defaultMax = Array.isArray(options.range.max) ? options.range.max[0] : options.range.max;
-    if (Math.round(prices[0]) != Math.round(defaultMin) || Math.round(prices[1]) != Math.round(defaultMax)) {
-        addTag('price-slider-tag', `Price: ₹${Math.round(prices[0])} - ₹${Math.round(prices[1])}`, 'price');
-    }
+    defaultMin = Array.isArray(options.range.min) ? options.range.min[0] : options.range.min;
+    defaultMax = Array.isArray(options.range.max) ? options.range.max[0] : options.range.max;
+  }
+
+  let currentMin = minPriceInput ? parseInt(minPriceInput.value) : defaultMin;
+  let currentMax = maxPriceInput ? parseInt(maxPriceInput.value) : defaultMax;
+
+  if (isNaN(currentMin)) currentMin = defaultMin;
+  if (isNaN(currentMax)) currentMax = defaultMax;
+
+  if (Math.round(currentMin) != Math.round(defaultMin) || Math.round(currentMax) != Math.round(defaultMax)) {
+      addTag('price-slider-tag', `Price: ₹${Math.round(currentMin)} - ₹${Math.round(currentMax)}`, 'price');
   }
 
   applyFilters();
@@ -328,14 +340,23 @@ function applyFilters() {
   sizeIds.forEach(id => searchParams.append('sizeIds', id));
   colorIds.forEach(id => searchParams.append('colorIds', id));
   
+  const minPriceInput = document.getElementById('minPrice');
+  const maxPriceInput = document.getElementById('maxPrice');
   const priceSlider = document.getElementById('price-slider');
-  if (priceSlider && priceSlider.noUiSlider) {
+
+  let currentMin = minPriceInput ? parseInt(minPriceInput.value) : null;
+  let currentMax = maxPriceInput ? parseInt(maxPriceInput.value) : null;
+
+  if (priceSlider && priceSlider.noUiSlider && (isNaN(currentMin) || isNaN(currentMax))) {
     const prices = priceSlider.noUiSlider.get();
     if (prices && prices.length === 2) {
-      searchParams.append('minPrice', Math.round(prices[0]));
-      searchParams.append('maxPrice', Math.round(prices[1]));
+      if (isNaN(currentMin)) currentMin = Math.round(prices[0]);
+      if (isNaN(currentMax)) currentMax = Math.round(prices[1]);
     }
   }
+
+  if (currentMin !== null && !isNaN(currentMin)) searchParams.append('minPrice', currentMin);
+  if (currentMax !== null && !isNaN(currentMax)) searchParams.append('maxPrice', currentMax);
 
   if (searchText) searchParams.append('search', searchText);
 
@@ -373,13 +394,26 @@ window.removeFilter = function(id, type) {
     }
   } else if (type === 'price') {
     const priceSlider = document.getElementById('price-slider');
+    const minPriceInput = document.getElementById('minPrice');
+    const maxPriceInput = document.getElementById('maxPrice');
+    
+    let defaultMin = 0;
+    let defaultMax = 1000;
+
     if (priceSlider && priceSlider.noUiSlider) {
       priceSlider.noUiSlider.reset();
+      const options = priceSlider.noUiSlider.options;
+      defaultMin = Array.isArray(options.range.min) ? options.range.min[0] : options.range.min;
+      defaultMax = Array.isArray(options.range.max) ? options.range.max[0] : options.range.max;
+      
       const priceText = document.getElementById('filter-price-range');
       if (priceText) {
-         priceText.innerText = `₹${Math.round(Array.isArray(priceSlider.noUiSlider.options.range.min) ? priceSlider.noUiSlider.options.range.min[0] : priceSlider.noUiSlider.options.range.min)} - ₹${Math.round(Array.isArray(priceSlider.noUiSlider.options.range.max) ? priceSlider.noUiSlider.options.range.max[0] : priceSlider.noUiSlider.options.range.max)}`;
+         priceText.innerText = `₹${Math.round(defaultMin)} - ₹${Math.round(defaultMax)}`;
       }
     }
+    
+    if (minPriceInput) minPriceInput.value = defaultMin;
+    if (maxPriceInput) maxPriceInput.value = defaultMax;
   }
   updateActiveFilters();
 };
@@ -420,9 +454,21 @@ document.addEventListener("click", function (e) {
     
     // Reset Price slider
     const priceSlider = document.getElementById('price-slider');
+    const minPriceInput = document.getElementById('minPrice');
+    const maxPriceInput = document.getElementById('maxPrice');
+    
+    let defaultMin = 0;
+    let defaultMax = 1000;
+
     if (priceSlider && priceSlider.noUiSlider) {
       priceSlider.noUiSlider.reset();
+      const options = priceSlider.noUiSlider.options;
+      defaultMin = Array.isArray(options.range.min) ? options.range.min[0] : options.range.min;
+      defaultMax = Array.isArray(options.range.max) ? options.range.max[0] : options.range.max;
     }
+    
+    if (minPriceInput) minPriceInput.value = defaultMin;
+    if (maxPriceInput) maxPriceInput.value = defaultMax;
 
     updateActiveFilters();
   }
@@ -458,4 +504,75 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Hook Price Slider
   // Small delay to let template main.js initialize the slider
+  setTimeout(() => {
+    const priceSlider = document.getElementById('price-slider');
+    if (priceSlider && priceSlider.noUiSlider) {
+      priceSlider.noUiSlider.on('change', function(values) {
+        const minPriceInput = document.getElementById('minPrice');
+        const maxPriceInput = document.getElementById('maxPrice');
+        if (minPriceInput) minPriceInput.value = Math.round(values[0]);
+        if (maxPriceInput) maxPriceInput.value = Math.round(values[1]);
+        updateActiveFilters();
+      });
+    }
+
+    // Robust event listeners for Price Inputs and Input-Spinner buttons
+    const priceFilterContainer = document.querySelector('.filter-price');
+    if (priceFilterContainer) {
+      let priceTimeout;
+      
+      const handlePriceChange = () => {
+        clearTimeout(priceTimeout);
+        priceTimeout = setTimeout(() => {
+          const priceSlider = document.getElementById('price-slider');
+          const minPrice = document.getElementById('minPrice');
+          const maxPrice = document.getElementById('maxPrice');
+          
+          if (minPrice && maxPrice) {
+            let minVal = minPrice.value;
+            let maxVal = maxPrice.value;
+            
+            // If user is typing in the spinner, grab the latest typed value directly
+            const minSpinner = minPrice.parentElement ? minPrice.parentElement.querySelector('.input-spinner input[type="text"]') : null;
+            if (minSpinner && minSpinner.value !== "") minVal = minSpinner.value;
+
+            const maxSpinner = maxPrice.parentElement ? maxPrice.parentElement.querySelector('.input-spinner input[type="text"]') : null;
+            if (maxSpinner && maxSpinner.value !== "") maxVal = maxSpinner.value;
+            
+            if (priceSlider && priceSlider.noUiSlider) {
+              priceSlider.noUiSlider.set([minVal, maxVal]);
+            }
+            
+            // Force sync so applyFilters uses the latest values
+            minPrice.value = minVal;
+            maxPrice.value = maxVal;
+
+            updateActiveFilters();
+          }
+        }, 500); // 500ms debounce to prevent API spamming
+      };
+
+      priceFilterContainer.addEventListener('keyup', (e) => {
+        if (e.target.tagName === 'INPUT') handlePriceChange();
+      });
+      
+      priceFilterContainer.addEventListener('click', (e) => {
+        if (e.target && e.target.closest && (e.target.closest('button') || e.target.closest('.btn-spinner'))) {
+           setTimeout(handlePriceChange, 50);
+        }
+      });
+
+      // Fallback native listeners
+      const minInput = document.getElementById('minPrice');
+      const maxInput = document.getElementById('maxPrice');
+      if (minInput) {
+          minInput.addEventListener('change', handlePriceChange);
+          minInput.addEventListener('input', handlePriceChange);
+      }
+      if (maxInput) {
+          maxInput.addEventListener('change', handlePriceChange);
+          maxInput.addEventListener('input', handlePriceChange);
+      }
+    }
+  }, 1000);
 });
