@@ -18,7 +18,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/images/demos/demo-7/favicon.webp">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/demos/demo-7/favicon.webp">
-    <link rel="manifest" href="assets/images/icons/site.html">
+    <link rel="manifest" href="manifest.json">
     <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
     <link rel="shortcut icon" href="assets/images/demos/demo-7/favicon.webp">
     <meta name="apple-mobile-web-app-title" content="Molla">

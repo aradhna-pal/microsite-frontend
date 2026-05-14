@@ -40,7 +40,7 @@
             <div class="heading heading-center mb-3">
                 <h2 class="title">FEATURED PRODUCTS</h2><!-- End .title -->
 
-                
+
             </div><!-- End .heading -->
 
             <div class="tab-content tab-content-carousel">
@@ -296,7 +296,7 @@
                         </div><!-- End .product -->
                     </div><!-- End .owl-carousel -->
                 </div><!-- .End .tab-pane -->
-              
+
             </div>
         </div><!-- End .container-fluid -->
     </div>
@@ -307,7 +307,7 @@
         <div class="heading heading-center mb-3">
             <h2 class="title">NEW ARRIVALS</h2><!-- End .title -->
 
-           
+
         </div><!-- End .heading -->
 
         <div class="tab-content">
@@ -710,7 +710,7 @@
                     </div><!-- End .row -->
                 </div><!-- End .products -->
             </div><!-- .End .tab-pane -->
-         
+
         </div><!-- End .tab-content -->
 
         <div class="more-container text-center mt-2">
@@ -944,5 +944,129 @@
     </div><!-- End .owl-carousel -->
 </main><!-- End .main -->
 
+<style>
+    .pwa-install-prompt {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border-radius: 8px;
+        padding: 15px;
+        z-index: 10000;
+        width: 90%;
+        max-width: 400px;
+        border: 1px solid #eee;
+    }
+
+    .pwa-install-prompt.show {
+        display: block;
+    }
+
+    .pwa-install-content {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .pwa-install-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+    }
+
+    .pwa-install-text-cell {
+        flex: 1;
+    }
+
+    .pwa-install-text-cell strong {
+        display: block;
+        font-size: 14px;
+        color: #333;
+    }
+
+    .pwa-install-text-cell p {
+        margin: 0;
+        font-size: 12px;
+        color: #666;
+    }
+
+    .pwa-install-btn {
+        background: #cc9966;
+        color: #fff;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .pwa-dismiss-btn {
+        background: none;
+        border: none;
+        font-size: 20px;
+        color: #999;
+        cursor: pointer;
+        padding: 0 5px;
+    }
+</style>
+
+<div class="pwa-install-prompt" id="pwaInstallPrompt">
+    <div class="pwa-install-content">
+        <div class="pwa-install-icon-cell">
+            <img class="pwa-install-icon" src="assets/images/demos/demo-7/favicon.webp" alt="App Icon">
+        </div>
+        <div class="pwa-install-text-cell">
+            <strong>Install App</strong>
+            <p>Get quick access from your home screen</p>
+        </div>
+        <button class="pwa-install-btn" id="pwaInstallBtn">Install</button>
+        <button class="pwa-dismiss-btn" id="pwaDismissBtn">×</button>
+    </div>
+</div>
+
+<script>
+    let deferredPrompt;
+    const pwaInstallPrompt = document.getElementById('pwaInstallPrompt');
+    const pwaInstallBtn = document.getElementById('pwaInstallBtn');
+    const pwaDismissBtn = document.getElementById('pwaDismissBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevent the mini-infobar from appearing on mobile
+        e.preventDefault();
+        // Stash the event so it can be triggered later.
+        deferredPrompt = e;
+        // Update UI notify the user they can install the PWA
+        pwaInstallPrompt.classList.add('show');
+    });
+
+    pwaInstallBtn.addEventListener('click', async () => {
+        pwaInstallPrompt.classList.remove('show');
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const {
+                outcome
+            } = await deferredPrompt.userChoice;
+            console.log(`User response to the install prompt: ${outcome}`);
+            deferredPrompt = null;
+        }
+    });
+
+    pwaDismissBtn.addEventListener('click', () => {
+        pwaInstallPrompt.classList.remove('show');
+    });
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js').then((registration) => {
+                console.log('ServiceWorker registration successful');
+            }, (err) => {
+                console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+    }
+</script>
 
 <?php include 'footer.php'; ?>
