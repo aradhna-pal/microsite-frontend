@@ -2,7 +2,7 @@
     <div class="footer-middle">
         <div class="container-fluid">
             <div class="row">
-                <div class=" col-lg-6">
+                <div class=" col-lg-4">
                     <div class="widget widget-about">
                         <img src="assets/images/demos/demo-7/logo1.png" class="footer-logo" alt="Footer Logo"
                             width="200" height="25">
@@ -20,7 +20,7 @@
                     </div><!-- End .widget about-widget -->
                 </div><!-- End .col-sm-12 col-lg-4 -->
 
-                <div class=" col-lg-4">
+                <div class=" col-lg-3">
                     <div class="widget">
                         <h4 class="widget-title">Useful links</h4><!-- End .widget-title -->
 
@@ -34,8 +34,23 @@
                             <!-- <li><a href="login.html">Log in</a></li> -->
                         </ul><!-- End .widget-list -->
                     </div><!-- End .widget -->
-                </div><!-- End .col-sm-4 col-lg-2 -->
+                </div>
 
+                <div class=" col-lg-3">
+                    <div class="widget">
+                        <h4 class="widget-title">Useful links</h4><!-- End .widget-title -->
+
+                        <ul class="widget-list">
+                            <li><a href="cart.php">Cart </a></li>
+
+                            <li><a href="terms.php">Term & Conditions </a></li>
+                            <li><a href="privacy.php">Privacy Policy</a></li>
+                            <!-- <li><a href="faq.html">FAQ</a></li> -->
+                            <!-- <li><a href="contact.php">Contact us</a></li> -->
+                            <!-- <li><a href="login.html">Log in</a></li> -->
+                        </ul><!-- End .widget-list -->
+                    </div><!-- End .widget -->
+                </div>
                
 
                 <div class=" col-lg-2">
